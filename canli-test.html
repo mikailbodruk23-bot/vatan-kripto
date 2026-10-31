@@ -4,52 +4,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>VATAN 2 - Canlı Binance Testi</title>
+<title>VATAN 2 - Canlı Fiyat Karşılaştırma</title>
 <style>
 body{background:#0b1220;color:white;font-family:Arial,sans-serif;padding:18px}
-h1{font-size:23px}
+h1{color:#4ade80}
 .card{background:#172238;padding:18px;margin:12px 0;border-radius:12px}
-.price{font-size:25px;color:#4ade80;font-weight:bold;margin-top:8px}
+.price{font-size:23px;color:#4ade80;font-weight:bold}
+.mark{font-size:19px;color:#facc15}
+.diff{font-size:16px;color:#cbd5e1}
 #status{color:#facc15;margin:15px 0}
 small{color:#94a3b8}
 </style>
 </head>
 <body>
 <h1>🇹🇷 VATAN 2</h1>
-<p>Binance Futures Canlı Fiyat Testi</p>
+<p>Binance Futures Canlı Fiyat Karşılaştırma</p>
 <div id="status">Bağlantı bekleniyor...</div>
-
-<div class="card">
-<strong>BTCUSDT</strong>
-<div class="price" id="BTCUSDT">Bekleniyor...</div>
-</div>
-
-<div class="card">
-<strong>ETHUSDT</strong>
-<div class="price" id="ETHUSDT">Bekleniyor...</div>
-</div>
-
-<div class="card">
-<strong>SOLUSDT</strong>
-<div class="price" id="SOLUSDT">Bekleniyor...</div>
-</div>
-
-<small>Gösterilen fiyatlar Binance Futures mark price verileridir. İşlem sinyali değildir.</small>
+<div id="coins"></div>
+<small>Son işlem fiyatı ve Mark Price farklı olabilir. Bu ekran işlem sinyali değildir.</small>
 
 <script>
-window.addEventListener("vatan-price",event=>{
- const {symbol,price,timestamp}=event.detail;
- const el=document.getElementById(symbol);
- if(!el)return;
- el.textContent=price.toLocaleString("en-US",{
-  minimumFractionDigits:2,
-  maximumFractionDigits:6
- })+" USDT";
- document.getElementById("status").textContent=
- "Canlı veri alınıyor - "+new Date(timestamp).toLocaleTimeString("tr-TR");
- document.getElementById("status").style.color="#4ade80";
+const symbols=["BTCUSDT","ETHUSDT","SOLUSDT"];
+const container=document.getElementById("coins");
+const statusEl=document.getElementById("status");
+
+symbols.forEach(s=>{
+ const card=document.createElement("div");
+ card.className="card";
+ card.innerHTML=`<h3>${s}</h3>
+ <p>Son işlem fiyatı</p><div class="price" id="last-${s}">Bekleniyor...</div>
+ <p>Mark Price</p><div class="mark" id="mark-${s}">Bekleniyor...</div>
+ <p>Fiyat farkı</p><div class="diff" id="diff-${s}">Bekleniyor...</div>`;
+ container.appendChild(card);
 });
+
+const fmt=n=>Number(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:6});
+
+async function update(){
+ try{
+  const [lastResponse,markResponse]=await Promise.all([
+   fetch("https://fapi.binance.com/fapi/v1/ticker/price"),
+   fetch("https://fapi.binance.com/fapi/v1/premiumIndex")
+  ]);
+  if(!lastResponse.ok||!markResponse.ok)throw Error("HTTP bağlantı hatası");
+  const lastData=await lastResponse.json();
+  const markData=await markResponse.json();
+  for(const s of symbols){
+   const last=Number(lastData.find(x=>x.symbol===s)?.price);
+   const mark=Number(markData.find(x=>x.symbol===s)?.markPrice);
+   if(!Number.isFinite(last)||!Number.isFinite(mark)||last<=0||mark<=0)continue;
+   const difference=last-mark;
+   document.getElementById("last-"+s).textContent=fmt(last)+" USDT";
+   document.getElementById("mark-"+s).textContent=fmt(mark)+" USDT";
+   document.getElementById("diff-"+s).textContent=
+    (difference>=0?"+":"")+fmt(difference)+" USDT ("+
+    (difference/mark*100).toFixed(3)+"%)";
+  }
+  statusEl.textContent="Canlı veri alındı: "+new Date().toLocaleTimeString("tr-TR");
+  statusEl.style.color="#4ade80";
+ }catch(e){
+  statusEl.textContent="Bağlantı hatası: "+e.message;
+  statusEl.style.color="#f87171";
+ }
+}
+update();
+setInterval(update,5000);
 </script>
-<script src="./binance-live.js"></script>
 </body>
 </html>
