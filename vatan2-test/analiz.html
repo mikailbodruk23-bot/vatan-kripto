@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VATAN 2 - Teknik Analiz</title>
+<style>
+*{box-sizing:border-box}
+body{background:#0b1220;color:#fff;font-family:Arial;margin:0;padding:20px}
+h1{color:#4ade80}
+select,button{background:#24344e;color:#fff;border:1px solid #465978;border-radius:9px;padding:12px;font-size:16px}
+button{background:#166534}
+.controls{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0}
+.card{background:#172338;padding:18px;border-radius:14px;margin:13px 0}
+.label{color:#aab8ce;font-size:14px}
+.value{font-size:22px;font-weight:bold;margin-top:7px}
+.long{color:#4ade80}
+.short{color:#fb7185}
+.wait{color:#facc15}
+#status{color:#facc15}
+small{color:#94a3b8;line-height:1.6}
+</style>
+</head>
+<body>
+<h1>🇹🇷 VATAN 2</h1>
+<p>USDT Futures • Teknik Analiz</p>
+<div class="controls">
+<select id="symbol">
+<option>BTCUSDT</option>
+<option>ETHUSDT</option>
+<option>SOLUSDT</option>
+</select>
+<select id="tf">
+<option value="5m">5 dakika</option>
+<option value="15m">15 dakika</option>
+</select>
+<button onclick="loadData()">Analiz Et</button>
+</div>
+<div id="status">Analiz hazırlanıyor...</div>
+<div id="result"></div>
+<small>Bu ekran eğitim ve piyasa gözlemi amaçlıdır.
+Sinyaller kesin sonuç veya yatırım tavsiyesi değildir.
+Açık mum yerine kapanmış mumlar değerlendirilir.</small>
+<script>
+const $=id=>document.getElementById(id);
+const num=(v,d=2)=>Number.isFinite(v)?v.toFixed(d):"—";
+function ema(arr,n){
+ let k=2/(n+1),out=[],v=null;
+ for(let i=0;i<arr.length;i++){
+  if(i===n-1){
+   v=arr.slice(0,n).reduce((a,b)=>a+b,0)/n;
+  }else if(i>=n){
+   v=arr[i]*k+v*(1-k);
+  }
+  out.push(v);
+ }
+ return out;
+}
+function rsi(arr,n=14){
+ let gain=0,loss=0;
+ for(let i=1;i<=n;i++){
+  let d=arr[i]-arr[i-1];
+  gain+=Math.max(d,0);loss+=Math.max(-d,0);
+ }
+ gain/=n;loss/=n;
+ let result=loss===0?(gain===0?50:100):100-100/(1+gain/loss);
+ for(let i=n+1;i<arr.length;i++){
+  let d=arr[i]-arr[i-1];
+  gain=(gain*(n-1)+Math.max(d,0))/n;
+  loss=(loss*(n-1)+Math.max(-d,0))/n;
+  result=loss===0?(gain===0?50:100):100-100/(1+gain/loss);
+ }
+ return result;
+}
+function macd(arr){
+ const a=ema(arr,12),b=ema(arr,26);
+ const line=a.map((v,i)=>v===null||b[i]===null?null:v-b[i]);
+ const valid=line.filter(v=>v!==null);
+ const signal=ema(valid,9);
+ return {line:valid.at(-1),signal:signal.at(-1),
+ histogram:valid.at(-1)-signal.at(-1)};
+}
+function atr(rows,n=14){
+ let tr=[];
+ for(let i=1;i<rows.length;i++){
+  let h=rows[i].h,l=rows[i].l,p=rows[i-1].c;
+  tr.push(Math.max(h-l,Math.abs(h-p),Math.abs(l-p)));
+ }
+ let v=tr.slice(0,n).reduce((a,b)=>a+b,0)/n;
+ for(let i=n;i<tr.length;i++)v=(v*(n-1)+tr[i])/n;
+ return v;
+}
+function card(name,value,cls=""){
+ return `<div class="card"><div class="label">${name}</div>
+ <div class="value ${cls}">${value}</div></div>`;
+}
+async function loadData(){
+ const symbol=$("symbol").value,tf=$("tf").value;
+ $("status").textContent="🟡 Binance mum verileri alınıyor...";
+ $("result").innerHTML="";
+ try{
+  const url="https://fapi.binance.com/fapi/v1/klines?symbol="+
+   encodeURIComponent(symbol)+"&interval="+tf+"&limit=250";
+  const response=await fetch(url,{cache:"no-store"});
+  if(!response.ok)throw Error("HTTP "+response.status);
+  const raw=await response.json();
+  if(!Array.isArray(raw)||raw.length<210)throw Error("Yetersiz veri");
+  const now=Date.now();
+  const rows=raw.filter(x=>Number(x[6])<now).map(x=>({
+   h:Number(x[2]),l:Number(x[3]),c:Number(x[4]),v:Number(x[5]),
+   time:Number(x[6])
+  }));
+  if(rows.length<210)throw Error("Yeterli kapanmış mum yok");
+  const closes=rows.map(x=>x.c);
+  const last=closes.at(-1);
+  const e9=ema(closes,9).at(-1);
+  const e21=ema(closes,21).at(-1);
+  const e50=ema(closes,50).at(-1);
+  const e200=ema(closes,200).at(-1);
+  const r=rsi(closes);
+  const m=macd(closes);
+  const a=atr(rows);
+  const volumes=rows.slice(-21,-1).map(x=>x.v);
+  const avgVol=volumes.reduce((x,y)=>x+y,0)/volumes.length;
+  const volRatio=rows.at(-1).v/avgVol;
+
+  let long=0,short=0;
+  if(e9>e21)long+=2;else short+=2;
+  if(e21>e50)long+=2;else short+=2;
+  if(last>e200)long+=2;else short+=2;
+  if(r>55&&r<75)long+=1;
+  if(r<45&&r>25)short+=1;
+  if(m.histogram>0)long+=2;
+  if(m.histogram<0)short+=2;
+  if(volRatio>1.2){
+   if(last>e9)long+=1;
+   if(last<e9)short+=1;
+  }
+  let signal="BEKLE",cls="wait";
+  if(long>=7&&long-short>=4){signal="LONG ADAYI";cls="long";}
+  if(short>=7&&short-long>=4){signal="SHORT ADAYI";cls="short";}
+
+  const stopLong=last-1.5*a,stopShort=last+1.5*a;
+  const targetLong=last+3*a,targetShort=last-3*a;
+  let risk="";
+  if(signal==="LONG ADAYI")
+   risk=card("Örnek stop / hedef",num(stopLong)+" / "+num(targetLong)+" USDT");
+  if(signal==="SHORT ADAYI")
+   risk=card("Örnek stop / hedef",num(stopShort)+" / "+num(targetShort)+" USDT");
+
+  $("result").innerHTML=
+   card("Analiz sonucu",signal,cls)+
+   card("Kapanış fiyatı",num(last)+" USDT")+
+   card("EMA 9 / 21 / 50 / 200",
+    [e9,e21,e50,e200].map(x=>num(x)).join(" / ")+
+    " USDT")+
+   card("RSI (14)",num(r))+
+   card("MACD histogram",num(m.histogram,5))+
+   card("Hacim / 20 mum ortalaması",num(volRatio)+"x")+
+   card("ATR (14)",num(a)+" USDT")+
+   card("LONG / SHORT puanları",long+" / "+short+" (10 üzerinden)")+
+   risk+
+   card("Son kapanan mum",
+    new Date(rows.at(-1).time).toLocaleString("tr-TR"));
+  $("status").textContent="🟢 Analiz tamamlandı";
+ }catch(err){
+  $("status").textContent="🔴 Veri alınamadı: "+err.message;
+ }
+}
+loadData();
+</script>
+</body>
+</html>
