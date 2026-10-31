@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VATAN 2 - Canlı Test</title>
+<style>
+body{background:#0b1220;color:white;font-family:Arial;padding:20px}
+h1{color:#4ade80}
+.card{background:#172238;padding:18px;margin:12px 0;border-radius:12px}
+.price{font-size:25px;color:#4ade80;font-weight:bold;margin-top:8px}
+#status{color:#facc15}
+</style>
+</head>
+<body>
+<h1>🇹🇷 VATAN 2</h1>
+<p>Binance Futures Canlı Fiyat Testi</p>
+<div id="status">Bağlantı bekleniyor...</div>
+<div class="card">BTCUSDT<div class="price" id="BTCUSDT">Bekleniyor...</div></div>
+<div class="card">ETHUSDT<div class="price" id="ETHUSDT">Bekleniyor...</div></div>
+<div class="card">SOLUSDT<div class="price" id="SOLUSDT">Bekleniyor...</div></div>
+<script>
+const symbols=["BTCUSDT","ETHUSDT","SOLUSDT"];
+async function update(){
+try{
+const r=await fetch("https://fapi.binance.com/fapi/v1/premiumIndex");
+if(!r.ok)throw Error("HTTP "+r.status);
+const data=await r.json();
+for(const s of symbols){
+const item=data.find(x=>x.symbol===s);
+if(item)document.getElementById(s).textContent=
+Number(item.markPrice).toLocaleString("en-US",
+{minimumFractionDigits:2,maximumFractionDigits:6})+" USDT";
+}
+document.getElementById("status").textContent="Canlı veri alındı: "+new Date().toLocaleTimeString("tr-TR");
+}catch(e){
+document.getElementById("status").textContent="Bağlantı hatası: "+e.message;
+}
+}
+update();
+setInterval(update,5000);
+</script>
+</body>
+</html>
