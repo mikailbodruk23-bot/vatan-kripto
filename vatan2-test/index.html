@@ -2,124 +2,179 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VATAN 2 - Anlık Canlı Fiyat</title>
-<style>
-body {
-  background:#0b1220;
-  color:white;
-  font-family:Arial,sans-serif;
-  padding:18px;
-}
-h1 {color:#4ade80}
-.card {
-  background:#172238;
-  padding:18px;
-  margin:12px 0;
-  border-radius:12px;
-}
-.price {
-  color:#4ade80;
-  font-size:26px;
-  font-weight:bold;
-  margin-top:10px;
-  overflow-wrap:anywhere;
-}
-#status {color:#facc15;margin:15px 0}
-small {color:#94a3b8}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VATAN 2 - Anlık Canlı Fiyat</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #0b1220;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    h1 { color: #4ade80; }
+    .card {
+      background: #172238;
+      padding: 18px;
+      margin: 14px 0;
+      border-radius: 14px;
+    }
+    .coin { font-size: 18px; }
+    .price {
+      color: #4ade80;
+      font-size: 27px;
+      font-weight: bold;
+      margin-top: 12px;
+      overflow-wrap: anywhere;
+    }
+    .status {
+      color: #facc15;
+      margin: 16px 0;
+    }
+    .details {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    small { color: #94a3b8; }
+  </style>
 </head>
 <body>
 
-<h1>🇹🇷 VATAN 2</h1>
-<p>Binance Futures Anlık Canlı Fiyat</p>
-<div id="status">Bağlanıyor...</div>
+  <h1>🇹🇷 VATAN 2</h1>
+  <p>Binance Futures Anlık İşlem Fiyatları</p>
+  <div class="status" id="status">Bağlanıyor...</div>
 
-<div class="card">
-  <strong>BTCUSDT</strong>
-  <div class="price" id="BTCUSDT">Bekleniyor...</div>
-</div>
+  <div class="card">
+    <div class="coin">BTCUSDT</div>
+    <div class="price" id="BTCUSDT">Bekleniyor...</div>
+    <div class="details" id="time-BTCUSDT">Veri bekleniyor</div>
+  </div>
 
-<div class="card">
-  <strong>ETHUSDT</strong>
-  <div class="price" id="ETHUSDT">Bekleniyor...</div>
-</div>
+  <div class="card">
+    <div class="coin">ETHUSDT</div>
+    <div class="price" id="ETHUSDT">Bekleniyor...</div>
+    <div class="details" id="time-ETHUSDT">Veri bekleniyor</div>
+  </div>
 
-<div class="card">
-  <strong>SOLUSDT</strong>
-  <div class="price" id="SOLUSDT">Bekleniyor...</div>
-</div>
+  <div class="card">
+    <div class="coin">SOLUSDT</div>
+    <div class="price" id="SOLUSDT">Bekleniyor...</div>
+    <div class="details" id="time-SOLUSDT">Veri bekleniyor</div>
+  </div>
 
-<small>Canlı piyasa verisidir. Al-sat sinyali değildir.</small>
+  <small>
+    Canlı piyasa verisidir. Al-sat sinyali değildir.
+    Binance Last Price ile karşılaştırılabilir.
+  </small>
 
-<script>
-const symbols = ["btcusdt","ethusdt","solusdt"];
-const statusEl = document.getElementById("status");
-let socket;
-let retryTimer;
-let lastMessage = 0;
+  <script>
+    const symbols = ["btcusdt", "ethusdt", "solusdt"];
+    const statusEl = document.getElementById("status");
 
-function connect() {
-  clearTimeout(retryTimer);
-  statusEl.textContent = "Binance bağlantısı kuruluyor...";
-  statusEl.style.color = "#facc15";
+    let socket = null;
+    let retryTimer = null;
+    let lastMessage = 0;
+    let reconnectCount = 0;
 
-  const streams = symbols.map(s => s + "@markPrice@1s").join("/");
-  socket = new WebSocket(
-    "wss://fstream.binance.com/stream?streams=" + streams
-  );
+    function connect() {
+      clearTimeout(retryTimer);
 
-  socket.onopen = () => {
-    statusEl.textContent = "Bağlandı, canlı veri bekleniyor...";
-    lastMessage = Date.now();
-  };
+      if (socket) {
+        socket.onclose = null;
+        socket.onerror = null;
+        socket.close();
+      }
 
-  socket.onmessage = event => {
-    try {
-      const packet = JSON.parse(event.data);
-      const data = packet.data;
-      if (!data || !data.s || !data.p) return;
+      statusEl.textContent = "Binance bağlantısı kuruluyor...";
+      statusEl.style.color = "#facc15";
 
-      const el = document.getElementById(data.s);
-      const price = Number(data.p);
-      if (!el || !Number.isFinite(price)) return;
+      const streams = symbols
+        .map(s => s + "@aggTrade")
+        .join("/");
 
-      el.textContent = price.toLocaleString("en-US", {
-        minimumFractionDigits:2,
-        maximumFractionDigits:6
-      }) + " USDT";
+      socket = new WebSocket(
+        "wss://fstream.binance.com/stream?streams=" + streams
+      );
 
-      lastMessage = Date.now();
-      statusEl.textContent =
-        "CANLI ● Son veri: " +
-        new Date().toLocaleTimeString("tr-TR");
-      statusEl.style.color = "#4ade80";
-    } catch (error) {
-      console.warn("Veri işleme hatası", error);
+      socket.onopen = () => {
+        reconnectCount = 0;
+        lastMessage = Date.now();
+        statusEl.textContent = "Bağlandı, canlı işlemler bekleniyor...";
+        statusEl.style.color = "#4ade80";
+      };
+
+      socket.onmessage = event => {
+        try {
+          const packet = JSON.parse(event.data);
+          const data = packet.data;
+
+          if (!data || data.e !== "aggTrade") return;
+
+          const symbol = data.s;
+          const price = Number(data.p);
+          const element = document.getElementById(symbol);
+
+          if (!element || !Number.isFinite(price)) return;
+
+          element.textContent =
+            price.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 6
+            }) + " USDT";
+
+          const eventTime = new Date(data.E);
+          const timeEl = document.getElementById("time-" + symbol);
+
+          if (timeEl) {
+            timeEl.textContent =
+              "İşlem zamanı: " +
+              eventTime.toLocaleTimeString("tr-TR");
+          }
+
+          lastMessage = Date.now();
+
+          statusEl.textContent =
+            "🟢 CANLI • Son veri: " +
+            new Date().toLocaleTimeString("tr-TR");
+
+          statusEl.style.color = "#4ade80";
+
+        } catch (error) {
+          console.warn("Veri işleme hatası:", error);
+        }
+      };
+
+      socket.onerror = () => {
+        statusEl.textContent = "Bağlantı hatası...";
+        statusEl.style.color = "#f87171";
+      };
+
+      socket.onclose = () => {
+        statusEl.textContent = "Bağlantı koptu, yeniden bağlanıyor...";
+        statusEl.style.color = "#facc15";
+
+        reconnectCount++;
+        const delay = Math.min(3000 * reconnectCount, 15000);
+
+        retryTimer = setTimeout(connect, delay);
+      };
     }
-  };
 
-  socket.onerror = () => {
-    statusEl.textContent = "Bağlantı hatası, yeniden deneniyor...";
-    statusEl.style.color = "#f87171";
-  };
+    setInterval(() => {
+      if (
+        socket &&
+        socket.readyState === WebSocket.OPEN &&
+        Date.now() - lastMessage > 15000
+      ) {
+        statusEl.textContent = "Veri akışı kontrol ediliyor...";
+        socket.close();
+      }
+    }, 5000);
 
-  socket.onclose = () => {
-    statusEl.textContent = "Bağlantı koptu, tekrar bağlanıyor...";
-    statusEl.style.color = "#facc15";
-    retryTimer = setTimeout(connect, 3000);
-  };
-}
-
-setInterval(() => {
-  if (socket && socket.readyState === WebSocket.OPEN &&
-      Date.now() - lastMessage > 15000) {
-    socket.close();
-  }
-}, 5000);
-
-connect();
-</script>
+    connect();
+  </script>
 </body>
 </html>
