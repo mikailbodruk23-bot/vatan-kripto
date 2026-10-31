@@ -22,6 +22,7 @@ jobs:
           mkdir -p public/vatan2-test
           cp canli-test.html public/vatan2-test/index.html
           cp binance-live.js public/vatan2-test/
+          cp analiz.html public/vatan2-test/analiz.html
           touch public/.nojekyll
 
       - name: Test dalina yayinla
