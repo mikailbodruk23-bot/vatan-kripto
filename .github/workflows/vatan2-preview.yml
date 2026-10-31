@@ -1,0 +1,33 @@
+
+name: VATAN 2 Test Yayini
+
+on:
+  push:
+    branches:
+      - Vatan-2
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+
+      - name: Test dosyalarini hazirla
+        run: |
+          mkdir -p public/vatan2-test
+          cp canli-test.html public/vatan2-test/index.html
+          cp binance-live.js public/vatan2-test/
+          touch public/.nojekyll
+
+      - name: Test dalina yayinla
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: vatan2-test-pages
+          publish_dir: ./public
+          
