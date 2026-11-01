@@ -59,7 +59,6 @@ const streams=symbols.map(s=>s.toLowerCase()+"@aggTrade").join("/");
 socket=new WebSocket("wss://fstream.binance.com/stream?streams="+streams);
 socket.onopen=()=>$("status").textContent="🟢 Canlı fiyat bağlantısı aktif";
 socket.onmessage=event=>{
-  $("fiyatlar").textContent="Gelen veri: "+event.data.slice(0,250);
 try{
 const paket=JSON.parse(event.data); const d=paket.data||paket;
 if(d&&d.e==="aggTrade"){
