@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VATAN 2 - USDT Canlı</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:22px;background:#0b1220;color:white;font-family:Arial,sans-serif}
+h1{color:#4ade80;font-size:32px}
+p{color:#cbd5e1}
+#status{color:#facc15;margin:18px 0}
+.card{background:#172338;border-radius:15px;padding:18px;margin:15px 0}
+.symbol{font-size:18px;color:#cbd5e1}
+.price{font-size:29px;font-weight:bold;color:#4ade80;margin:12px 0;overflow-wrap:anywhere}
+.details{font-size:13px;color:#aab8ce;line-height:1.8}
+small{color:#94a3b8}
+</style>
+</head>
+<body>
+<h1>🇹🇷 VATAN 2</h1>
+<p>Binance Futures • USDT • Son İşlem Fiyatı</p>
+<div id="status">Bağlanıyor...</div>
+<div id="cards"></div>
+<small>Canlı piyasa verisidir. Al-sat sinyali değildir.</small>
+
+<script>
+const symbols=["BTCUSDT","ETHUSDT","SOLUSDT"];
+const cards=document.getElementById("cards");
+const statusEl=document.getElementById("status");
+const lastSeen={};
+let socket=null;
+let reconnectTimer=null;
+let attempts=0;
+
+const fmt=p=>Number(p).toLocaleString("en-US",{
+ minimumFractionDigits:2,
+ maximumFractionDigits:6
+});
+
+for(const symbol of symbols){
+ const card=document.createElement("div");
+ card.className="card";
+ card.innerHTML=`
+ <div class="symbol">${symbol} PERP</div>
+ <div class="price" id="price-${symbol}">Bekleniyor...</div>
+ <div class="details">
+ Son işlem: <span id="time-${symbol}">—</span><br>
+ Veri gecikmesi: <span id="delay-${symbol}">—</span><br>
+ Son veri yaşı: <span id="age-${symbol}">—</span>
+ </div>`;
+ cards.appendChild(card);
+}
+
+function connect(){
+ clearTimeout(reconnectTimer);
+ statusEl.textContent="🟡 Binance bağlantısı kuruluyor...";
+ const streams=symbols.map(
+  s=>s.toLowerCase()+"@trade"
+ ).join("/");
+ const url="wss://fstream.binance.com/stream?streams="+streams;
+
+ try{
+  socket=new WebSocket(url);
+ }catch(e){
+  retry();
+  return;
+ }
+
+ const current=socket;
+
+ current.onopen=()=>{
+  attempts=0;
+  statusEl.textContent="🟢 Bağlandı • Canlı işlemler izleniyor";
+ };
+
+ current.onmessage=event=>{
+  try{
+   const packet=JSON.parse(event.data);
+   const d=packet.data||packet;
+   if(d.e!=="trade"||!symbols.includes(d.s))return;
+
+   const received=Date.now();
+   const price=Number(d.p);
+   if(!Number.isFinite(price))return;
+
+   lastSeen[d.s]=received;
+
+   document.getElementById("price-"+d.s)
+    .textContent=fmt(price)+" USDT";
+
+   document.getElementById("time-"+d.s)
+    .textContent=new Date(d.T).toLocaleTimeString("tr-TR");
+
+   const lag=received-Number(d.E);
+   document.getElementById("delay-"+d.s)
+    .textContent=lag>=0
+      ?lag+" ms (tahmini)"
+      :"Saat farkı: "+lag+" ms";
+
+   statusEl.textContent="🟢 Canlı veri alınıyor";
+  }catch(e){
+   console.warn("Veri işleme hatası",e);
+  }
+ };
+
+ current.onerror=()=>{
+  statusEl.textContent="🔴 Bağlantı hatası";
+ };
+
+ current.onclose=()=>{
+  if(socket!==current)return;
+  statusEl.textContent="🟡 Bağlantı kesildi • Yeniden bağlanıyor";
+  retry();
+ };
+}
+
+function retry(){
+ clearTimeout(reconnectTimer);
+ attempts++;
+ const wait=Math.min(30000,1000*Math.pow(2,Math.min(attempts,5)));
+ reconnectTimer=setTimeout(connect,wait);
+}
+
+setInterval(()=>{
+ const now=Date.now();
+ let stale=false;
+ for(const s of symbols){
+  const t=lastSeen[s];
+  const ageEl=document.getElementById("age-"+s);
+  if(!t){
+   ageEl.textContent="Veri bekleniyor";
+   continue;
+  }
+  const age=now-t;
+  ageEl.textContent=(age/1000).toFixed(1)+" saniye";
+  if(age>10000)stale=true;
+ }
+ if(socket&&socket.readyState===WebSocket.OPEN&&stale){
+  statusEl.textContent="🟠 Veri akışı yavaşladı • Kontrol ediliyor";
+  socket.close();
+ }
+},1000);
+
+connect();
+</script>
+</body>
+</html>
