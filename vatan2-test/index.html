@@ -67,7 +67,7 @@ $("prices").innerHTML=symbols.map(s=>
 "<p>"+s+": <span class='price'>"+(prices[s]?fmt(prices[s]):"Bekleniyor")+"</span> USDT</p>"
 ).join("");
 }
-}catch(e){}
+}catch(e){$("status").textContent="🔴 Veri hatası: "+e.message;}
 };
 socket.onerror=()=>$("status").textContent="🔴 Bağlantı hatası";
 socket.onclose=()=>{
