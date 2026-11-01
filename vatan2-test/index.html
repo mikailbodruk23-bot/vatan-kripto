@@ -3,43 +3,175 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VATAN 2 - Canlı Test</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VATAN 2 | Canlı Analiz</title>
 <style>
-body{background:#0b1220;color:white;font-family:Arial;padding:20px}
+*{box-sizing:border-box}
+body{margin:0;padding:18px;background:#0b1220;color:white;font-family:Arial,sans-serif}
 h1{color:#4ade80}
-.card{background:#172238;padding:18px;margin:12px 0;border-radius:12px}
-.price{font-size:25px;color:#4ade80;font-weight:bold;margin-top:8px}
+.card{background:#172338;padding:16px;border-radius:14px;margin:12px 0}
+label{display:block;color:#aab8ce;margin-bottom:7px}
+select,button{padding:12px;background:#24344e;color:white;border:1px solid #52617a;border-radius:9px}
+button{background:#166534;cursor:pointer}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.price{font-size:27px;color:#4ade80;font-weight:bold}
+.long{color:#4ade80}.short{color:#fb7185}.wait{color:#facc15}
+small{color:#aab8ce;line-height:1.6}
 #status{color:#facc15}
 </style>
 </head>
 <body>
 <h1>🇹🇷 VATAN 2</h1>
-<p>Binance Futures Canlı Fiyat Testi</p>
-<div id="status">Bağlantı bekleniyor...</div>
-<div class="card">BTCUSDT<div class="price" id="BTCUSDT">Bekleniyor...</div></div>
-<div class="card">ETHUSDT<div class="price" id="ETHUSDT">Bekleniyor...</div></div>
-<div class="card">SOLUSDT<div class="price" id="SOLUSDT">Bekleniyor...</div></div>
+<p>Binance Futures • Canlı fiyat ve teknik analiz</p>
+<div id="status">Bağlantı hazırlanıyor...</div>
+<div class="card">
+<label>Canlı işlem fiyatları</label>
+<div id="prices">Veriler bekleniyor...</div>
+</div>
+<div class="controls">
+<select id="symbol">
+<option>BTCUSDT</option>
+<option>ETHUSDT</option>
+<option>SOLUSDT</option>
+</select>
+<select id="tf">
+<option value="15m">15 dakika</option>
+<option value="1h">1 saat</option>
+<option value="4h">4 saat</option>
+<option value="1d">Günlük</option>
+</select>
+<button onclick="analyze()">Analiz Et</button>
+</div>
+<div id="result" class="card">Analiz için bekleniyor...</div>
+<small>Analiz yalnızca kapanmış mumlarla yapılır. Puanlar tahmini başarı oranı değildir. Otomatik emir verilmez.</small>
 <script>
 const symbols=["BTCUSDT","ETHUSDT","SOLUSDT"];
-async function update(){
+const prices={};
+let socket;
+let reconnectTimer;
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n).toLocaleString("en-US",{maximumFractionDigits:6});
+
+function connect(){
+clearTimeout(reconnectTimer);
+$("status").textContent="🟡 Binance bağlantısı kuruluyor...";
+const streams=symbols.map(s=>s.toLowerCase()+"@aggTrade").join("/");
+socket=new WebSocket("wss://fstream.binance.com/stream?streams="+streams);
+socket.onopen=()=>$("status").textContent="🟢 Canlı fiyat bağlantısı aktif";
+socket.onmessage=event=>{
 try{
-const r=await fetch("https://fapi.binance.com/fapi/v1/premiumIndex");
-if(!r.ok)throw Error("HTTP "+r.status);
-const data=await r.json();
-for(const s of symbols){
-const item=data.find(x=>x.symbol===s);
-if(item)document.getElementById(s).textContent=
-Number(item.markPrice).toLocaleString("en-US",
-{minimumFractionDigits:2,maximumFractionDigits:6})+" USDT";
+const d=JSON.parse(event.data).data;
+if(d&&d.e==="aggTrade"){
+prices[d.s]=Number(d.p);
+$("prices").innerHTML=symbols.map(s=>
+"<p>"+s+": <span class='price'>"+(prices[s]?fmt(prices[s]):"Bekleniyor")+"</span> USDT</p>"
+).join("");
 }
-document.getElementById("status").textContent="Canlı veri alındı: "+new Date().toLocaleTimeString("tr-TR");
+}catch(e){}
+};
+socket.onerror=()=>$("status").textContent="🔴 Bağlantı hatası";
+socket.onclose=()=>{
+$("status").textContent="🟡 Yeniden bağlanılıyor...";
+reconnectTimer=setTimeout(connect,3000);
+};
+}
+function ema(a,n){
+const out=[],k=2/(n+1);
+let v=null;
+for(let i=0;i<a.length;i++){
+if(i===n-1)v=a.slice(0,n).reduce((x,y)=>x+y,0)/n;
+else if(i>=n)v=a[i]*k+v*(1-k);
+out.push(v);
+}
+return out;
+}
+function rsi(a,n=14){
+let gain=0,loss=0;
+for(let i=1;i<=n;i++){
+const d=a[i]-a[i-1];
+gain+=Math.max(d,0);loss+=Math.max(-d,0);
+}
+gain/=n;loss/=n;
+for(let i=n+1;i<a.length;i++){
+const d=a[i]-a[i-1];
+gain=(gain*(n-1)+Math.max(d,0))/n;
+loss=(loss*(n-1)+Math.max(-d,0))/n;
+}
+return loss===0?(gain===0?50:100):100-100/(1+gain/loss);
+}
+function macd(a){
+const x=ema(a,12),y=ema(a,26);
+const line=a.map((_,i)=>x[i]===null||y[i]===null?null:x[i]-y[i]);
+const valid=line.filter(v=>v!==null);
+const signal=ema(valid,9);
+return valid.at(-1)-signal.at(-1);
+}
+function atr(rows,n=14){
+const tr=[];
+for(let i=1;i<rows.length;i++){
+const x=rows[i],p=rows[i-1].c;
+tr.push(Math.max(x.h-x.l,Math.abs(x.h-p),Math.abs(x.l-p)));
+}
+let v=tr.slice(0,n).reduce((a,b)=>a+b,0)/n;
+for(let i=n;i<tr.length;i++)v=(v*(n-1)+tr[i])/n;
+return v;
+}
+async function analyze(){
+const symbol=$("symbol").value,tf=$("tf").value;
+$("result").textContent="Kapanmış mumlar inceleniyor...";
+try{
+const url="https://fapi.binance.com/fapi/v1/klines?symbol="+symbol+"&interval="+tf+"&limit=250";
+const response=await fetch(url,{cache:"no-store"});
+if(!response.ok)throw Error("HTTP "+response.status);
+const raw=await response.json();
+const now=Date.now();
+const rows=raw.filter(x=>Number(x[6])<now).map(x=>({
+h:+x[2],l:+x[3],c:+x[4],v:+x[5]
+}));
+if(rows.length<210)throw Error("Yeterli kapanmış mum yok");
+const closes=rows.map(x=>x.c),last=closes.at(-1);
+const e9=ema(closes,9).at(-1),e21=ema(closes,21).at(-1);
+const e50=ema(closes,50).at(-1),e200=ema(closes,200).at(-1);
+const r=rsi(closes),m=macd(closes),a=atr(rows);
+const prev=rows.slice(-21,-1).map(x=>x.v);
+const avg=prev.reduce((x,y)=>x+y,0)/prev.length;
+const ratio=avg>0?rows.at(-1).v/avg:0;
+let long=0,short=0;
+if(e9>e21)long+=2;else short+=2;
+if(e21>e50)long+=2;else short+=2;
+if(last>e200)long+=2;else short+=2;
+if(r>55&&r<75)long++;
+if(r<45&&r>25)short++;
+if(m>0)long+=2;else short+=2;
+if(ratio>1.2){long++;short++;}
+if(last>e9)long++;else short++;
+const lscore=Math.round(long/11*100);
+const sscore=Math.round(short/11*100);
+let signal="BEKLE",cls="wait",score=Math.max(lscore,sscore);
+if(lscore>=75&&long>short){signal="LONG ADAYI";cls="long";}
+if(sscore>=75&&short>long){signal="SHORT ADAYI";cls="short";}
+const stopLong=last-1.5*a,targetLong=last+3*a;
+const stopShort=last+1.5*a,targetShort=last-3*a;
+const levels=signal==="LONG ADAYI"?
+"Stop: "+fmt(stopLong)+" | Hedef: "+fmt(targetLong):
+signal==="SHORT ADAYI"?
+"Stop: "+fmt(stopShort)+" | Hedef: "+fmt(targetShort):
+"İşlem için yeterli onay yok";
+$("result").innerHTML=
+"<h2 class='"+cls+"'>"+signal+"</h2>"+
+"<p>Gösterge puanı: "+score+"/100</p>"+
+"<p>Kapanış: "+fmt(last)+" USDT</p>"+
+"<p>EMA 9/21/50/200: "+[e9,e21,e50,e200].map(fmt).join(" / ")+"</p>"+
+"<p>RSI: "+r.toFixed(1)+" | MACD histogram: "+fmt(m)+"</p>"+
+"<p>ATR: "+fmt(a)+" | Hacim oranı: "+ratio.toFixed(2)+"x</p>"+
+"<p>"+levels+"</p>"+
+"<small>Bu yalnızca tek zaman dilimli ön analizdir; 4 saat, günlük ve BTC yönü birlikte henüz doğrulanmıyor.</small>";
 }catch(e){
-document.getElementById("status").textContent="Bağlantı hatası: "+e.message;
+$("result").textContent="Analiz alınamadı: "+e.message;
 }
 }
-update();
-setInterval(update,5000);
+connect();
+analyze();
 </script>
 </body>
 </html>
