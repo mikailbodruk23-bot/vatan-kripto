@@ -55,14 +55,14 @@ const fmt=n=>Number(n).toLocaleString("en-US",{maximumFractionDigits:6});
 function connect(){
 clearTimeout(reconnectTimer);
 $("status").textContent="🟡 Binance bağlantısı kuruluyor...";
-const streams=symbols.map(s=>s.toLowerCase()+"@aggTrade").join("/");
+const streams=symbols.map(s=>s.toLowerCase()+"@trade").join("/");
 socket=new WebSocket("wss://fstream.binance.com/stream?streams="+streams);
 socket.onopen=()=>$("status").textContent="🟢 Canlı fiyat bağlantısı aktif";
 socket.onmessage=event=>{
 $("prices").textContent="📩 Binance mesajı geldi";
 try{
 const paket=JSON.parse(event.data); const d=paket.data||paket;
-if(d&&d.e==="aggTrade"){
+if(d&&d.e==="trade"){
 prices[d.s]=Number(d.p);
 $("prices").innerHTML=symbols.map(s=>
 "<p>"+s+": <span class='price'>"+(prices[s]?fmt(prices[s]):"Bekleniyor")+"</span> USDT</p>"
