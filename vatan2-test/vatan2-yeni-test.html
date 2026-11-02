@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VATAN 2 | Çoklu Zaman Dilimi Analizi</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#edf2fa;font:16px Arial,sans-serif}.wrap{max-width:760px;margin:auto;padding:22px 16px 50px}h1{color:#4ade80;font-size:34px;margin:12px 0 24px}h2{font-size:21px;margin:0 0 16px}.muted{color:#aab7ca}.card{background:#172338;border-radius:16px;padding:20px;margin:16px 0}.prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.price-card{background:#22334c;border-radius:12px;padding:14px}.price{font-size:24px;color:#4ade80;font-weight:bold;overflow-wrap:anywhere}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}select,button{font:inherit;border:1px solid #52617a;border-radius:10px;padding:13px;color:white;background:#24344e}button{background:#166534;cursor:pointer}button:disabled{opacity:.6}.status{color:#facc15}.long{color:#4ade80}.short{color:#fb7185}.wait{color:#facc15}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}.metric{background:#22334c;padding:12px;border-radius:10px}.metric small{display:block;color:#b9c5d5;margin-bottom:7px}.metric strong{font-size:17px}.note{font-size:13px;line-height:1.6;color:#b9c5d5}.pill{display:inline-block;padding:5px 10px;border-radius:8px;background:#263952}.error{color:#fb7185}p{line-height:1.55}
+</style>
+</head>
+<body><main class="wrap">
+<h1>🇹🇷 VATAN 2</h1><p class="muted">Binance Futures • Canlı fiyat • Çoklu zaman dilimi analizi</p>
+<p id="connection" class="status" aria-live="polite">🟡 Bağlanıyor...</p>
+<section class="card"><h2>Canlı işlem fiyatları</h2><div id="prices" class="prices"><p>Veriler bekleniyor...</p></div><p id="freshness" class="note"></p></section>
+<section class="card"><div class="controls"><label for="symbol">Coin</label><select id="symbol"><option>BTCUSDT</option><option>ETHUSDT</option><option>SOLUSDT</option></select><button id="analyzeBtn" type="button">Analiz Et</button></div><p class="note">Günlük + 4 saat ana trend; 1 saat onay; 15 dakika giriş. Yalnızca kapanmış mumlar.</p></section>
+<section id="result" class="card" aria-live="polite">Analiz hazırlanıyor...</section>
+<p class="note">Gösterge puanı başarı olasılığı değildir. Otomatik emir verilmez. İşlem açmadan önce riskinizi bağımsız değerlendirin. Bu sürüm yalnızca üç USDT paritesini inceler; 7/24 sunucu taraması ve Telegram bildirimi henüz eklenmedi.</p>
+</main>
+<script>
+'use strict';
+const symbols=['BTCUSDT','ETHUSDT','SOLUSDT'];
+const $=id=>document.getElementById(id);
+const fmt=n=>Number.isFinite(n)?Number(n).toLocaleString('en-US',{maximumFractionDigits:6}):'—';
+const latest=Object.create(null),lastSeen=Object.create(null);
+let socket=null,retryTimer=null,watchdog=null;
+function renderPrices(){
+ $('prices').innerHTML=symbols.map(s=>'<div class="price-card"><div>'+s+'</div><div class="price">'+(Number.isFinite(latest[s])?fmt(latest[s])+' USDT':'Bekleniyor...')+'</div><small class="muted">'+(lastSeen[s]?'Son veri: '+new Date(lastSeen[s]).toLocaleTimeString('tr-TR'):'Henüz veri yok')+'</small></div>').join('');
+ const ages=symbols.filter(s=>lastSeen[s]).map(s=>Date.now()-lastSeen[s]);
+ $('freshness').textContent=ages.length?'En eski veri yaşı: '+(Math.max(...ages)/1000).toFixed(1)+' sn':'';
+}
+function connect(){
+ clearTimeout(retryTimer);
+ if(socket){try{socket.onclose=null;socket.close()}catch(_){}}
+ $('connection').textContent='🟡 Binance canlı fiyat bağlantısı kuruluyor...';
+ const streams=symbols.map(s=>s.toLowerCase()+'@trade').join('/');
+ try{socket=new WebSocket('wss://fstream.binance.com/stream?streams='+streams)}catch(e){$('connection').textContent='🔴 Bağlantı açılamadı: '+e.message;retryTimer=setTimeout(connect,5000);return}
+ socket.onopen=()=>{$('connection').textContent='🟡 Bağlandı; ilk fiyat mesajı bekleniyor...'};
+ socket.onmessage=event=>{
+  try{
+   const packet=JSON.parse(event.data),d=packet.data||packet;
+   if(d.e!=='trade'||!symbols.includes(d.s))return;
+   const price=Number(d.p);if(!Number.isFinite(price))return;
+   latest[d.s]=price;lastSeen[d.s]=Date.now();
+   $('connection').textContent='🟢 Canlı veri alınıyor';renderPrices();
+  }catch(e){console.warn('Canlı fiyat mesajı işlenemedi',e)}
+ };
+ socket.onerror=()=>{$('connection').textContent='🔴 Canlı fiyat bağlantısında hata'};
+ socket.onclose=()=>{$('connection').textContent='🟡 Yeniden bağlanılıyor...';retryTimer=setTimeout(connect,3000)};
+}
+function ema(values,n){if(values.length<n)return NaN;let v=values.slice(0,n).reduce((a,b)=>a+b,0)/n;const k=2/(n+1);for(let i=n;i<values.length;i++)v=values[i]*k+v*(1-k);return v}
+function emaSeries(values,n){const out=Array(values.length).fill(null);if(values.length<n)return out;let v=values.slice(0,n).reduce((a,b)=>a+b,0)/n;out[n-1]=v;const k=2/(n+1);for(let i=n;i<values.length;i++){v=values[i]*k+v*(1-k);out[i]=v}return out}
+function rsi(values,n=14){if(values.length<n+2)return NaN;let gains=0,losses=0;for(let i=1;i<=n;i++){const d=values[i]-values[i-1];gains+=Math.max(d,0);losses+=Math.max(-d,0)}gains/=n;losses/=n;for(let i=n+1;i<values.length;i++){const d=values[i]-values[i-1];gains=(gains*(n-1)+Math.max(d,0))/n;losses=(losses*(n-1)+Math.max(-d,0))/n}return losses===0?(gains===0?50:100):100-100/(1+gains/losses)}
+function macdHistogram(values){const a=emaSeries(values,12),b=emaSeries(values,26);const diffs=[];for(let i=0;i<values.length;i++)if(a[i]!=null&&b[i]!=null)diffs.push(a[i]-b[i]);if(diffs.length<9)return NaN;const signal=ema(diffs,9);return diffs.at(-1)-signal}
+function atr(rows,n=14){if(rows.length<n+1)return NaN;const tr=[];for(let i=1;i<rows.length;i++){const x=rows[i],prev=rows[i-1];tr.push(Math.max(x.h-x.l,Math.abs(x.h-prev.c),Math.abs(x.l-prev.c)))}let v=tr.slice(0,n).reduce((a,b)=>a+b,0)/n;for(let i=n;i<tr.length;i++)v=(v*(n-1)+tr[i])/n;return v}
+async function candles(symbol,interval){
+ const url='https://fapi.binance.com/fapi/v1/klines?symbol='+encodeURIComponent(symbol)+'&interval='+encodeURIComponent(interval)+'&limit=250';
+ const res=await fetch(url,{cache:'no-store'});if(!res.ok)throw Error(interval+' verisi alınamadı (HTTP '+res.status+')');
+ const raw=await res.json();if(!Array.isArray(raw))throw Error(interval+' veri biçimi hatalı');
+ const now=Date.now();const rows=raw.filter(x=>Number(x[6])<now).map(x=>({h:Number(x[2]),l:Number(x[3]),c:Number(x[4]),v:Number(x[5])}));
+ if(rows.length<210)throw Error(interval+' için yeterli kapanmış mum yok');return rows;
+}
+function trend(rows){const closes=rows.map(x=>x.c),e50=ema(closes,50),e200=ema(closes,200);return{direction:e50>e200?'LONG':e50<e200?'SHORT':'BEKLE',e50,e200}}
+function signal15(rows){
+ const closes=rows.map(x=>x.c),last=closes.at(-1),e9=ema(closes,9),e21=ema(closes,21),e50=ema(closes,50),e200=ema(closes,200),r=rsi(closes),m=macdHistogram(closes),a=atr(rows);
+ const prev=rows.slice(-21,-1).map(x=>x.v);const avg=prev.reduce((x,y)=>x+y,0)/prev.length;const ratio=avg>0?rows.at(-1).v/avg:0;
+ let long=0,short=0;
+ if(e9>e21)long+=2;else short+=2;
+ if(e21>e50)long+=2;else short+=2;
+ if(last>e200)long+=2;else short+=2;
+ if(r>55&&r<75)long++;if(r<45&&r>25)short++;
+ if(m>0)long+=2;else short+=2;
+ if(ratio>1.2){long++;short++}
+ if(last>e9)long++;else short++;
+ return{last,e9,e21,e50,e200,r,m,a,ratio,long,short,longScore:Math.round(long/11*100),shortScore:Math.round(short/11*100)};
+}
+function metric(name,value){return '<div class="metric"><small>'+name+'</small><strong>'+value+'</strong></div>'}
+async function analyze(){
+ const symbol=$('symbol').value,btn=$('analyzeBtn');btn.disabled=true;$('result').textContent='Günlük, 4 saat, 1 saat ve 15 dakika kapanmış mumları inceleniyor...';
+ try{
+  const [d1,h4,h1,m15]=await Promise.all(['1d','4h','1h','15m'].map(tf=>candles(symbol,tf)));
+  const daily=trend(d1),four=trend(h4),hour=trend(h1),s=signal15(m15);
+  const aligned=daily.direction===four.direction&&four.direction===hour.direction&&daily.direction!=='BEKLE';
+  const direction=aligned?daily.direction:'BEKLE';
+  const score=direction==='LONG'?s.longScore:direction==='SHORT'?s.shortScore:Math.max(s.longScore,s.shortScore);
+  const confirmed=aligned&&score>=75&&((direction==='LONG'&&s.long>s.short)||(direction==='SHORT'&&s.short>s.long));
+  const decision=confirmed?direction:'BEKLE';
+  const entry=s.last,stop=decision==='LONG'?entry-1.5*s.a:decision==='SHORT'?entry+1.5*s.a:NaN;
+  const target=decision==='LONG'?entry+3*s.a:decision==='SHORT'?entry-3*s.a:NaN;
+  const rr=Number.isFinite(stop)&&Math.abs(entry-stop)>0?Math.abs(target-entry)/Math.abs(entry-stop):NaN;
+  const reason=!aligned?'Zaman dilimleri aynı yönde değil.':score<75?'Gösterge puanı 75 altında.':decision==='BEKLE'?'15 dakikalık giriş yönü onaylanmadı.':'Dört zaman diliminde yön uyumlu; yine de işlem garantisi yok.';
+  const cls=decision==='LONG'?'long':decision==='SHORT'?'short':'wait';
+  $('result').innerHTML='<h2 class="'+cls+'">'+decision+'</h2><p>'+reason+'</p><div class="grid">'+
+   metric('Günlük ana trend',daily.direction)+metric('4 saat trend',four.direction)+metric('1 saat onay',hour.direction)+metric('15 dakika puanı',score+'/100')+
+   metric('15 dk kapanış',fmt(s.last)+' USDT')+metric('Canlı fiyat',Number.isFinite(latest[symbol])?fmt(latest[symbol])+' USDT':'Bekleniyor')+
+   metric('RSI (15 dk)',s.r.toFixed(1))+metric('MACD histogram',fmt(s.m))+metric('ATR (15 dk)',fmt(s.a))+metric('Hacim oranı',s.ratio.toFixed(2)+'x')+
+   metric('EMA 9 / 21',fmt(s.e9)+' / '+fmt(s.e21))+metric('EMA 50 / 200',fmt(s.e50)+' / '+fmt(s.e200))+
+   metric('Giriş (referans)',decision==='BEKLE'?'—':fmt(entry)+' USDT')+metric('Stop',fmt(stop))+metric('Hedef',fmt(target))+metric('Risk / ödül',fmt(rr))+'</div>'+
+   '<p class="note">Giriş, son kapanmış 15 dakikalık mumun fiyatıdır; canlı işlem fiyatı farklı olabilir. Stop/hedef ATR tabanlı örnektir, gerçekleşme veya kazanç garantisi değildir. 75 puan bir gösterge eşiğidir; doğruluk yüzdesi değildir.</p>';
+ }catch(e){$('result').innerHTML='<h2 class="error">Analiz alınamadı</h2><p>'+String(e.message||e)+'</p><p class="note">Binance Futures API erişimi, ağ veya veri sınırı nedeniyle başarısız olabilir.</p>'}
+ finally{btn.disabled=false}
+}
+$('analyzeBtn').addEventListener('click',analyze);
+$('symbol').addEventListener('change',analyze);
+renderPrices();connect();analyze();
+watchdog=setInterval(()=>{renderPrices();if(socket&&socket.readyState===WebSocket.OPEN){const ages=symbols.map(s=>lastSeen[s]?Date.now()-lastSeen[s]:Infinity);if(ages.every(age=>age>20000)){$('connection').textContent='🟡 Fiyat mesajı gecikiyor, yeniden bağlanılıyor...';connect()}}},5000);
+</script></body></html>
