@@ -57,7 +57,7 @@ clearTimeout(reconnectTimer);
 $("status").textContent="🟡 Binance bağlantısı kuruluyor...";
 const streams=symbols.map(s=>s.toLowerCase()+"@trade").join("/");
 socket=new WebSocket("wss://fstream.binance.com/stream?streams="+streams);
-socket.onopen=()=>$("status").textContent="🟢 Canlı fiyat bağlantısı aktif";
+$("prices").textContent="🧪 Yeni kod çalışıyor, fiyat verisi bekleniyor";
 socket.onmessage=event=>{
 $("prices").textContent="📩 Binance mesajı geldi";
 try{
