@@ -3,9 +3,11 @@ name: VATAN 2 Gelismis Analiz
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   analiz:
@@ -21,6 +23,59 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Coklu zaman analizi
-        run: python vatan2-analiz.py
-        
+      - name: Analizi calistir
+        shell: bash
+        run: |
+          set -o pipefail
+          python vatan2-analiz.py | tee vatan2-log.txt
+
+      - name: Sonuclari JSON olarak hazirla
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          lines = Path("vatan2-log.txt").read_text(
+              encoding="utf-8"
+          ).splitlines()
+
+          results = [
+              json.loads(line)
+              for line in lines
+              if line.startswith('{"coin":')
+          ]
+
+          if len(results) != 3:
+              raise RuntimeError("Uc coin sonucu eksik")
+
+          output = {
+              "updated_at": datetime.now(
+                  timezone.utc
+              ).isoformat(),
+              "results": results
+          }
+
+          Path("son-analiz.json").write_text(
+              json.dumps(
+                  output,
+                  ensure_ascii=False,
+                  indent=2
+              ),
+              encoding="utf-8"
+          )
+
+          print("SON ANALIZ JSON HAZIR")
+          PY
+
+      - name: Sonuclari GitHub'a kaydet
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add son-analiz.json
+          if git diff --cached --quiet; then
+            echo "Degisiklik yok"
+            exit 0
+          fi
+          git commit -m "Update VATAN 2 results"
+          git push
