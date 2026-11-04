@@ -1,0 +1,25 @@
+name: VATAN 2 Baglanti Testi
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  baglanti:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Dosyalari al
+        uses: actions/checkout@v4
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: OKX ve Bybit test
+        run: python vatan2-baglanti-test.py
+        
