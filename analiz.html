@@ -170,5 +170,84 @@ async function loadData(){
 }
 loadData();
 </script>
+<script>
+(function () {
+  const panel = document.createElement("section");
+  panel.className = "card";
+  panel.innerHTML = `
+    <h2>VATAN 2 - Son OKX Analizi</h2>
+    <p id="sonDurum">Son analiz kontrol ediliyor...</p>
+    <div id="sonCoinler"></div>
+    <small>
+      75 puan kazanma garantisi degildir.
+      Eski verilerle islem acmayin.
+    </small>
+  `;
+
+  document.querySelector("h1").after(panel);
+
+  async function guncelle() {
+    const durum = document.getElementById("sonDurum");
+    const alan = document.getElementById("sonCoinler");
+
+    try {
+      const response = await fetch(
+        "./son-analiz.json?t=" + Date.now(),
+        {cache: "no-store"}
+      );
+
+      if (!response.ok) {
+        throw new Error("Sonuc dosyasi henuz yok");
+      }
+
+      const data = await response.json();
+      if (!Array.isArray(data.results)) {
+        throw new Error("Gecersiz sonuc dosyasi");
+      }
+
+      const zaman = new Date(data.updated_at);
+      const yas = Date.now() - zaman.getTime();
+      const guncel = Number.isFinite(yas) &&
+        yas >= 0 && yas <= 30 * 60000;
+
+      durum.textContent =
+        "Son tarama: " +
+        (Number.isFinite(zaman.getTime())
+          ? zaman.toLocaleString("tr-TR")
+          : "Bilinmiyor") +
+        (guncel ? " - GUNCEL" : " - ESKI VERI");
+
+      alan.replaceChildren();
+
+      for (const coin of data.results) {
+        const kutu = document.createElement("div");
+        kutu.className = "card";
+
+        const baslik = document.createElement("strong");
+        baslik.textContent =
+          coin.coin.replace("-USDT-SWAP", "") +
+          " | " + coin.puan + "/100" +
+          " | " + (guncel ? coin.karar : "BEKLE");
+
+        const ayrinti = document.createElement("p");
+        ayrinti.textContent =
+          "RSI: " + coin.rsi15m +
+          " | Hacim: " + coin.hacim_orani + "x";
+
+        kutu.append(baslik, ayrinti);
+        alan.append(kutu);
+      }
+
+    } catch (error) {
+      durum.textContent =
+        "Son analiz henuz uygulamaya aktarilmadi.";
+      alan.replaceChildren();
+    }
+  }
+
+  guncelle();
+  setInterval(guncelle, 60000);
+})();
+</script>
 </body>
 </html>
