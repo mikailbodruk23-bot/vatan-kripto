@@ -3,7 +3,7 @@ import json
 import urllib.request
 from datetime import datetime, timezone
 
-BASE = "https://fapi1.binance.com"
+BASE = "https://fapi.binance.com"
 SYMBOLS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
 
 def get_json(path):
