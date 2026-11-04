@@ -1,6 +1,7 @@
 
 import json
 import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 
 BASE = "https://fapi.binance.com"
@@ -10,9 +11,14 @@ def get_json(path):
     req = urllib.request.Request(
         BASE + path,
         headers={"User-Agent": "VATAN2-Scanner/1.0"}
-    )
+    try:
     with urllib.request.urlopen(req, timeout=15) as response:
         return json.load(response)
+except urllib.error.HTTPError as e:
+    detail = e.read(500).decode("utf-8", errors="replace")
+    raise RuntimeError(
+        f"Binance HTTP {e.code}: {detail}"
+    ) from e
 
 def scan(symbol):
     data = get_json(
