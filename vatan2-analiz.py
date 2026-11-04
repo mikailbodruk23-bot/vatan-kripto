@@ -122,11 +122,16 @@ def analyze(symbol, btc_trends):
     daily = trends["1Dutc"]
     main = trends["4H"]
 
-    side = (
-        daily
-        if daily == main and daily != "BEKLE"
-        else "BEKLE"
+    
+    side = next(
+        (
+            trends[p]
+            for p in ["1Dutc", "4H", "1H", "15m"]
+            if trends[p] != "BEKLE"
+        ),
+        "BEKLE"
     )
+
 
     closes = [
         float(row[4])
