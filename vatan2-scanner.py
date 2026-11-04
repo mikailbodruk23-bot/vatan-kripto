@@ -2,112 +2,95 @@
 import json
 import sys
 import urllib.request
-import urllib.error
 from datetime import datetime, timezone
 
-# VATAN 2 - Binance Futures Tarama
-BASE = "https://fapi.binance.com"
-
+# VATAN 2 - OKX Futures Scanner
 SYMBOLS = [
-    "BTCUSDT",
-    "ETHUSDT",
-    "SOLUSDT"
+    "BTC-USDT-SWAP",
+    "ETH-USDT-SWAP",
+    "SOL-USDT-SWAP"
 ]
 
-
-def get_json(path):
-    url = BASE + path
+def get_candles(symbol):
+    url = (
+        "https://www.okx.com/api/v5/market/candles"
+        f"?instId={symbol}&bar=15m&limit=60"
+    )
 
     req = urllib.request.Request(
         url,
-        headers={
-            "User-Agent": "VATAN2-Scanner/1.0",
-            "Accept": "application/json"
-        }
+        headers={"User-Agent": "VATAN2-Scanner/2.0"}
     )
 
-    try:
-        with urllib.request.urlopen(
-            req, timeout=15
-        ) as response:
-            return json.load(response)
+    with urllib.request.urlopen(
+        req, timeout=15
+    ) as response:
+        result = json.load(response)
 
-    except urllib.error.HTTPError as e:
-        detail = e.read(500).decode(
-            "utf-8",
-            errors="replace"
+    if result.get("code") != "0":
+        raise ValueError(str(result)[:300])
+
+    candles = [
+        row for row in result.get("data", [])
+        if len(row) >= 9 and row[8] == "1"
+    ]
+
+    if len(candles) < 30:
+        raise ValueError("Yetersiz mum verisi")
+
+    candles.sort(key=lambda row: int(row[0]))
+    return candles
+
+
+def ema(values, period):
+    value = sum(values[:period]) / period
+    multiplier = 2 / (period + 1)
+
+    for price in values[period:]:
+        value = (
+            price * multiplier
+            + value * (1 - multiplier)
         )
 
-        raise RuntimeError(
-            f"HTTP {e.code}: {detail}"
-        ) from e
-
-    except urllib.error.URLError as e:
-        raise RuntimeError(
-            f"Baglanti hatasi: {e.reason}"
-        ) from e
+    return value
 
 
 def scan(symbol):
-    path = (
-        f"/fapi/v1/klines?symbol={symbol}"
-        "&interval=15m&limit=60"
-    )
-
-    data = get_json(path)
-
-    if not isinstance(data, list):
-        raise ValueError("Gecersiz veri")
-
-    if len(data) < 22:
-        raise ValueError("Yetersiz mum verisi")
-
-    # Son kapanmis mumlari kullan
-    candles = data[:-1]
-
-    closes = [
-        float(candle[4])
-        for candle in candles
-    ]
+    candles = get_candles(symbol)
+    closes = [float(c[4]) for c in candles]
 
     price = closes[-1]
+    ema9 = ema(closes, 9)
+    ema21 = ema(closes, 21)
 
-    # Basit ortalama - EMA degildir
-    avg9 = sum(closes[-9:]) / 9
-    avg21 = sum(closes[-21:]) / 21
-
-    if avg9 > avg21 and price > avg9:
+    if price > ema9 > ema21:
         signal = "LONG ADAYI"
 
-    elif avg9 < avg21 and price < avg9:
+    elif price < ema9 < ema21:
         signal = "SHORT ADAYI"
 
     else:
         signal = "BEKLE"
 
     return {
-        "symbol": symbol,
-        "price": price,
-        "signal": signal,
-        "avg9": round(avg9, 4),
-        "avg21": round(avg21, 4)
+        "coin": symbol,
+        "fiyat": price,
+        "sinyal": signal,
+        "ema9": round(ema9, 4),
+        "ema21": round(ema21, 4),
+        "mum": "15m kapanmis"
     }
 
 
 def main():
-    print("VATAN 2 TARAMA TESTI")
-    print(
-        datetime.now(
-            timezone.utc
-        ).isoformat()
-    )
+    print("VATAN 2 - OKX TARAMA")
+    print(datetime.now(timezone.utc).isoformat())
 
     errors = 0
 
     for symbol in SYMBOLS:
         try:
             result = scan(symbol)
-
             print(
                 json.dumps(
                     result,
@@ -117,17 +100,13 @@ def main():
 
         except Exception as error:
             errors += 1
-            print(
-                f"{symbol}: HATA - {error}"
-            )
+            print(f"{symbol}: HATA - {error}")
 
-    if errors > 0:
-        print(
-            f"TARAMA BASARISIZ: {errors} hata"
-        )
+    if errors:
+        print(f"TARAMA HATASI: {errors}")
         sys.exit(1)
 
-    print("TARAMA BASARILI")
+    print("OKX TARAMA BASARILI")
 
 
 if __name__ == "__main__":
