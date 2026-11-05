@@ -5,6 +5,8 @@ Var olan son-tum-analiz.json ve vatan2-risk.json dosyalarini OKUR,
 bunlara dokunmaz; son-makro60.json olusturur. Otomatik emir yok.
 60/100 yon adayi esigidir; 75/100 teknik risk onayi degildir.
 Puanlar kazanma olasiligi/yuzdesi degildir.
+Yeni risk motorunun gercek sureli OI ve fiyat degisimlerini kontrol eder;
+veri eksikse veya anomaliyse yeni LONG/SHORT islem onayi vermez.
 """
 from __future__ import annotations
 import argparse
@@ -46,6 +48,18 @@ def parse_time(t):
 def freshness(text, now, seconds=MAX_AGE_SECONDS):
     t = parse_time(text)
     return t is not None and -120 <= (now - t).total_seconds() <= seconds
+
+
+def same_instant(a, b, tolerance_seconds=2):
+    """Two ISO timestamps may use different but equivalent UTC representations."""
+    t1, t2 = parse_time(a), parse_time(b)
+    return t1 is not None and t2 is not None and abs((t1 - t2).total_seconds()) <= tolerance_seconds
+
+
+def clear_old_trade_levels(row):
+    """Never show obsolete entry/stop/targets as active on a WAIT record."""
+    for key in ('giris_referans', 'stop', 'hedef', 'risk_odul'):
+        row.pop(key, None)
 
 
 def technical_scores(row):
@@ -111,38 +125,92 @@ def macro_impact(report):
 
 
 def derivatives_impact(rec):
+    """Conservative, *time-aware* derivatives adjustment.
+
+    oi_usd is a notional value and can rise merely because price rises.
+    Prefer measured oi_ccy change, otherwise estimate quantity change after
+    removing the price effect. Never equate OI growth to guaranteed direction.
+
+    Returns (score shifts, explanatory notes, safe-for-approval, data status).
+    """
     shifts = {'LONG': 0, 'SHORT': 0}
     reasons = []
+    if not isinstance(rec, dict):
+        return shifts, ['Vadeli veri kaydı yok'], False, 'VERI_EKSIK'
+
     rate = num(rec.get('funding_rate'))
-    oi = num(rec.get('oi_change_pct'))
-    price = num(rec.get('last_price_change_pct'))
-    if rate is None or num(rec.get('oi_usd')) is None:
-        return shifts, ['Funding / açık faiz eksik: yön ek puanı verilmedi'], False
-    # High funding indicates crowded positioning, NOT automatic reverse signal.
-    # fundingRate fractional unit: 0.001 = 0.10% per settlement (not APR).
+    oi_usd = num(rec.get('oi_usd'))
+    last_price = num(rec.get('last_price'))
+    oi_pct = num(rec.get('oi_change_pct'))
+    px_pct = num(rec.get('last_price_change_pct'))
+    ccy_pct = num(rec.get('oi_ccy_change_pct'))
+    interval = num(rec.get('change_period_minutes'))
+    monitor_state = rec.get('status')
+
+    if rate is None or oi_usd is None or oi_usd <= 0 or last_price is None or last_price <= 0:
+        return shifts, ['Funding, açık faiz veya son fiyat eksik: onay engellendi'], False, 'VERI_EKSIK'
+
+    # Funding's direction-only effect remains deliberately small and never
+    # creates an approval on its own.
     if rate >= 0.001:
         shifts['LONG'] -= 6
-        reasons.append('Aşırı pozitif funding: LONG kalabalık, LONG -6')
+        reasons.append('Yüksek pozitif funding: kalabalık LONG riski; LONG -6')
     elif rate <= -0.001:
         shifts['SHORT'] -= 6
-        reasons.append('Aşırı negatif funding: SHORT kalabalık, SHORT -6')
-    # Moderate funding does not get directional votes without corroboration.
-    if oi is not None and price is not None:
-        if oi >= 3 and price >= 0.6:
-            shifts['LONG'] += 4
-            shifts['SHORT'] -= 3
-            reasons.append('OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3')
-        elif oi >= 3 and price <= -0.6:
-            shifts['SHORT'] += 4
-            shifts['LONG'] -= 3
-            reasons.append('OI yükseldi, fiyat düştü: SHORT +4 / LONG -3')
-        elif oi <= -8:
-            shifts['LONG'] -= 2
-            shifts['SHORT'] -= 2
-            reasons.append('OI hızlı daraldı: iki yön -2')
+        reasons.append('Yüksek negatif funding: kalabalık SHORT riski; SHORT -6')
+
+    if rec.get('comparison_status') != 'OK' or interval is None or oi_pct is None or px_pct is None:
+        reasons.append('Önceki doğrulanmış OI/fiyat ölçümü yok: yön teyidi yapılamadı')
+        return shifts, reasons, False, 'REFERANS_YOK'
+    if not 5 <= interval <= 90:
+        reasons.append(f'Ölçümler arası {interval:.1f} dk: kısa vadeli teyit için uygun değil')
+        return shifts, reasons, False, 'ARALIK_UYGUN_DEGIL'
+
+    # Abrupt OI shocks, extreme price moves, or inconsistent amount/notional
+    # combinations require observation rather than automated scoring.
+    if (abs(oi_pct) >= 30 or abs(px_pct) >= 18 or
+            (ccy_pct is not None and abs(ccy_pct) >= 30)):
+        reasons.append(f'Olağan dışı hareket ({interval:.1f} dk): OI {oi_pct:+.2f}%, fiyat {px_pct:+.2f}%; onay bloke')
+        return shifts, reasons, False, 'ANOMALI'
+
+    if ccy_pct is not None:
+        implied_notional_pct = ((1 + ccy_pct / 100) * (1 + px_pct / 100) - 1) * 100
+        if abs(implied_notional_pct - oi_pct) > 15:
+            reasons.append('USD açık faiz ile baz varlık miktarı/fiyat değişimi tutarsız: onay bloke')
+            return shifts, reasons, False, 'TUTARSIZ_VERI'
+        quantity_change = ccy_pct
+        reasons.append(f'Baz varlık OI değişimi {ccy_pct:+.2f}% ({interval:.1f} dk)')
+        quantity_confirmed = True
+    elif px_pct > -99:
+        quantity_change = ((1 + oi_pct / 100) / (1 + px_pct / 100) - 1) * 100
+        reasons.append(f'OI miktarı yaklaşık {quantity_change:+.2f}% (fiyat etkisi çıkarıldı; teyitsiz)')
+        quantity_confirmed = False
     else:
-        reasons.append('OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok')
-    return shifts, reasons, True
+        reasons.append('Fiyat değişimi geçersiz: OI miktarı türetilemedi')
+        return shifts, reasons, False, 'TUTARSIZ_VERI'
+
+    if quantity_change >= 3 and px_pct >= 0.6:
+        shifts['LONG'] += 4 if quantity_confirmed else 2
+        shifts['SHORT'] -= 3 if quantity_confirmed else 1
+        reasons.append('OI miktarı ve fiyat yükseliyor: temkinli LONG yön katkısı')
+    elif quantity_change >= 3 and px_pct <= -0.6:
+        shifts['SHORT'] += 4 if quantity_confirmed else 2
+        shifts['LONG'] -= 3 if quantity_confirmed else 1
+        reasons.append('OI miktarı yükselirken fiyat düşüyor: temkinli SHORT yön katkısı')
+    elif quantity_change <= -8:
+        shifts['LONG'] -= 2
+        shifts['SHORT'] -= 2
+        reasons.append('Pozisyonlar hızla kapanıyor olabilir: iki yöne -2')
+    else:
+        reasons.append(f'Fiyat/OI eşleşmesinden güçlü yön teyidi yok ({interval:.1f} dk)')
+
+    if monitor_state != 'IZLE' or rec.get('warnings'):
+        reasons.append('Risk motoru uyarısı var: işlem adayı onaylanmadı')
+        return shifts, reasons, False, 'RISK_UYARISI'
+    if not quantity_confirmed:
+        reasons.append('OI baz miktarının geçmiş değişimi eksik: onay için ikinci ölçüm gerekli')
+        return shifts, reasons, False, 'MIKTAR_TEYITSIZ'
+    return shifts, reasons, True, 'DOGRULANDI'
 
 
 def make_report(scan, risk, now=None):
@@ -151,20 +219,26 @@ def make_report(scan, risk, now=None):
         raise ValueError('Tarama listesi yok')
     scan_fresh = freshness(scan.get('updated_at'), now)
     risk_fresh = freshness(risk.get('updated_at'), now)
-    same_scan = scan.get('updated_at') == (risk.get('analysis_source') or {}).get('updated_at')
+    same_scan = same_instant(scan.get('updated_at'), (risk.get('analysis_source') or {}).get('updated_at'))
     sources = risk.get('sources') or {}
     macro = risk.get('macro') or {}
     calendar_ok = macro.get('event_gate') == 'OLAY_YOK' and all(
         (sources.get(k) or {}).get('status') == 'OK' for k in ('bls_calendar', 'fed_calendar'))
     no_event = calendar_ok and not (macro.get('active_events') or [])
     treasury_ok = (sources.get('us_treasury') or {}).get('status') == 'OK' and (macro.get('treasury') or {}).get('fresh_daily') is True
-    global_ok = scan_fresh and risk_fresh and same_scan and no_event and treasury_ok
+    market_feeds_ok = all((sources.get(k) or {}).get('status') == 'OK'
+                          for k in ('okx_open_interest', 'okx_tickers', 'okx_funding'))
+    risk_gate_ok = risk.get('global_risk') == 'KONTROL_ET'
+    global_ok = (scan_fresh and risk_fresh and same_scan and no_event
+                 and treasury_ok and market_feeds_ok and risk_gate_ok)
     overall_notes = []
     if not scan_fresh: overall_notes.append('Coin taraması eski')
     if not risk_fresh: overall_notes.append('Ekonomik rapor eski')
     if not same_scan: overall_notes.append('Ekonomik rapor başka taramaya ait')
     if not calendar_ok: overall_notes.append('Resmî takvim eksik veya kritik ekonomik olay var')
     if not treasury_ok: overall_notes.append('Tahvil verisi doğrulanmamış/eski')
+    if not market_feeds_ok: overall_notes.append('OKX açık faiz, fiyat veya fonlama kaynağı eksik')
+    if not risk_gate_ok: overall_notes.append('Risk motorunun genel güvenlik kapısı uygun değil')
     mshift, mnotes = macro_impact(risk) if risk_fresh and same_scan else ({'LONG':0,'SHORT':0},['Makro rapor eski/uyumsuz; puana katılmadı'])
     by_coin = {c.get('coin'):c for c in risk.get('coins',[]) if isinstance(c,dict)}
     rows = []
@@ -174,33 +248,40 @@ def make_report(scan, risk, now=None):
         row = dict(r)
         tech = technical_scores(r)
         if tech is None:
+            clear_old_trade_levels(row)
             row.update(long_puani=None, short_puani=None, yon_esigi=60, yon_adayi='YOK',
                        makro_etki={'LONG':0,'SHORT':0}, makro_notlari=['Teknik veri eksik'],
-                       makro_durumu='VERI_EKSIK', karar='BEKLE', puan=None)
+                       makro_durumu='VERI_EKSIK', karar='BEKLE', puan=None,
+                       makro_onay=False, risk_freni=True)
             rows.append(row)
             continue
         deriv = by_coin.get(r.get('coin')) if risk_fresh and same_scan else None
         if deriv is not None:
-            dshift, dnotes, derivative_ok = derivatives_impact(deriv)
+            dshift, dnotes, derivative_ok, derivative_status = derivatives_impact(deriv)
         else:
-            dshift, dnotes, derivative_ok = {'LONG':0,'SHORT':0}, ['Bu coin için güncel funding/OI kontrolü yok'], False
+            dshift, dnotes, derivative_ok, derivative_status = {'LONG':0,'SHORT':0}, ['Bu coin için güncel funding/OI kontrolü yok'], False, 'KAPSAM_DISI'
         net = {side: int(clamp(dshift[side]+mshift[side], -MAX_NET_EFFECT, MAX_NET_EFFECT)) for side in ('LONG','SHORT')}
         combined = {side: int(clamp(tech[side]+net[side])) for side in ('LONG','SHORT')}
         side = 'LONG' if combined['LONG'] >= combined['SHORT'] else 'SHORT'
         gap = combined[side] - combined['SHORT' if side=='LONG' else 'LONG']
         candidate = combined[side] >= CANDIDATE_THRESHOLD and gap >= 8
         # A 60 score creates a direction candidate, NEVER an automatic trade approval.
-        safe = (global_ok and derivative_ok and deriv.get('status') == 'IZLE' and
+        safe = (global_ok and derivative_ok and deriv is not None and deriv.get('status') == 'IZLE' and
                 r.get('trend_onayi') is True and r.get('btc_filtre') is True and
                 r.get('likidite_onayi') is True and all(r.get('yonler',{}).get(p)==side for p in WEIGHTS))
         approved = bool(candidate and safe and combined[side]>=APPROVAL_THRESHOLD and gap>=12)
         status = ('GUNCEL' if safe else
                   'OLAY_RISKI' if not calendar_ok else
-                  'VERI_EKSIK' if not global_ok or not derivative_ok else
-                  'RISK_UYARISI' if deriv.get('status')=='RISK_UYARISI' else 'FILTRE_BEKLE')
+                  'VERI_EKSIK' if not global_ok or derivative_status in ('VERI_EKSIK', 'REFERANS_YOK', 'KAPSAM_DISI') else
+                  'RISK_UYARISI' if not derivative_ok or (deriv and deriv.get('status') == 'RISK_UYARISI') else 'FILTRE_BEKLE')
         row.update( teknik_long=tech['LONG'], teknik_short=tech['SHORT'],
                    long_puani=combined['LONG'], short_puani=combined['SHORT'],
                    makro_etki=net, makro_notlari=mnotes+dnotes,
+                   vadeli_veri_durumu=derivative_status,
+                   oi_degisim_yuzde=deriv.get('oi_change_pct') if deriv else None,
+                   oi_miktar_degisim_yuzde=deriv.get('oi_ccy_change_pct') if deriv else None,
+                   fiyat_degisim_yuzde=deriv.get('last_price_change_pct') if deriv else None,
+                   olcum_araligi_dakika=deriv.get('change_period_minutes') if deriv else None,
                    makro_durumu=status, yon_esigi=CANDIDATE_THRESHOLD,
                    yon_adayi=side if candidate else 'YOK',
                    aday_yon=side, puan=max(combined.values()),
@@ -208,8 +289,7 @@ def make_report(scan, risk, now=None):
                    makro_onay=approved, risk_freni=not approved)
         if not approved:
             # Old entry/stop/target must not survive invalidation.
-            for key in ('giris_referans','stop','hedef','risk_odul'):
-                row.pop(key, None)
+            clear_old_trade_levels(row)
         rows.append(row)
     rows.sort(key=lambda r: (r.get('durum')!='ANALIZ_EDILDI', -(r.get('puan') or 0), str(r.get('coin'))))
     count=sum(r.get('karar') in ('LONG ADAY','SHORT ADAY') for r in rows)
@@ -225,34 +305,58 @@ def make_report(scan, risk, now=None):
 
 
 def self_test():
-    now = datetime(2026,11,5,10,0,tzinfo=timezone.utc)
-    stamp=now.isoformat()
-    base={'coin':'AAA-USDT-SWAP','durum':'ANALIZ_EDILDI',
-          'yonler':{'1Dutc':'SHORT','4H':'SHORT','1H':'SHORT','15m':'SHORT'},
-          'rsi15m':25,'macd15m':-1,'hacim_orani':1.5,'likidite_onayi':True,
-          'btc_filtre':True,'trend_onayi':True,'puan':90,'karar':'SHORT ADAY'}
-    scan={'updated_at':stamp,'results':[base],'eligible_count':1,'analyzed_count':1,'error_count':0}
-    risk={'updated_at':stamp, 'analysis_source':{'updated_at':stamp},
-          'sources':{'bls_calendar':{'status':'OK'},'fed_calendar':{'status':'OK'},'us_treasury':{'status':'OK'}},
-          'macro':{'event_gate':'OLAY_YOK','active_events':[], 'treasury':{'fresh_daily':True},
-                   'broad_usd_proxy':{'status':'OK','change_pct':0.6}},
-          'coins':[{'coin':'AAA-USDT-SWAP','status':'IZLE','funding_rate':0.0001,
-                    'oi_usd':1000,'oi_change_pct':5,'last_price_change_pct':-1}]}
-    report=make_report(scan,risk,now)
-    a=report['results'][0]
-    assert a['short_puani'] > a['teknik_short'] and a['long_puani'] < a['teknik_long'],a
-    assert a['karar']=='SHORT ADAY',a
-    risk['macro']['event_gate']='ETKINLIK_RISKI'
-    b=make_report(scan,risk,now)['results'][0]
-    assert b['karar']=='BEKLE'
-    risk['macro']['event_gate']='OLAY_YOK'
-    risk['coins']=[]
-    c=make_report(scan,risk,now)['results'][0]
-    assert c['karar']=='BEKLE' and c['makro_durumu']=='VERI_EKSIK'
-    scan['updated_at']='2026-11-04T10:00:00+00:00'
-    d=make_report(scan,risk,now)['results'][0]
-    assert d['karar']=='BEKLE'
-    print('SELF_TEST_OK: 60 esik, LONG/SHORT etkileri, zaman damgasi, risk freni')
+    now = datetime(2026, 11, 5, 10, 0, tzinfo=timezone.utc)
+    stamp = now.isoformat()
+    base = {'coin': 'AAA-USDT-SWAP', 'durum': 'ANALIZ_EDILDI',
+            'yonler': {'1Dutc': 'SHORT', '4H': 'SHORT', '1H': 'SHORT', '15m': 'SHORT'},
+            'rsi15m': 25, 'macd15m': -1, 'hacim_orani': 1.5,
+            'likidite_onayi': True, 'btc_filtre': True, 'trend_onayi': True,
+            'puan': 90, 'karar': 'SHORT ADAY', 'stop': 101, 'hedef': 90}
+    scan = {'updated_at': stamp, 'results': [base],
+            'eligible_count': 1, 'analyzed_count': 1, 'error_count': 0}
+    rec = {'coin': 'AAA-USDT-SWAP', 'status': 'IZLE', 'funding_rate': 0.0001,
+           'oi_usd': 1000, 'last_price': 100,
+           'comparison_status': 'OK', 'change_period_minutes': 28,
+           'oi_change_pct': 5, 'last_price_change_pct': -1,
+           'oi_ccy_change_pct': 6, 'warnings': []}
+    risk = {'updated_at': stamp, 'global_risk': 'KONTROL_ET',
+            'analysis_source': {'updated_at': stamp.replace('+00:00', 'Z')},
+            'sources': {k: {'status': 'OK'} for k in (
+                'bls_calendar', 'fed_calendar', 'us_treasury',
+                'okx_open_interest', 'okx_tickers', 'okx_funding')},
+            'macro': {'event_gate': 'OLAY_YOK', 'active_events': [],
+                      'treasury': {'fresh_daily': True},
+                      'broad_usd_proxy': {'status': 'OK', 'change_pct': 0.6}},
+            'coins': [rec]}
+    a = make_report(scan, risk, now)['results'][0]
+    assert a['short_puani'] > a['teknik_short'], a
+    assert a['long_puani'] < a['teknik_long'], a
+    assert a['karar'] == 'SHORT ADAY' and a['vadeli_veri_durumu'] == 'DOGRULANDI', a
+
+    rec['comparison_status'] = 'REFERANS_YOK'
+    b = make_report(scan, risk, now)['results'][0]
+    assert b['karar'] == 'BEKLE' and b['vadeli_veri_durumu'] == 'REFERANS_YOK', b
+    assert 'stop' not in b and 'hedef' not in b, b
+    rec['comparison_status'] = 'OK'
+    rec['oi_change_pct'] = 74.5
+    c = make_report(scan, risk, now)['results'][0]
+    assert c['karar'] == 'BEKLE' and c['vadeli_veri_durumu'] == 'ANOMALI', c
+    rec['oi_change_pct'] = 5
+
+    rec['oi_ccy_change_pct'] = None
+    d = make_report(scan, risk, now)['results'][0]
+    assert d['karar'] == 'BEKLE' and d['vadeli_veri_durumu'] == 'MIKTAR_TEYITSIZ', d
+    rec['oi_ccy_change_pct'] = 6
+
+    risk['macro']['event_gate'] = 'ETKINLIK_RISKI'
+    assert make_report(scan, risk, now)['results'][0]['karar'] == 'BEKLE'
+    risk['macro']['event_gate'] = 'OLAY_YOK'
+    risk['coins'] = []
+    assert make_report(scan, risk, now)['results'][0]['karar'] == 'BEKLE'
+    risk['coins'] = [rec]
+    scan['updated_at'] = '2026-11-04T10:00:00+00:00'
+    assert make_report(scan, risk, now)['results'][0]['karar'] == 'BEKLE'
+    print('SELF_TEST_OK: 60/75 esik, OI/fiyat teyidi, anomali, eskime, risk freni')
 
 
 def main():
