@@ -1,0 +1,56 @@
+name: VATAN 2 Makro ve LONG SHORT Puani
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Var olan 15dk coin taramasindan yaklasik 5 dakika sonra calis.
+    # GitHub Actions schedule gecikebilir; eski veri fail-closed BEKLE olur.
+    - cron: '13,28,43,58 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vatan2-makro60
+  cancel-in-progress: false
+
+jobs:
+  makro_puan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Tests
+        run: |
+          python vatan2-risk-motor.py --self-test
+          python vatan2-makro60.py --self-test
+      - name: OKX ve resmî makro veri raporu
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python vatan2-risk-motor.py
+      - name: Birlesik LONG SHORT puanlari
+        run: python vatan2-makro60.py
+      - name: Sonuclari yayinla
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add vatan2-risk.json son-makro60.json
+          if git diff --cached --quiet; then
+            echo 'Yeni veri yok'
+            exit 0
+          fi
+          git commit -m 'Update VATAN2 macro long short scoring'
+          for trial in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo 'GitHub yayinlama basarisiz' >&2
+          exit 1
