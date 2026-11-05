@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "updated_at": "2026-11-05T13:56:47.566658+00:00",
+  "updated_at": "2026-11-05T13:57:46.919735+00:00",
   "source": "OKX",
   "source_scan_at": "2026-11-05T13:54:37.275214+00:00",
-  "source_risk_at": "2026-11-05T13:56:30.409004+00:00",
+  "source_risk_at": "2026-11-05T13:57:24.449109+00:00",
   "market": "USDT-SWAP",
   "eligible_count": 525,
   "analyzed_count": 456,
@@ -2733,6 +2733,47 @@
       "risk_freni": true
     },
     {
+      "coin": "CAP-USDT-SWAP",
+      "anlik_fiyat": 0.10131,
+      "hacim24h_usdt_tahmini": 109282094.03,
+      "spread_yuzde": 0.079,
+      "yonler": {
+        "1Dutc": "LONG",
+        "4H": "LONG",
+        "1H": "LONG",
+        "15m": "LONG"
+      },
+      "fiyat_kapanis": 0.10795,
+      "rsi15m": 77.47,
+      "macd15m": 0.00094,
+      "hacim_orani": 5.613,
+      "puan": 90,
+      "aday_yon": "LONG",
+      "btc_filtre": false,
+      "trend_onayi": true,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793885400000,
+      "teknik_long": 90,
+      "teknik_short": 10,
+      "long_puani": 90,
+      "short_puani": 10,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "OLAY_RISKI",
+      "yon_esigi": 60,
+      "yon_adayi": "LONG",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
       "coin": "CSOPSKHYNIX2L-USDT-SWAP",
       "anlik_fiyat": 2.2,
       "hacim24h_usdt_tahmini": 3699405.6,
@@ -4276,8 +4317,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
@@ -5245,48 +5285,6 @@
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
       "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "CAP-USDT-SWAP",
-      "anlik_fiyat": 0.10131,
-      "hacim24h_usdt_tahmini": 109282094.03,
-      "spread_yuzde": 0.079,
-      "yonler": {
-        "1Dutc": "LONG",
-        "4H": "LONG",
-        "1H": "LONG",
-        "15m": "LONG"
-      },
-      "fiyat_kapanis": 0.10795,
-      "rsi15m": 77.47,
-      "macd15m": 0.00094,
-      "hacim_orani": 5.613,
-      "puan": 88,
-      "aday_yon": "LONG",
-      "btc_filtre": false,
-      "trend_onayi": true,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793885400000,
-      "teknik_long": 90,
-      "teknik_short": 10,
-      "long_puani": 88,
-      "short_puani": 8,
-      "makro_etki": {
-        "LONG": -2,
-        "SHORT": -2
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI hızlı daraldı: iki yön -2"
-      ],
-      "makro_durumu": "OLAY_RISKI",
-      "yon_esigi": 60,
-      "yon_adayi": "LONG",
       "makro_onay": false,
       "risk_freni": true
     },
@@ -7541,8 +7539,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
@@ -10474,8 +10471,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
@@ -10642,8 +10638,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
@@ -10810,8 +10805,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
@@ -11230,8 +11224,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
@@ -11441,8 +11434,7 @@
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
         "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "Aşırı pozitif funding: LONG kalabalık, LONG -6",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Aşırı pozitif funding: LONG kalabalık, LONG -6"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
@@ -13200,8 +13192,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
@@ -16010,8 +16001,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "OLAY_RISKI",
       "yon_esigi": 60,
