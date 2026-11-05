@@ -3,7 +3,7 @@
 
 Feeds: OKX public funding/OI/tickers; BLS release ICS; Federal Reserve FOMC calendar;
 US Treasury daily yield XML; optional FRED daily broad dollar index (NOT ICE DXY).
-Produces vatan2-risk.json; leaves existing VATAN 2 analyses untouched.
+Produces vatan2-risk.json (including rolling public-market snapshots); leaves existing VATAN 2 analyses untouched.
 """
 from __future__ import annotations
 
@@ -31,6 +31,11 @@ TREASURY = "https://home.treasury.gov/resource-center/data-chart-center/interest
 JSON_FILE = Path("son-tum-analiz.json")
 OUT_FILE = Path("vatan2-risk.json")
 PREVIOUS = {}
+# The macro job may run roughly hourly. Do not label irregular samples as 15m moves.
+# Snapshots are stored IN vatan2-risk.json, so the existing workflow still publishes one file.
+MAX_COMPARISON_MINUTES = 180
+HISTORY_RETENTION_MINUTES = 360
+HISTORY_MAX_SNAPSHOTS = 12
 
 
 def utc_now():
@@ -255,6 +260,109 @@ def floatdiff(current, previous):
     return round((current / previous - 1) * 100, 3)
 
 
+def parse_aware_timestamp(value):
+    """Return UTC-aware datetime or None for missing/invalid timestamps."""
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        result = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return result.astimezone(UTC) if result.tzinfo else None
+    except (TypeError, ValueError, OverflowError):
+        return None
+
+
+def valid_positive(value):
+    result = number(value)
+    return result if result is not None and result > 0 else None
+
+
+def clean_snapshot_values(raw):
+    """Normalize a compact snapshot: [OI_USD, last_price, OI_base_ccy]."""
+    if isinstance(raw, (list, tuple)) and len(raw) >= 2:
+        vals = list(raw[:3])
+        while len(vals) < 3:
+            vals.append(None)
+        oi, price, oi_ccy = vals
+    elif isinstance(raw, dict):
+        oi, price, oi_ccy = raw.get("oi_usd"), raw.get("last_price"), raw.get("oi_ccy")
+    else:
+        return None
+    oi, price, oi_ccy = valid_positive(oi), valid_positive(price), valid_positive(oi_ccy)
+    if oi is None or price is None:
+        return None
+    return [oi, price, oi_ccy]
+
+
+def load_market_history(previous, now):
+    """Read recent snapshots, or migrate one old-style report if needed."""
+    history = []
+    raw_entries = previous.get("market_history", []) if isinstance(previous, dict) else []
+    if not isinstance(raw_entries, list):
+        raw_entries = []
+    for entry in raw_entries:
+        if not isinstance(entry, dict):
+            continue
+        dt = parse_aware_timestamp(entry.get("at"))
+        if dt is None or not (0 < (now - dt).total_seconds() <= HISTORY_RETENTION_MINUTES * 60):
+            continue
+        raw_coins = entry.get("values", {})
+        if not isinstance(raw_coins, dict):
+            continue
+        values = {k: clean_snapshot_values(v) for k, v in raw_coins.items() if isinstance(k, str) and k.endswith("-USDT-SWAP")}
+        values = {k: v for k, v in values.items() if v is not None}
+        if values:
+            history.append({"at": stamp(dt), "values": values})
+    # First run after upgrade can compare coins already stored in the previous report.
+    if not history and isinstance(previous, dict):
+        dt = parse_aware_timestamp(previous.get("updated_at"))
+        if dt is not None and 0 < (now - dt).total_seconds() <= HISTORY_RETENTION_MINUTES * 60:
+            rows = previous.get("coins", [])
+            if isinstance(rows, list):
+                values = {}
+                for coin in rows:
+                    if isinstance(coin, dict):
+                        symbol = coin.get("coin")
+                        if isinstance(symbol, str) and symbol.endswith("-USDT-SWAP"):
+                            v = clean_snapshot_values(coin)
+                            if v is not None:
+                                values[symbol] = v
+                if values:
+                    history.append({"at": stamp(dt), "values": values})
+    # Avoid reusing duplicate measurements after reruns.
+    by_time = {entry["at"]: entry for entry in history}
+    return sorted(by_time.values(), key=lambda x: x["at"])[-HISTORY_MAX_SNAPSHOTS:]
+
+
+def reference_sample(history, symbol, now, target=None, tolerance=None):
+    """Use actual observation timestamps, not assumed 5m/15m/60m intervals."""
+    candidates = []
+    for entry in history:
+        dt = parse_aware_timestamp(entry.get("at"))
+        age = (now - dt).total_seconds() / 60 if dt else None
+        if age is None or not 1 <= age <= MAX_COMPARISON_MINUTES:
+            continue
+        if target is not None and abs(age - target) > tolerance:
+            continue
+        v = entry.get("values", {}).get(symbol)
+        v = clean_snapshot_values(v)
+        if v is not None:
+            candidates.append((age, entry["at"], v))
+    if not candidates:
+        return None
+    return (min(candidates, key=lambda x: abs(x[0] - target)) if target is not None
+            else min(candidates, key=lambda x: x[0]))
+
+
+def current_market_snapshot(oi_map, px_map, oi_ccy_map, now):
+    values = {}
+    for symbol in oi_map.keys() & px_map.keys():
+        if isinstance(symbol, str) and symbol.endswith("-USDT-SWAP"):
+            v = clean_snapshot_values([oi_map[symbol], px_map[symbol], oi_ccy_map.get(symbol)])
+            if v is not None:
+                values[symbol] = v
+    return {"at": stamp(now), "values": values} if values else None
+
+
 def assess(funding, oi_usd, last_px, previous):
     alerts = []
     if funding is not None and abs(funding) >= 0.001:
@@ -287,15 +395,15 @@ def build_report(now=None):
             PREVIOUS = json.loads(OUT_FILE.read_text("utf-8"))
         except (json.JSONDecodeError, OSError):
             PREVIOUS = {}
-    old_map = {}
-    # Compare consecutive measurements only; never treat yesterday's OI as a 15-minute spike.
-    try:
-        last_risk = datetime.fromisoformat(str(PREVIOUS.get("updated_at", "")).replace("Z", "+00:00"))
-        age = (now - last_risk).total_seconds()
-        if last_risk.tzinfo is not None and 0 <= age <= 50 * 60:
-            old_map = {c.get("coin"): c for c in PREVIOUS.get("coins", []) if isinstance(c, dict)}
-    except (ValueError, TypeError):
-        pass
+    # Read previous observations from the already-committed risk report. A one-hour
+    # scheduled workflow is longer than the old 50-minute gate, so that gate was
+    # causing permanently-null changes. Keep the ACTUAL interval with each result.
+    history = load_market_history(PREVIOUS, now)
+    report["market_comparison"] = {
+        "max_comparison_minutes": MAX_COMPARISON_MINUTES,
+        "history_samples": len(history),
+        "note": "Percent changes require a prior observation; OI_USD also moves with price."
+    }
 
     try:
         scan = json.loads(JSON_FILE.read_text("utf-8"))
@@ -314,9 +422,11 @@ def build_report(now=None):
     try:
         source = okx("/api/v5/public/open-interest", instType="SWAP")
         oi_map = {x.get("instId"): number(x.get("oiUsd")) for x in source}
+        oi_ccy_map = {x.get("instId"): number(x.get("oiCcy")) for x in source}
         report["sources"]["okx_open_interest"] = {"status": "OK", "retrieved_at": stamp(now), "symbols": len(oi_map)}
     except Exception as exc:
         oi_map = {}
+        oi_ccy_map = {}
         report["errors"].append("OKX OI unavailable: " + str(exc)[:130])
         report["sources"]["okx_open_interest"] = {"status": "UNAVAILABLE"}
 
@@ -345,16 +455,41 @@ def build_report(now=None):
         if oi is not None and oi <= 0:
             oi = None
         price = px_map.get(coin)
-        status, alerts, oi_change, px_change = assess(funding, oi, price, old_map.get(coin, {}))
+        ref = reference_sample(history, coin, now)
+        old_values = {"oi_usd": ref[2][0], "last_price": ref[2][1]} if ref else {}
+        status, alerts, oi_change, px_change = assess(funding, oi, price, old_values)
+        oi_ccy = valid_positive(oi_ccy_map.get(coin))
+        ccy_change = floatdiff(oi_ccy, ref[2][2]) if ref else None
+        # USD open interest moves with price too; base-asset OI is an additional
+        # diagnostic, NOT a stand-alone trade signal.
+        changes = {}
+        for label, target, tolerance in (("5m", 5, 3), ("15m", 15, 6), ("60m", 60, 12)):
+            interval_ref = reference_sample(history, coin, now, target, tolerance)
+            changes[f"oi_change_{label}_pct"] = (floatdiff(oi, interval_ref[2][0]) if interval_ref else None)
+            changes[f"price_change_{label}_pct"] = (floatdiff(price, interval_ref[2][1]) if interval_ref else None)
         report["coins"].append({"coin": coin, "status": status, "funding_rate": funding,
                                 "funding_pct": round(funding * 100, 5) if funding is not None else None,
                                 "next_funding_ms": next_funding, "oi_usd": oi, "oi_change_pct": oi_change,
-                                "last_price": price, "last_price_change_pct": px_change, "warnings": alerts})
+                                "oi_ccy": oi_ccy, "oi_ccy_change_pct": ccy_change,
+                                "last_price": price, "last_price_change_pct": px_change,
+                                "change_reference_at": ref[1] if ref else None,
+                                "change_period_minutes": round(ref[0], 1) if ref else None,
+                                "comparison_status": "OK" if ref else "REFERANS_YOK",
+                                **changes, "warnings": alerts})
         time.sleep(0.12)
     if coins and report["sources"]["okx_funding"]["ok_count"] == 0:
         report["sources"]["okx_funding"]["status"] = "UNAVAILABLE"
     if not coins:
         report["sources"]["okx_funding"]["status"] = "NOT_RUN"
+
+    # Preserve snapshots for ALL USDT swaps, not only the top ~60 currently checked.
+    # This provides a baseline when the top-list membership changes next run.
+    snap = current_market_snapshot(oi_map, px_map, oi_ccy_map, now)
+    if snap is not None:
+        history.append(snap)
+    report["market_history"] = history[-HISTORY_MAX_SNAPSHOTS:]
+    report["market_comparison"]["current_symbols"] = len(snap["values"]) if snap else 0
+    report["market_comparison"]["comparable_coins"] = sum(c["comparison_status"] == "OK" for c in report["coins"])
 
     all_events = []
     try:
@@ -434,7 +569,18 @@ def self_test():
     assert assess(None, 100, 80, {})[0] == "VERI_EKSIK"
     html = "<h3>2026 FOMC Meetings</h3><div>December</div><div>8-9*</div><h3>2027 FOMC Meetings</h3><div>January</div><div>26-27</div>"
     assert len(fomc_events(html)) >= 1
-    print("SELF_TEST_OK: parsing, risk flags, symbol normalization")
+    t0 = datetime(2026, 11, 5, 17, 0, tzinfo=UTC)
+    t1 = t0 + timedelta(minutes=61)
+    first = {"updated_at": stamp(t0), "coins": [{"coin": "BTC-USDT-SWAP", "oi_usd": 100, "last_price": 80}]}
+    h = load_market_history(first, t1)
+    assert len(h) == 1 and reference_sample(h, "BTC-USDT-SWAP", t1)[0] == 61
+    assert floatdiff(110, reference_sample(h, "BTC-USDT-SWAP", t1)[2][0]) == 10.0
+    assert reference_sample(h, "BTC-USDT-SWAP", t1 + timedelta(hours=4)) is None
+    assert reference_sample(h, "ETH-USDT-SWAP", t1) is None
+    s = current_market_snapshot({"ETH-USDT-SWAP": 200}, {"ETH-USDT-SWAP": 20}, {}, t1)
+    assert s and s["values"]["ETH-USDT-SWAP"][:2] == [200, 20]
+    assert len(load_market_history({"market_history": [s]}, t1 + timedelta(minutes=61))) == 1
+    print("SELF_TEST_OK: parsers, OI history, comparisons, stale guards, symbol normalization")
 
 
 def main():
