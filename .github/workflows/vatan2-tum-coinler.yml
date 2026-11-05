@@ -1,4 +1,3 @@
-
 name: VATAN 2 Tum Coin Taramasi
 
 on:
@@ -17,26 +16,46 @@ jobs:
   tum_coinler:
     runs-on: ubuntu-latest
     timeout-minutes: 12
-
     steps:
       - name: Dosyalari al
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Python kur
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Tum coinleri analiz et
+      - name: Tum aktif USDT SWAP coinlerini analiz et
         run: python vatan2-tum-coinler.py
 
-      - name: Sonuclari kaydet
+      - name: Sonuclari depoya guvenle kaydet
+        shell: bash
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add son-tum-analiz.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Update VATAN 2 all coins"
-          git pull --rebase origin main
-          git push origin HEAD:main
-          
+          set -euo pipefail
+          python -m json.tool son-tum-analiz.json > /dev/null
+          cp son-tum-analiz.json "$RUNNER_TEMP/son-tum-analiz.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          for attempt in 1 2 3 4 5; do
+            echo "Yayinlama denemesi: $attempt"
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$RUNNER_TEMP/son-tum-analiz.json" son-tum-analiz.json
+            git add son-tum-analiz.json
+            if git diff --cached --quiet; then
+              echo 'Sonuc zaten guncel'
+              exit 0
+            fi
+            git commit -m 'Update VATAN 2 all coins'
+            if git push origin HEAD:main; then
+              echo 'Tarama sonucu basariyla kaydedildi'
+              exit 0
+            fi
+            echo 'Bu arada baska bir workflow commit atti; guncel dal ile tekrar denenecek'
+            sleep $((attempt * 3))
+          done
+          echo 'Tarama sonucunu kaydetmek mumkun olmadi' >&2
+          exit 1

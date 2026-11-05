@@ -47,27 +47,41 @@ jobs:
       - name: Birlesik LONG SHORT puanlari
         run: python vatan2-makro60.py
 
-      - name: Sonuclari yayinla
+      - name: Sonuclari guvenle yayinla
         shell: bash
         run: |
+          set -euo pipefail
+          python -m json.tool vatan2-risk.json > /dev/null
+          python -m json.tool son-makro60.json > /dev/null
+          cp vatan2-risk.json "$RUNNER_TEMP/vatan2-risk.json"
+          cp son-makro60.json "$RUNNER_TEMP/son-makro60.json"
+          source_hash=$(sha256sum son-tum-analiz.json | cut -d ' ' -f1)
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add vatan2-risk.json son-makro60.json
-          if git diff --cached --quiet; then
-            echo 'Yeni veri yok'
-            exit 0
-          fi
-          git commit -m 'Update VATAN2 macro long short scoring'
-          for trial in 1 2 3; do
-            if ! git pull --rebase origin main; then
-              git rebase --abort || true
-              echo 'Veri cakismasi; islem durduruldu'
+
+          for attempt in 1 2 3 4 5; do
+            echo "Ekonomik rapor yayinlama denemesi: $attempt"
+            git fetch origin main
+            git reset --hard origin/main
+            latest_source_hash=$(sha256sum son-tum-analiz.json | cut -d ' ' -f1)
+            if [ "$latest_source_hash" != "$source_hash" ]; then
+              echo 'Tam coin taramasi bu arada degisti; eski ekonomi puanlari yayinlanmayacak' >&2
               exit 1
             fi
-            if git push origin HEAD:main; then
+            cp "$RUNNER_TEMP/vatan2-risk.json" vatan2-risk.json
+            cp "$RUNNER_TEMP/son-makro60.json" son-makro60.json
+            git add vatan2-risk.json son-makro60.json
+            if git diff --cached --quiet; then
+              echo 'Ekonomik rapor zaten guncel'
               exit 0
             fi
-            sleep 3
+            git commit -m 'Update VATAN2 macro long short scoring'
+            if git push origin HEAD:main; then
+              echo 'Ekonomik LONG SHORT raporu kaydedildi'
+              exit 0
+            fi
+            echo 'Es zamanli commit var; yeniden denenecek'
+            sleep $((attempt * 3))
           done
-          echo 'GitHub yayinlama basarisiz' >&2
+          echo 'Ekonomik rapor yayinlanamadi' >&2
           exit 1
