@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220">
+  <title>VATAN 2 | Canlı OKX Fiyat ve Analiz</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1220;--surface:#121e31;--surface2:#192840;--stroke:#293b54;--white:#f2f7ff;--muted:#a8bbd1;--green:#42d9a1;--red:#ff7e8c;--amber:#f2c36b;--blue:#7db8ff}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(ellipse 680px 260px at 50% -90px,#193e48 0%,transparent 75%),var(--bg);color:var(--white);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+    button{font:inherit;cursor:pointer}
+    main{width:min(100%,850px);margin:0 auto;padding:26px 16px 66px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:0 0 22px}
+    .brand{font-weight:850;letter-spacing:.6px;font-size:29px;line-height:1.1}
+    .brand span{color:var(--green)}
+    .subtitle,.hint{color:var(--muted);font-size:13px;margin-top:9px}
+    .source{padding:7px 10px;border:1px solid var(--stroke);border-radius:99px;color:var(--blue);font-size:12px;white-space:nowrap;background:#142337}
+    .summary{padding:20px;border-radius:20px;background:linear-gradient(138deg,#172d37,#122237 54%,#172338);border:1px solid #31515c;margin-bottom:18px}
+    .summary-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .section-kicker{font-size:12px;letter-spacing:1.1px;color:var(--muted);text-transform:uppercase;font-weight:700}
+    .state{border-radius:99px;padding:5px 10px;font-size:12px;font-weight:800;background:#294452;color:#c4f8ea;white-space:nowrap}
+    .state.old{background:#4b3431;color:#ffe0b7}.state.bad{background:#493039;color:#ffc1cb}
+    .summary-line{font-size:25px;font-weight:800;margin-top:14px}
+    .summary-description{font-size:13px;color:var(--muted);margin:10px 0 0}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px;color:var(--muted);font-size:12px}
+    .meta span{background:#132536;border:1px solid #2b4955;border-radius:8px;padding:7px 10px}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:23px 0 16px;flex-wrap:wrap}
+    h2{margin:0;font-size:19px;letter-spacing:-.2px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{padding:9px 13px;border:1px solid var(--stroke);background:#152337;color:var(--white);border-radius:10px;font-size:13px;font-weight:700}
+    .btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+    .btn.active{border-color:#35765d;background:#204a40;color:#b6ffe2}
+    .btn:disabled{opacity:.5;cursor:wait}
+    .cards{display:grid;grid-template-columns:1fr;gap:13px}
+    .coin{background:var(--surface);border:1px solid var(--stroke);border-radius:18px;padding:18px}
+    .coin-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .symbol{font-size:23px;font-weight:850;letter-spacing:-.5px}
+    .symbol small{font-size:12px;color:var(--muted);font-weight:500;margin-left:5px;letter-spacing:0}
+    .decision{display:inline-block;border-radius:8px;padding:7px 10px;background:#34333a;color:var(--amber);font-size:12px;font-weight:850}
+    .decision.long{background:#1b4439;color:var(--green)}
+    .decision.short{background:#4b2d39;color:var(--red)}
+    .decision.stale{background:#3f3530;color:#e7b978}
+    .score-head{display:flex;justify-content:space-between;align-items:center;margin-top:19px;color:var(--muted);font-size:12px}
+    .score-head strong{color:var(--white);font-size:19px}
+    .bar{height:7px;border-radius:99px;background:#2b3a51;overflow:hidden;margin-top:7px}
+    .bar span{display:block;height:100%;background:linear-gradient(90deg,#37789b,#42d9a1);border-radius:99px}
+    .trends-title{font-size:12px;color:var(--muted);margin:19px 0 8px;font-weight:700}
+    .trends{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+    .trend{border:1px solid #304258;background:#19273b;border-radius:10px;text-align:center;padding:9px 4px}
+    .trend small{display:block;font-size:11px;color:var(--muted);margin-bottom:6px}
+    .trend b{font-size:11px;color:var(--amber)}
+    .trend b.long{color:var(--green)}.trend b.short{color:var(--red)}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:14px}
+    .metric{background:var(--surface2);border-radius:10px;padding:11px 9px;min-width:0}
+    .metric small{display:block;color:var(--muted);font-size:11px}
+    .metric strong{display:block;font-size:16px;margin-top:5px;overflow-wrap:anywhere}
+    .risk{background:#162f32;border:1px solid #356052;border-radius:12px;padding:12px;margin-top:15px;font-size:12px}
+    .risk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:7px}
+    .risk small{display:block;color:var(--muted);font-size:10px}.risk strong{font-size:13px;overflow-wrap:anywhere}
+    .note{font-size:12px;color:var(--muted);margin-top:17px;border-top:1px solid var(--stroke);padding-top:12px}
+    .empty{border:1px dashed #456078;background:#142338;border-radius:15px;padding:22px;color:var(--muted);font-size:14px}
+
+    .live-panel{border:1px solid #2d5365;background:linear-gradient(155deg,#122c39,#132036);border-radius:20px;padding:18px;margin-bottom:18px}
+    .live-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+    .live-state{padding:5px 9px;border:1px solid #34536e;border-radius:8px;color:#b8d3e4;font-weight:800;font-size:11px;letter-spacing:.2px}
+    .live-state.good{color:#baffdd;border-color:#346e5e;background:#153a33}
+    .live-state.off{color:#ffc7a5;border-color:#715349;background:#33272b}
+    .live-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:15px}
+    .live-coin{background:#192b41;border:1px solid #2d445a;border-radius:12px;padding:12px 9px;min-width:0}
+    .live-symbol{font-size:12px;color:#bfd3e6;font-weight:800}
+    .live-price{font-size:clamp(14px,4vw,22px);font-variant-numeric:tabular-nums;font-weight:850;letter-spacing:-.3px;margin-top:6px;overflow-wrap:anywhere}
+    .live-change{font-size:11px;color:var(--muted);margin-top:5px}
+    .live-change.up{color:var(--green)}.live-change.down{color:var(--red)}
+    .live-foot{color:var(--muted);font-size:11px;margin-top:12px;line-height:1.5}
+    .live-foot strong{color:var(--white)}
+    @media(max-width:375px){.live-grid{gap:5px}.live-coin{padding:10px 7px}.live-symbol{font-size:11px}.live-price{font-size:14px}}
+    footer{margin-top:25px;font-size:12px;color:var(--muted);line-height:1.65}
+    footer a{color:var(--blue)}
+    @media(min-width:690px){main{padding:40px 24px 76px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.coin{padding:20px}}
+    @media(max-width:365px){.trends{gap:4px}.trend{padding:8px 2px}.trend b{font-size:10px}.brand{font-size:25px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="brand">🇹🇷 VATAN <span>2</span></div><div class="subtitle">Futures piyasa analiz ve karar destek paneli</div></div>
+    <div class="source">OKX · USDT SWAP</div>
+  </header>
+
+
+  <section class="live-panel" aria-label="OKX anlık fiyat takibi">
+    <div class="live-head"><span class="section-kicker">OKX • Canlı işlem fiyatları</span><span id="liveStatus" class="live-state">BAĞLANIYOR...</span></div>
+    <div class="live-grid" id="livePrices">
+      <div class="live-coin"><div class="live-symbol">BTC / USDT</div><div class="live-price" id="priceBTC">—</div><div class="live-change" id="changeBTC">Veri bekleniyor</div></div>
+      <div class="live-coin"><div class="live-symbol">ETH / USDT</div><div class="live-price" id="priceETH">—</div><div class="live-change" id="changeETH">Veri bekleniyor</div></div>
+      <div class="live-coin"><div class="live-symbol">SOL / USDT</div><div class="live-price" id="priceSOL">—</div><div class="live-change" id="changeSOL">Veri bekleniyor</div></div>
+    </div>
+    <div class="live-foot">Fiyatlar <strong>OKX WebSocket</strong> üzerinden olay oluştuğunda kendiliğinden değişir. <span id="liveUpdated">Henüz fiyat verisi gelmedi.</span><br>15 dakikalık kapanmış mumlar ve 1s / 4s / günlük yönler aşağıda ayrı analiz edilir. Ekranı açık tutun; bağlantı kesilirse son fiyat canlı diye gösterilmez.</div>
+  </section>
+
+  <section class="summary" aria-live="polite">
+    <div class="summary-top"><span class="section-kicker">Piyasa tarama durumu</span><span id="dataState" class="state old">VERİ BEKLENİYOR</span></div>
+    <div id="headline" class="summary-line">Son analiz yükleniyor…</div>
+    <p id="description" class="summary-description">GitHub Actions tarafından oluşturulan son tarama sonucu okunuyor.</p>
+    <div class="meta"><span id="updated">Son tarama: —</span><span id="counts">İncelenen: —</span><span>75+ puan = başarı garantisi değil</span></div>
+  </section>
+
+  <div class="toolbar">
+    <h2>Coin analizleri</h2>
+    <div class="actions">
+      <button type="button" class="btn active" id="allBtn" aria-pressed="true">Tümü</button>
+      <button type="button" class="btn" id="signalBtn" aria-pressed="false">75+ onaylı</button>
+      <button type="button" class="btn" id="refreshBtn">↻ Yenile</button>
+    </div>
+  </div>
+  <div id="cards" class="cards" aria-live="polite"><div class="empty">Veriler yükleniyor…</div></div>
+  <footer>
+    <p>Üstteki fiyatlar OKX canlı fiyat akışıdır; alttaki RSI, MACD, trendler ve puanlar GitHub Actions tarafından üretilmiş son kapanmış 15 dakikalık mum analizidir. Veriler 30 dakikayı geçince kararlar güvenlik amacıyla <strong>BEKLE</strong> olarak görüntülenir. Canlı fiyat almak puanların anlık güncellendiği anlamına gelmez.</p>
+    <p>Otomatik emir yoktur. Fırsat puanı kazanma olasılığı değildir. Giriş, stop ve hedef mevcutsa yalnızca analiz referansıdır.</p>
+    <p><a href="./index.html">Ana sayfaya dön</a></p>
+  </footer>
+</main>
+<script>
+'use strict';
+const DATA_URL = 'https://raw.githubusercontent.com/mikailbodruk23-bot/vatan-kripto/main/son-analiz.json';
+const byId = id => document.getElementById(id);
+const num = v => v == null || v === '' || !Number.isFinite(Number(v)) ? '—' : Number(v).toLocaleString('tr-TR',{maximumFractionDigits:5});
+let last = null, onlyApproved = false;
+const state = {fresh:false,error:null};
+const bands = [['1Dutc','Günlük'],['4H','4 saat'],['1H','1 saat'],['15m','15 dk']];
+function element(tag, cls, value) {
+  const node=document.createElement(tag);
+  if(cls)node.className=cls;
+  if(value !== undefined)node.textContent=value;
+  return node;
+}
+function cell(title,value){
+  const box=element('div','metric');
+  box.append(element('small','',title),element('strong','',value));
+  return box;
+}
+function makeCard(item){
+  const score=Math.max(0,Math.min(100,Number(item.puan)||0));
+  const choice=String(item.karar||'BEKLE');
+  const approved=state.fresh && score>=75 && /^(LONG|SHORT) ADAY$/.test(choice);
+  if(onlyApproved && !approved)return null;
+  const visibleChoice=!state.fresh?'BEKLE · ESKİ VERİ':choice;
+  const type=!state.fresh?'stale':choice.startsWith('LONG')?'long':choice.startsWith('SHORT')?'short':'';
+  const card=element('article','coin');
+  const head=element('div','coin-head');
+  const name=element('div','symbol',String(item.coin||'BİLİNMİYOR').replace('-USDT-SWAP',''));
+  name.append(element('small','','USDT perpetual'));
+  head.append(name,element('span','decision '+type,visibleChoice));
+  const line=element('div','score-head');
+  line.append(element('span','','Teknik fırsat puanı'),element('strong','',score+'/100'));
+  const bar=element('div','bar');
+  const fill=element('span');fill.style.width=score+'%';bar.append(fill);
+  const label=element('div','trends-title','TREND YÖNLERİ');
+  const trends=element('div','trends');
+  for(const [key,title] of bands){
+    const val=String(item.yonler?.[key]||'—');
+    const box=element('div','trend');
+    const tone=val==='LONG'?'long':val==='SHORT'?'short':'';
+    box.append(element('small','',title),element('b',tone,val));trends.append(box);
+  }
+  const metrics=element('div','metrics');
+  metrics.append(cell('RSI (15 dk)',num(item.rsi15m)),cell('MACD farkı',num(item.macd15m)),cell('Hacim oranı',num(item.hacim_orani)+'x'));
+  card.append(head,line,bar,label,trends,metrics);
+  if(approved && item.giris_referans != null && item.stop != null && item.hedef != null){
+    const risk=element('div','risk');
+    risk.append(element('strong','','Örnek işlem seviyeleri (son kapanmış mum)'));
+    const grid=element('div','risk-grid');
+    for(const [title,val] of [['Giriş referansı',item.giris_referans],['Stop',item.stop],['Hedef',item.hedef]]){
+      const part=element('div');part.append(element('small','',title),element('strong','',num(val)));grid.append(part);
+    }
+    risk.append(grid);card.append(risk);
+  }
+  const btc=item.btc_filtre === true?'BTC yön filtresi uygun': 'BTC yön filtresi onaylı değil';
+  card.append(element('div','note',btc+' · 75 puan işlem garantisi değildir.'));
+  return card;
+}
+function render(){
+  const target=byId('cards');target.replaceChildren();
+  if(!last){target.append(element('div','empty',state.error||'Son analiz bekleniyor.'));return;}
+  const items=last.results||[];
+  const count=items.filter(x=>state.fresh && Number(x.puan)>=75 && /^(LONG|SHORT) ADAY$/.test(String(x.karar))).length;
+  byId('counts').textContent='İncelenen: '+items.length+' · Onaylı 75+: '+count;
+  byId('headline').textContent=state.fresh?(count ? count+' onaylı fırsat bulundu' : 'Şu anda onaylı fırsat yok'):'Son tarama verisi eski';
+  byId('description').textContent=state.fresh?'Aşağıdaki puanlar son kapanmış mumlara dayanır. Canlı fiyatlar üst panelde ayrı akar.':'Sonuçlar 30 dakikadan eski. Yeni tarama gelmeden işlem adayı gösterilmiyor.';
+  for(const row of items){const card=makeCard(row);if(card)target.append(card);}
+  if(!target.children.length)target.append(element('div','empty',onlyApproved?'Güncel ve 75+ onaylı aday bulunmuyor.':'Gösterilecek sonuç yok.'));
+}
+async function refresh(){
+  const btn=byId('refreshBtn');btn.disabled=true;
+  byId('dataState').className='state old';
+  try{
+    const response=await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const obj=await response.json();
+    if(!Array.isArray(obj.results) || !obj.updated_at)throw new Error('Geçersiz JSON biçimi');
+    const time=new Date(obj.updated_at).getTime();
+    if(!Number.isFinite(time))throw new Error('Geçersiz tarama zamanı');
+    last=obj;
+    const age=Date.now()-time;
+    state.fresh=age>=0 && age<=30*60*1000;
+    state.error=null;
+    byId('updated').textContent='Son tarama: '+new Date(time).toLocaleString('tr-TR');
+    byId('dataState').textContent=state.fresh?'SON TARAMA GÜNCEL':'ESKİ VERİ';
+    byId('dataState').className='state '+(state.fresh?'':'old');
+  }catch(e){
+    last=null;state.fresh=false;state.error='Analiz verisi alınamadı: '+e.message;
+    byId('headline').textContent='Veri bağlantısı kurulamadı';
+    byId('description').textContent='Bağlantıyı kontrol edip Yenile düğmesine basın.';
+    byId('updated').textContent='Son tarama: —';
+    byId('counts').textContent='İncelenen: —';
+    byId('dataState').textContent='BAĞLANTI HATASI';
+    byId('dataState').className='state bad';
+  }finally{btn.disabled=false;render();}
+}
+function switchFilter(value){
+  onlyApproved=value;
+  byId('allBtn').classList.toggle('active',!value);
+  byId('signalBtn').classList.toggle('active',value);
+  byId('allBtn').setAttribute('aria-pressed',String(!value));
+  byId('signalBtn').setAttribute('aria-pressed',String(value));
+  render();
+}
+byId('allBtn').addEventListener('click',()=>switchFilter(false));
+byId('signalBtn').addEventListener('click',()=>switchFilter(true));
+byId('refreshBtn').addEventListener('click',refresh);
+refresh();setInterval(refresh,60000);
+
+// CANLI PIYASA: OKX public WebSocket tickers. Analiz puanlamasindan ayri.
+const liveSymbols=['BTC','ETH','SOL'];
+const liveData=Object.create(null);
+let okxSocket=null, reconnectHandle=null, lastWsMessage=0, httpBusy=false;
+let liveMode='connecting';
+function prettyPrice(value){
+  const n=Number(value);
+  if(!Number.isFinite(n)||n<=0)return '—';
+  return n.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:n>=100?2:4});
+}
+function setLiveStatus(message,tone=''){
+  const el=byId('liveStatus');
+  el.textContent=message;
+  el.className='live-state '+tone;
+}
+function drawLive(){
+  const now=Date.now();
+  let latest=0, active=0;
+  for(const symbol of liveSymbols){
+    const d=liveData[symbol];
+    const age=d?now-d.receivedAt:Infinity;
+    const valid=age<=45000 && (liveMode==='socket'||liveMode==='http');
+    const price=byId('price'+symbol),change=byId('change'+symbol);
+    if(!valid){
+      price.textContent='—';
+      change.textContent=d?'Son fiyat eski / bağlantı bekleniyor':'Veri bekleniyor';
+      change.className='live-change';
+      continue;
+    }
+    active++; latest=Math.max(latest,d.receivedAt);
+    price.textContent=prettyPrice(d.last);
+    const op=Number(d.open24h);
+    const pct=op>0?(Number(d.last)/op-1)*100:null;
+    change.textContent=(pct===null?'24s değişim: —':'24s: '+(pct>=0?'+':'')+pct.toFixed(2)+'%')+
+      (d.transport==='http'?' · yedek':'');
+    change.className='live-change '+(pct===null?'':pct>=0?'up':'down');
+  }
+  if(active>0){
+    setLiveStatus(liveMode==='socket'?'CANLI · WEBSOCKET':'YEDEK · HTTP',liveMode==='socket'?'good':'');
+    byId('liveUpdated').textContent='Son veri: '+new Date(latest).toLocaleTimeString('tr-TR');
+  }else{
+    setLiveStatus(liveMode==='connecting'?'BAĞLANIYOR...':'CANLI VERİ YOK',liveMode==='connecting'?'':'off');
+    byId('liveUpdated').textContent='Bağlantı kurulamadı veya veri gecikti.';
+  }
+}
+function acceptTicker(t,transport){
+  const symbol=String(t.instId||'').split('-')[0];
+  if(!liveSymbols.includes(symbol)||!Number.isFinite(Number(t.last)))return;
+  liveData[symbol]={last:Number(t.last),open24h:t.open24h,receivedAt:Date.now(),transport};
+  liveMode=transport==='ws'?'socket':'http';
+  drawLive();
+}
+function connectOkx(){
+  clearTimeout(reconnectHandle);
+  if(okxSocket && (okxSocket.readyState===WebSocket.OPEN||okxSocket.readyState===WebSocket.CONNECTING))return;
+  liveMode='connecting';drawLive();
+  try{
+    // Port 8443 OKX tarafindan 31 Ekim 2026'da kapatildi; 443 kullan.
+    const socket=new WebSocket('wss://ws.okx.com/ws/v5/public');
+    okxSocket=socket;
+    socket.onopen=()=>{
+      lastWsMessage=Date.now();
+      socket.send(JSON.stringify({op:'subscribe',args:liveSymbols.map(s=>({channel:'tickers',instId:s+'-USDT-SWAP'}))}));
+    };
+    socket.onmessage=event=>{
+      lastWsMessage=Date.now();
+      if(event.data==='pong')return;
+      let msg;try{msg=JSON.parse(event.data)}catch{return;}
+      if(msg.event==='error'){
+        console.warn('OKX abonelik hatasi:',msg.msg||msg.code);
+        return;
+      }
+      if(msg.arg?.channel==='tickers'&&Array.isArray(msg.data)){
+        for(const ticker of msg.data)acceptTicker(ticker,'ws');
+      }
+    };
+    socket.onerror=()=>{try{socket.close()}catch(_){}};
+    socket.onclose=()=>{
+      if(okxSocket!==socket)return;
+      liveMode='offline';drawLive();
+      reconnectHandle=setTimeout(connectOkx,4000);
+    };
+  }catch(e){
+    console.warn('OKX WebSocket hatasi:',e);
+    liveMode='offline';drawLive();
+    reconnectHandle=setTimeout(connectOkx,4000);
+  }
+}
+async function pollFallback(){
+  if(httpBusy)return;
+  // WebSocket aktif ve son paket yeniyse HTTP gereksiz.
+  if(okxSocket?.readyState===WebSocket.OPEN && Date.now()-lastWsMessage<25000)return;
+  httpBusy=true;
+  try{
+    await Promise.all(liveSymbols.map(async symbol=>{
+      const url='https://www.okx.com/api/v5/market/ticker?instId='+symbol+'-USDT-SWAP';
+      try{
+        const res=await fetch(url,{cache:'no-store'});
+        if(!res.ok)throw new Error('HTTP '+res.status);
+        const body=await res.json();
+        if(body.code==='0'&&body.data?.[0]){
+          // Bir WS olayi geldi ise daha gecikmeli HTTP verisiyle ezme.
+          if(okxSocket?.readyState!==WebSocket.OPEN||Date.now()-lastWsMessage>25000){
+            acceptTicker(body.data[0],'http');
+          }
+        }
+      }catch(e){console.warn('OKX yedek fiyat alinmadi:',symbol,e.message);}
+    }));
+  }finally{httpBusy=false;drawLive();}
+}
+connectOkx();
+setInterval(()=>{
+  if(okxSocket?.readyState===WebSocket.OPEN){
+    const idle=Date.now()-lastWsMessage;
+    if(idle>60000){okxSocket.close();return;}
+    if(idle>20000){try{okxSocket.send('ping')}catch(_){}}
+  }else if(!reconnectHandle){connectOkx();}
+  drawLive();
+},5000);
+setInterval(pollFallback,12000);
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden){
+    if(!okxSocket||okxSocket.readyState===WebSocket.CLOSED)connectOkx();
+    drawLive();pollFallback();refresh();
+  }
+});
+</script>
+</body>
+</html>
