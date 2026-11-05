@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="tr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220"><title>VATAN 2 | Tüm USDT Coinler</title>
+<style>
+    :root{color-scheme:dark;--bg:#0b1220;--surface:#121e31;--surface2:#192840;--stroke:#293b54;--white:#f2f7ff;--muted:#a8bbd1;--green:#42d9a1;--red:#ff7e8c;--amber:#f2c36b;--blue:#7db8ff}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(ellipse 680px 260px at 50% -90px,#193e48 0%,transparent 75%),var(--bg);color:var(--white);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45}
+    button{font:inherit;cursor:pointer}
+    main{width:min(100%,850px);margin:0 auto;padding:26px 16px 66px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:0 0 22px}
+    .brand{font-weight:850;letter-spacing:.6px;font-size:29px;line-height:1.1}
+    .brand span{color:var(--green)}
+    .subtitle,.hint{color:var(--muted);font-size:13px;margin-top:9px}
+    .source{padding:7px 10px;border:1px solid var(--stroke);border-radius:99px;color:var(--blue);font-size:12px;white-space:nowrap;background:#142337}
+    .summary{padding:20px;border-radius:20px;background:linear-gradient(138deg,#172d37,#122237 54%,#172338);border:1px solid #31515c;margin-bottom:18px}
+    .summary-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .section-kicker{font-size:12px;letter-spacing:1.1px;color:var(--muted);text-transform:uppercase;font-weight:700}
+    .state{border-radius:99px;padding:5px 10px;font-size:12px;font-weight:800;background:#294452;color:#c4f8ea;white-space:nowrap}
+    .state.old{background:#4b3431;color:#ffe0b7}.state.bad{background:#493039;color:#ffc1cb}
+    .summary-line{font-size:25px;font-weight:800;margin-top:14px}
+    .summary-description{font-size:13px;color:var(--muted);margin:10px 0 0}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px;color:var(--muted);font-size:12px}
+    .meta span{background:#132536;border:1px solid #2b4955;border-radius:8px;padding:7px 10px}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:23px 0 16px;flex-wrap:wrap}
+    h2{margin:0;font-size:19px;letter-spacing:-.2px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{padding:9px 13px;border:1px solid var(--stroke);background:#152337;color:var(--white);border-radius:10px;font-size:13px;font-weight:700}
+    .btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+    .btn.active{border-color:#35765d;background:#204a40;color:#b6ffe2}
+    .btn:disabled{opacity:.5;cursor:wait}
+    .cards{display:grid;grid-template-columns:1fr;gap:13px}
+    .coin{background:var(--surface);border:1px solid var(--stroke);border-radius:18px;padding:18px}
+    .coin-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .symbol{font-size:23px;font-weight:850;letter-spacing:-.5px}
+    .symbol small{font-size:12px;color:var(--muted);font-weight:500;margin-left:5px;letter-spacing:0}
+    .decision{display:inline-block;border-radius:8px;padding:7px 10px;background:#34333a;color:var(--amber);font-size:12px;font-weight:850}
+    .decision.long{background:#1b4439;color:var(--green)}
+    .decision.short{background:#4b2d39;color:var(--red)}
+    .decision.stale{background:#3f3530;color:#e7b978}
+    .score-head{display:flex;justify-content:space-between;align-items:center;margin-top:19px;color:var(--muted);font-size:12px}
+    .score-head strong{color:var(--white);font-size:19px}
+    .bar{height:7px;border-radius:99px;background:#2b3a51;overflow:hidden;margin-top:7px}
+    .bar span{display:block;height:100%;background:linear-gradient(90deg,#37789b,#42d9a1);border-radius:99px}
+    .trends-title{font-size:12px;color:var(--muted);margin:19px 0 8px;font-weight:700}
+    .trends{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+    .trend{border:1px solid #304258;background:#19273b;border-radius:10px;text-align:center;padding:9px 4px}
+    .trend small{display:block;font-size:11px;color:var(--muted);margin-bottom:6px}
+    .trend b{font-size:11px;color:var(--amber)}
+    .trend b.long{color:var(--green)}.trend b.short{color:var(--red)}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:14px}
+    .metric{background:var(--surface2);border-radius:10px;padding:11px 9px;min-width:0}
+    .metric small{display:block;color:var(--muted);font-size:11px}
+    .metric strong{display:block;font-size:16px;margin-top:5px;overflow-wrap:anywhere}
+    .risk{background:#162f32;border:1px solid #356052;border-radius:12px;padding:12px;margin-top:15px;font-size:12px}
+    .risk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:7px}
+    .risk small{display:block;color:var(--muted);font-size:10px}.risk strong{font-size:13px;overflow-wrap:anywhere}
+    .note{font-size:12px;color:var(--muted);margin-top:17px;border-top:1px solid var(--stroke);padding-top:12px}
+    .empty{border:1px dashed #456078;background:#142338;border-radius:15px;padding:22px;color:var(--muted);font-size:14px}
+
+    .live-panel{border:1px solid #2d5365;background:linear-gradient(155deg,#122c39,#132036);border-radius:20px;padding:18px;margin-bottom:18px}
+    .live-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+    .live-state{padding:5px 9px;border:1px solid #34536e;border-radius:8px;color:#b8d3e4;font-weight:800;font-size:11px;letter-spacing:.2px}
+    .live-state.good{color:#baffdd;border-color:#346e5e;background:#153a33}
+    .live-state.off{color:#ffc7a5;border-color:#715349;background:#33272b}
+    .live-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:15px}
+    .live-coin{background:#192b41;border:1px solid #2d445a;border-radius:12px;padding:12px 9px;min-width:0}
+    .live-symbol{font-size:12px;color:#bfd3e6;font-weight:800}
+    .live-price{font-size:clamp(14px,4vw,22px);font-variant-numeric:tabular-nums;font-weight:850;letter-spacing:-.3px;margin-top:6px;overflow-wrap:anywhere}
+    .live-change{font-size:11px;color:var(--muted);margin-top:5px}
+    .live-change.up{color:var(--green)}.live-change.down{color:var(--red)}
+    .live-foot{color:var(--muted);font-size:11px;margin-top:12px;line-height:1.5}
+    .live-foot strong{color:var(--white)}
+    @media(max-width:375px){.live-grid{gap:5px}.live-coin{padding:10px 7px}.live-symbol{font-size:11px}.live-price{font-size:14px}}
+    footer{margin-top:25px;font-size:12px;color:var(--muted);line-height:1.65}
+    footer a{color:var(--blue)}
+    @media(min-width:690px){main{padding:40px 24px 76px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.coin{padding:20px}}
+    @media(max-width:365px){.trends{gap:4px}.trend{padding:8px 2px}.trend b{font-size:10px}.brand{font-size:25px}}
+  
+    .searchbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0 10px}
+    .searchbar input,.searchbar select{min-height:42px;min-width:0;border-radius:10px;border:1px solid var(--stroke);background:#192a3f;color:var(--white);padding:9px 10px;font:inherit;font-size:14px}
+    .searchbar input{flex:2;min-width:150px}.searchbar select{flex:1;min-width:140px}
+    .paging{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:15px}
+    .live-in-card{font-variant-numeric:tabular-nums;font-size:16px;font-weight:800;margin-top:6px;color:var(--blue)}
+    .live-in-card small{font-size:11px;color:var(--muted);font-weight:400}
+    .tiny{font-size:11px;color:var(--muted)}
+    .stats{color:var(--muted);font-size:12px;margin-top:8px}
+    .warning{color:var(--amber)}
+</style></head>
+<body><main>
+<header><div><div class="brand">🇹🇷 VATAN <span>2</span></div><div class="subtitle">Tüm aktif OKX USDT perpetual sözleşmeleri</div></div><div class="source">OKX · USDT SWAP</div></header>
+<section class="live-panel" aria-label="Canlı fiyatlar"><div class="live-head"><span class="section-kicker">OKX • Canlı piyasa fiyatları</span><span id="liveStatus" class="live-state">BAĞLANIYOR...</span></div>
+<div class="live-grid"><div class="live-coin"><div class="live-symbol">BTC/USDT</div><div class="live-price" id="priceBTC">—</div><div class="live-change" id="changeBTC">Bekleniyor</div></div>
+<div class="live-coin"><div class="live-symbol">ETH/USDT</div><div class="live-price" id="priceETH">—</div><div class="live-change" id="changeETH">Bekleniyor</div></div>
+<div class="live-coin"><div class="live-symbol">SOL/USDT</div><div class="live-price" id="priceSOL">—</div><div class="live-change" id="changeSOL">Bekleniyor</div></div></div>
+<p class="live-foot">Görüntülenen coinlerin fiyatları <strong>OKX WebSocket</strong> ile veri geldikçe güncellenir. <span id="liveUpdated">Veri bekleniyor.</span> Arama veya sayfa değiştirince yeni coinlere abone olunur. Ekran kapalıyken canlı akış durabilir.</p></section>
+<section class="summary"><div class="summary-top"><span class="section-kicker">Piyasa tarama durumu</span><span id="dataState" class="state old">BEKLENİYOR</span></div>
+<div id="headline" class="summary-line">Analiz yükleniyor…</div><p id="description" class="summary-description">GitHub Actions'ın son tarama sonucu okunuyor.</p>
+<div class="meta"><span id="updated">Son tarama: —</span><span id="counts">İncelenen: —</span><span id="approvedCount">75+ onaylı: —</span></div>
+<p class="stats" id="noteErrors"></p></section>
+<div class="toolbar"><h2>Tüm coin analizleri</h2><div class="actions"><button type="button" class="btn active" id="allBtn">Tümü</button><button type="button" class="btn" id="signalBtn">75+ onaylı</button><button type="button" class="btn" id="refreshBtn">↻ Yenile</button></div></div>
+<div class="searchbar"><input type="search" id="search" placeholder="Coin ara: BTC, DOGE, XRP…" aria-label="Coin ara" autocomplete="off"><select id="sort" aria-label="Sıralama"><option value="score">Puana göre</option><option value="volume">24 saatlik hacme göre</option><option value="name">Ada göre</option></select></div>
+<p class="tiny" id="showing">Sonuçlar bekleniyor…</p><div id="cards" class="cards"><div class="empty">Veriler yükleniyor…</div></div>
+<div class="paging"><button type="button" class="btn" id="prevBtn">← Önceki</button><span class="tiny" id="pages">—</span><button type="button" class="btn" id="nextBtn">Sonraki →</button></div>
+<footer><p><strong>Önemli:</strong> Bütün uygun USDT-SWAP coinleri otomatik keşfedilir. Günlük, 4 saat, 1 saat ve 15 dakikalık <strong>kapanmış mum</strong> analizleri GitHub Actions tarafından aralıklarla yapılır; yeni mum açılınca sonuçlar hemen değişmek zorunda değildir. Fiyatların canlı akması, puanın da canlı hesaplandığı anlamına gelmez.</p>
+<p>Yalnızca ekranda görüntülenen coinlerin WebSocket fiyatına abone olunur; telefonun aşırı veri tüketimi önlenir. Fiyat verisi gecikirse <strong>canlı</strong> olarak gösterilmez. 30 dakikadan eski analizlerde işlem adayları BEKLE olarak görüntülenir. Likiditesi düşük veya veri alınamayan coinler onay alamaz.</p>
+<p>75 puan başarı olasılığı değildir. Kaldıraçlı işlemler yüksek risklidir; otomatik emir verilmez. <a href="./vatan2-canli.html">Önceki 3 coin ekranı</a></p></footer>
+</main>
+<script>
+'use strict';
+const DATA_URL='https://raw.githubusercontent.com/mikailbodruk23-bot/vatan-kripto/main/son-tum-analiz.json';
+const $=id=>document.getElementById(id);
+const fmt=v=>v==null||v===''||!Number.isFinite(Number(v))?'—':Number(v).toLocaleString('tr-TR',{maximumFractionDigits:Number(v)<1?8:5});
+const freshMs=30*60*1000,PAGE_SIZE=20;
+const bands=[['1Dutc','Günlük'],['4H','4 saat'],['1H','1 saat'],['15m','15 dk']];
+let data=null, fresh=false, onlyApproved=false, page=0, shown=[];
+const quoteData=new Map(), wsTopics=new Set();
+let sock=null, lastWsAt=0, reconnectTimer=0;
+function el(tag,cls,val){const n=document.createElement(tag);if(cls)n.className=cls;if(val!==undefined)n.textContent=val;return n}
+function isApproved(r){return fresh&&r.durum==='ANALIZ_EDILDI'&&Number(r.puan)>=75&&/^(LONG|SHORT) ADAY$/.test(String(r.karar))}
+function metric(label,value){const n=el('div','metric');n.append(el('small','',label),el('strong','',value));return n}
+function prettyPrice(v){const n=Number(v);if(!Number.isFinite(n)||n<=0)return '—';return n.toLocaleString('tr-TR',{minimumFractionDigits:n>=1?2:0,maximumFractionDigits:n>=100?2:n>=1?5:9})}
+function ageValid(q){return q&&Date.now()-q.receivedAt<45000}
+function marketPrice(id,fallback){const q=quoteData.get(id);return ageValid(q)?prettyPrice(q.last)+' USDT · CANLI':(fallback>0?prettyPrice(fallback)+' USDT · Eski tarama':'Fiyat bekleniyor')}
+function buildCard(r){
+  const card=el('article','coin');
+  const head=el('div','coin-head');const symbol=el('div','symbol',String(r.coin||'').replace('-USDT-SWAP',''));
+  symbol.append(el('small','','USDT perpetual'));
+  const choice=isApproved(r)?r.karar:('BEKLE'+(!fresh?' · ESKİ':'') );
+  const tag=el('span','decision '+(isApproved(r)?choice.startsWith('LONG')?'long':'short':'stale'),choice);
+  head.append(symbol,tag);card.append(head);
+  const live=el('div','live-in-card',marketPrice(r.coin,r.anlik_fiyat));live.dataset.priceId=r.coin;card.append(live);
+  if(r.durum!=='ANALIZ_EDILDI'){
+    card.append(el('div','note','Veri eksik: '+(r.hata||'mum gecmisi yetersiz')+' · BEKLE'));
+    return card;
+  }
+  const score=Math.max(0,Math.min(100,Number(r.puan)||0));
+  const sc=el('div','score-head');sc.append(el('span','','Teknik fırsat puanı'),el('strong','',score+'/100'));
+  const bar=el('div','bar');const fill=el('span');fill.style.width=score+'%';bar.append(fill);card.append(sc,bar);
+  card.append(el('div','trends-title','TREND YÖNLERİ'));
+  const trends=el('div','trends');for(const [p,label] of bands){const v=String(r.yonler?.[p]||'—');const b=el('div','trend');b.append(el('small','',label),el('b',v==='LONG'?'long':v==='SHORT'?'short':'',v));trends.append(b)}
+  card.append(trends);
+  const metrics=el('div','metrics');metrics.append(metric('RSI (15 dk)',fmt(r.rsi15m)),metric('MACD farkı',fmt(r.macd15m)),metric('Hacim oranı',fmt(r.hacim_orani)+'x'));
+  metrics.append(metric('24s hacim (tahmini)',fmt(r.hacim24h_usdt_tahmini)+' USDT'),metric('Spread',r.spread_yuzde==null?'—':fmt(r.spread_yuzde)+'%'),metric('15 dk kapanışı',fmt(r.fiyat_kapanis)));
+  card.append(metrics);
+  if(isApproved(r)&&r.stop!=null&&r.hedef!=null){
+    const box=el('div','risk');box.append(el('strong','','Örnek seviyeler · kapanmış mum fiyatı'));
+    const grid=el('div','risk-grid');for(const [title,key] of [['Giriş','giris_referans'],['Stop','stop'],['Hedef','hedef']]){const p=el('div');p.append(el('small','',title),el('strong','',fmt(r[key])));grid.append(p)}box.append(grid);card.append(box);
+  }
+  const why=['BTC yön filtresi '+(r.btc_filtre?'uygun':'uygun değil'),'4 zaman dilimi '+(r.trend_onayi?'uyumlu':'çelişkili'),'Likidite '+(r.likidite_onayi?'yeterli':'düşük/spread geniş')].join(' · ');
+  card.append(el('div','note',why+' · 75/100 başarı garantisi değildir.'));
+  return card;
+}
+function filtered(){if(!data)return [];
+  const query=$('search').value.toUpperCase().trim();
+  const out=data.results.filter(r=>(!query||String(r.coin).includes(query))&&(!onlyApproved||isApproved(r)));
+  const sort=$('sort').value;
+  if(sort==='volume')out.sort((a,b)=>(b.hacim24h_usdt_tahmini||0)-(a.hacim24h_usdt_tahmini||0));
+  else if(sort==='name')out.sort((a,b)=>a.coin.localeCompare(b.coin));
+  else out.sort((a,b)=>(b.puan??-1)-(a.puan??-1));
+  return out;
+}
+function render(){
+  const container=$('cards');container.replaceChildren();
+  if(!data){container.append(el('div','empty','Son analiz verisi henüz yok veya alınamadı.'));return}
+  shown=filtered();const max=Math.max(1,Math.ceil(shown.length/PAGE_SIZE));page=Math.max(0,Math.min(page,max-1));
+  const list=shown.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE);
+  for(const r of list)container.append(buildCard(r));
+  if(!list.length)container.append(el('div','empty',onlyApproved?'Onaylı 75+ aday yok.':'Sonuç bulunamadı.'));
+  $('pages').textContent=(page+1)+' / '+max;
+  $('showing').textContent=shown.length+' sonuç · sayfada '+list.length+' coin · verisi eksik olanlar da listelenir';
+  $('prevBtn').disabled=page===0;$('nextBtn').disabled=page+1>=max;
+  subscribeVisible();
+}
+function setFilter(val){onlyApproved=val;page=0;$('allBtn').classList.toggle('active',!val);$('signalBtn').classList.toggle('active',val);render()}
+$('allBtn').onclick=()=>setFilter(false);$('signalBtn').onclick=()=>setFilter(true);
+$('search').oninput=()=>{page=0;render()};$('sort').onchange=()=>{page=0;render()};
+$('prevBtn').onclick=()=>{page--;render();$('cards').scrollIntoView({behavior:'smooth'})};
+$('nextBtn').onclick=()=>{page++;render();$('cards').scrollIntoView({behavior:'smooth'})};
+async function refresh(){
+  $('refreshBtn').disabled=true;
+  try{
+    const res=await fetch(DATA_URL+'?t='+Date.now(),{cache:'no-store'});if(!res.ok)throw Error('HTTP '+res.status);
+    const obj=await res.json();if(!Array.isArray(obj.results)||!obj.updated_at)throw Error('Gecersiz JSON');
+    data=obj;const age=Date.now()-new Date(obj.updated_at).getTime();fresh=age>=0&&age<=freshMs;
+    $('updated').textContent='Son tarama: '+new Date(obj.updated_at).toLocaleString('tr-TR');
+    $('counts').textContent='Bulunan: '+obj.eligible_count+' · Analiz: '+obj.analyzed_count;
+    $('approvedCount').textContent='75+ onaylı: '+(fresh?obj.approved_count:0);
+    $('noteErrors').textContent='Veri alınamayan: '+(obj.error_count||0)+' · Son tarama '+fmt(obj.scan_seconds)+' saniye sürdü';
+    $('dataState').className='state '+(fresh?'':'old');$('dataState').textContent=fresh?'TARAMA GÜNCEL':'TARAMA ESKİ';
+    $('headline').textContent=fresh?(obj.approved_count?obj.approved_count+' onaylı aday':'Şu anda onaylı fırsat yok'):'Analiz verisi eski';
+    $('description').textContent='Tam kapsam tarama · Coin bazlı teknik analiz aralıklarla yenilenir, ekrandaki canlı fiyatlar ayrı akar.';
+    render();
+  }catch(e){fresh=false;data=null;$('dataState').className='state bad';$('dataState').textContent='SONUÇ YOK';$('headline').textContent='Tüm coin taraması henüz yok';$('description').textContent='Önce GitHub Actions → VATAN 2 Tum Coin Taramasi çalıştırılmalı: '+e.message;render()}
+  finally{$('refreshBtn').disabled=false}
+}
+$('refreshBtn').onclick=refresh;refresh();setInterval(refresh,60000);
+
+// OKX WebSocket: surekli temel 3 coin + acik sayfada gorunen coinler.
+const BASE_TOPICS=['BTC-USDT-SWAP','ETH-USDT-SWAP','SOL-USDT-SWAP'];
+let desired=[],subscribed=[],lastMessage=0,connectTimer=0;
+function setWsStatus(text,good){$('liveStatus').textContent=text;$('liveStatus').className='live-state '+(good?'good':'off')}
+function targetTopics(){
+  if(!data)return BASE_TOPICS;
+  return [...new Set([...BASE_TOPICS,...shown.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE).map(x=>x.coin)])];
+}
+function changeSubscriptions(){
+  const want=targetTopics();desired=want;
+  if(!sock||sock.readyState!==WebSocket.OPEN)return;
+  const old=subscribed.filter(x=>!want.includes(x));const add=want.filter(x=>!subscribed.includes(x));
+  try{
+    if(old.length)sock.send(JSON.stringify({op:'unsubscribe',args:old.map(instId=>({channel:'tickers',instId}))}));
+    if(add.length)sock.send(JSON.stringify({op:'subscribe',args:add.map(instId=>({channel:'tickers',instId}))}));
+    subscribed=want;
+  }catch(e){console.warn('OKX abonelik:',e.message)}
+}
+function subscribeVisible(){changeSubscriptions();drawQuotes()}
+function drawQuotes(){
+  const now=Date.now();let latest=0;
+  for(const symbol of ['BTC','ETH','SOL']){
+    const id=symbol+'-USDT-SWAP';const q=quoteData.get(id);const valid=ageValid(q);
+    $('price'+symbol).textContent=valid?prettyPrice(q.last):'—';
+    const op=Number(q?.open24h);const pct=valid&&op>0?(q.last/op-1)*100:null;
+    $('change'+symbol).textContent=pct==null?'Canlı veri bekleniyor':'24s: '+(pct>=0?'+':'')+pct.toFixed(2)+'%';
+    $('change'+symbol).className='live-change '+(pct==null?'':pct>=0?'up':'down');
+    if(valid)latest=Math.max(latest,q.receivedAt);
+  }
+  for(const node of document.querySelectorAll('[data-price-id]')){
+    const id=node.dataset.priceId;const r=data?.results.find(x=>x.coin===id);
+    node.textContent=marketPrice(id,r?.anlik_fiyat);
+  }
+  if(latest&&sock?.readyState===WebSocket.OPEN){setWsStatus('CANLI · WEBSOCKET',true);$('liveUpdated').textContent='Son veri: '+new Date(latest).toLocaleTimeString('tr-TR')}
+  else{setWsStatus('CANLI VERİ BEKLENİYOR',false);$('liveUpdated').textContent='Bağlantı kuruluyor veya son veri eski.'}
+}
+function connect(){clearTimeout(connectTimer);if(sock&&(sock.readyState===1||sock.readyState===0))return;
+  try{
+    const s=new WebSocket('wss://ws.okx.com/ws/v5/public');sock=s;subscribed=[];
+    s.onopen=()=>{lastMessage=Date.now();changeSubscriptions()};
+    s.onmessage=e=>{lastMessage=Date.now();if(e.data==='pong')return;
+      let msg;try{msg=JSON.parse(e.data)}catch{return};
+      if(msg.event==='error'){console.warn('OKX error',msg.code,msg.msg);return}
+      if(msg.arg?.channel==='tickers'&&Array.isArray(msg.data)){
+        for(const q of msg.data){const n=Number(q.last);if(!q.instId||!Number.isFinite(n)||n<=0)continue;
+          quoteData.set(q.instId,{last:n,open24h:q.open24h,receivedAt:Date.now()})}
+        drawQuotes();
+      }
+    };
+    s.onerror=()=>{try{s.close()}catch(_){}};
+    s.onclose=()=>{if(sock!==s)return;subscribed=[];drawQuotes();connectTimer=setTimeout(connect,4000)};
+  }catch(e){console.warn(e);connectTimer=setTimeout(connect,4000)}
+}
+connect();setInterval(()=>{
+  if(sock?.readyState===1){const idle=Date.now()-lastMessage;if(idle>60000)sock.close();else if(idle>20000){try{sock.send('ping')}catch(_){}}}
+  else if(!connectTimer)connect();
+  drawQuotes();
+},5000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){refresh();if(!sock||sock.readyState===3)connect();drawQuotes()}});
+</script></body></html>
