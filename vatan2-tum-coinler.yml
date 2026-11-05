@@ -1,0 +1,42 @@
+
+name: VATAN 2 Tum Coin Taramasi
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "8,23,38,53 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vatan2-tum-coinler
+  cancel-in-progress: false
+
+jobs:
+  tum_coinler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Dosyalari al
+        uses: actions/checkout@v4
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Tum coinleri analiz et
+        run: python vatan2-tum-coinler.py
+
+      - name: Sonuclari kaydet
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add son-tum-analiz.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Update VATAN 2 all coins"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          
