@@ -2,10 +2,10 @@ name: VATAN 2 Makro ve LONG SHORT Puani
 
 on:
   workflow_dispatch:
-  schedule:
-    # Var olan 15dk coin taramasindan yaklasik 5 dakika sonra calis.
-    # GitHub Actions schedule gecikebilir; eski veri fail-closed BEKLE olur.
-    - cron: '13,28,43,58 * * * *'
+  workflow_run:
+    workflows: ["VATAN 2 Tum Coin Taramasi"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: write
@@ -16,26 +16,39 @@ concurrency:
 
 jobs:
   makro_puan:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Depoyu al
         uses: actions/checkout@v4
+        with:
+          ref: main
+
       - name: Python kur
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Tests
+
+      - name: Testler
         run: |
           python vatan2-risk-motor.py --self-test
           python vatan2-makro60.py --self-test
-      - name: OKX ve resmî makro veri raporu
+
+      - name: Pages yayinlari icin kisa ara
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: sleep 60
+
+      - name: OKX ve resmi makro veri raporu
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python vatan2-risk-motor.py
+
       - name: Birlesik LONG SHORT puanlari
         run: python vatan2-makro60.py
+
       - name: Sonuclari yayinla
+        shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -46,7 +59,11 @@ jobs:
           fi
           git commit -m 'Update VATAN2 macro long short scoring'
           for trial in 1 2 3; do
-            git pull --rebase origin main
+            if ! git pull --rebase origin main; then
+              git rebase --abort || true
+              echo 'Veri cakismasi; islem durduruldu'
+              exit 1
+            fi
             if git push origin HEAD:main; then
               exit 0
             fi
