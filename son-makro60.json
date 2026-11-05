@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "updated_at": "2026-11-05T19:53:47.252054+00:00",
+  "updated_at": "2026-11-05T20:21:38.402793+00:00",
   "source": "OKX",
   "source_scan_at": "2026-11-05T19:52:13.367044+00:00",
-  "source_risk_at": "2026-11-05T19:53:27.857250+00:00",
+  "source_risk_at": "2026-11-05T20:21:15.932115+00:00",
   "market": "USDT-SWAP",
   "eligible_count": 525,
   "analyzed_count": 456,
@@ -389,8 +389,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -649,6 +648,49 @@
       "risk_freni": true
     },
     {
+      "coin": "SAMSUNG-USDT-SWAP",
+      "anlik_fiyat": 138.38,
+      "hacim24h_usdt_tahmini": 30565698.21,
+      "spread_yuzde": 0.0072,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "SHORT"
+      },
+      "fiyat_kapanis": 137.73,
+      "rsi15m": 31.49,
+      "macd15m": 0.113491,
+      "hacim_orani": 0.8,
+      "puan": 78,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": true,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 80,
+      "long_puani": 7,
+      "short_puani": 78,
+      "makro_etki": {
+        "LONG": -3,
+        "SHORT": -2
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
+        "Aşırı negatif funding: SHORT kalabalık, SHORT -6",
+        "OI yükseldi, fiyat düştü: SHORT +4 / LONG -3"
+      ],
+      "makro_durumu": "RISK_UYARISI",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
       "coin": "ALAB-USDT-SWAP",
       "anlik_fiyat": 191.21,
       "hacim24h_usdt_tahmini": 448571.01,
@@ -767,49 +809,6 @@
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
         "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
         "Aşırı negatif funding: SHORT kalabalık, SHORT -6"
-      ],
-      "makro_durumu": "RISK_UYARISI",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "SAMSUNG-USDT-SWAP",
-      "anlik_fiyat": 138.38,
-      "hacim24h_usdt_tahmini": 30565698.21,
-      "spread_yuzde": 0.0072,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "SHORT"
-      },
-      "fiyat_kapanis": 137.73,
-      "rsi15m": 31.49,
-      "macd15m": 0.113491,
-      "hacim_orani": 0.8,
-      "puan": 71,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": true,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 80,
-      "long_puani": 14,
-      "short_puani": 71,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -9
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "Aşırı negatif funding: SHORT kalabalık, SHORT -6",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
       ],
       "makro_durumu": "RISK_UYARISI",
       "yon_esigi": 60,
@@ -1489,6 +1488,47 @@
       "risk_freni": true
     },
     {
+      "coin": "AMD-USDT-SWAP",
+      "anlik_fiyat": 420.9,
+      "hacim24h_usdt_tahmini": 39435560.48,
+      "spread_yuzde": 0.0119,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "BEKLE"
+      },
+      "fiyat_kapanis": 420.43,
+      "rsi15m": 38.33,
+      "macd15m": 1.87599,
+      "hacim_orani": 0.36,
+      "puan": 65,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": false,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 65,
+      "long_puani": 10,
+      "short_puani": 65,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "FILTRE_BEKLE",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
       "coin": "ANTHROPIC-USDT-SWAP",
       "anlik_fiyat": 150.77,
       "hacim24h_usdt_tahmini": 10193722.83,
@@ -1605,8 +1645,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -1731,8 +1770,48 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "FILTRE_BEKLE",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
+      "coin": "AXTI-USDT-SWAP",
+      "anlik_fiyat": 38.83,
+      "hacim24h_usdt_tahmini": 29685679.06,
+      "spread_yuzde": 0.0515,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "BEKLE"
+      },
+      "fiyat_kapanis": 38.9,
+      "rsi15m": 40.49,
+      "macd15m": 0.263957,
+      "hacim_orani": 0.277,
+      "puan": 65,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": false,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 65,
+      "long_puani": 10,
+      "short_puani": 65,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -3374,6 +3453,47 @@
       "risk_freni": true
     },
     {
+      "coin": "INTW-USDT-SWAP",
+      "anlik_fiyat": 5.13,
+      "hacim24h_usdt_tahmini": 16283950.21,
+      "spread_yuzde": 0.039,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "BEKLE"
+      },
+      "fiyat_kapanis": 5.13,
+      "rsi15m": 46.74,
+      "macd15m": 0.015893,
+      "hacim_orani": 0.434,
+      "puan": 65,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": false,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 65,
+      "long_puani": 10,
+      "short_puani": 65,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "FILTRE_BEKLE",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
       "coin": "IREN-USDT-SWAP",
       "anlik_fiyat": 19.0,
       "hacim24h_usdt_tahmini": 3921104.1,
@@ -4128,6 +4248,47 @@
       "risk_freni": true
     },
     {
+      "coin": "MU-USDT-SWAP",
+      "anlik_fiyat": 692.47,
+      "hacim24h_usdt_tahmini": 368946118.63,
+      "spread_yuzde": 0.0029,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "BEKLE"
+      },
+      "fiyat_kapanis": 689.09,
+      "rsi15m": 40.78,
+      "macd15m": 2.08735,
+      "hacim_orani": 0.332,
+      "puan": 65,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": false,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 65,
+      "long_puani": 10,
+      "short_puani": 65,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "FILTRE_BEKLE",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
       "coin": "MUBARAK-USDT-SWAP",
       "anlik_fiyat": 0.040859,
       "hacim24h_usdt_tahmini": 2982147.23,
@@ -4164,6 +4325,47 @@
         "Bu coin için güncel funding/OI kontrolü yok"
       ],
       "makro_durumu": "VERI_EKSIK",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
+      "coin": "MUU-USDT-SWAP",
+      "anlik_fiyat": 14.19,
+      "hacim24h_usdt_tahmini": 20092788.98,
+      "spread_yuzde": 0.1409,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "BEKLE"
+      },
+      "fiyat_kapanis": 14.02,
+      "rsi15m": 40.47,
+      "macd15m": 0.099777,
+      "hacim_orani": 0.297,
+      "puan": 65,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": false,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 65,
+      "long_puani": 10,
+      "short_puani": 65,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
       "yon_adayi": "SHORT",
       "makro_onay": false,
@@ -5882,6 +6084,47 @@
       "risk_freni": true
     },
     {
+      "coin": "SNXX-USDT-SWAP",
+      "anlik_fiyat": 3.567,
+      "hacim24h_usdt_tahmini": 308575037.61,
+      "spread_yuzde": 0.028,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "BEKLE"
+      },
+      "fiyat_kapanis": 3.535,
+      "rsi15m": 39.15,
+      "macd15m": 0.044786,
+      "hacim_orani": 0.455,
+      "puan": 65,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": false,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 65,
+      "long_puani": 10,
+      "short_puani": 65,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "FILTRE_BEKLE",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
       "coin": "SOL-USDT-SWAP",
       "anlik_fiyat": 90.04,
       "hacim24h_usdt_tahmini": 1233276858.05,
@@ -5959,6 +6202,47 @@
         "Bu coin için güncel funding/OI kontrolü yok"
       ],
       "makro_durumu": "VERI_EKSIK",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
+      "coin": "SOXL-USDT-SWAP",
+      "anlik_fiyat": 47.66,
+      "hacim24h_usdt_tahmini": 1958447532.89,
+      "spread_yuzde": 0.042,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "BEKLE"
+      },
+      "fiyat_kapanis": 47.56,
+      "rsi15m": 43.11,
+      "macd15m": 0.541008,
+      "hacim_orani": 0.435,
+      "puan": 65,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": false,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 65,
+      "long_puani": 10,
+      "short_puani": 65,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
       "yon_adayi": "SHORT",
       "makro_onay": false,
@@ -6291,6 +6575,47 @@
         "Bu coin için güncel funding/OI kontrolü yok"
       ],
       "makro_durumu": "VERI_EKSIK",
+      "yon_esigi": 60,
+      "yon_adayi": "SHORT",
+      "makro_onay": false,
+      "risk_freni": true
+    },
+    {
+      "coin": "TQQQ-USDT-SWAP",
+      "anlik_fiyat": 52.96,
+      "hacim24h_usdt_tahmini": 55327269.63,
+      "spread_yuzde": 0.0189,
+      "yonler": {
+        "1Dutc": "SHORT",
+        "4H": "SHORT",
+        "1H": "SHORT",
+        "15m": "BEKLE"
+      },
+      "fiyat_kapanis": 52.67,
+      "rsi15m": 38.75,
+      "macd15m": 0.231032,
+      "hacim_orani": 0.287,
+      "puan": 65,
+      "aday_yon": "SHORT",
+      "btc_filtre": false,
+      "trend_onayi": false,
+      "likidite_onayi": true,
+      "karar": "BEKLE",
+      "durum": "ANALIZ_EDILDI",
+      "mum_15m_ts": 1793907000000,
+      "teknik_long": 10,
+      "teknik_short": 65,
+      "long_puani": 10,
+      "short_puani": 65,
+      "makro_etki": {
+        "LONG": 0,
+        "SHORT": 0
+      },
+      "makro_notlari": [
+        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
+      ],
+      "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
       "yon_adayi": "SHORT",
       "makro_onay": false,
@@ -6798,342 +7123,6 @@
       "risk_freni": true
     },
     {
-      "coin": "AMD-USDT-SWAP",
-      "anlik_fiyat": 420.9,
-      "hacim24h_usdt_tahmini": 39435560.48,
-      "spread_yuzde": 0.0119,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
-      },
-      "fiyat_kapanis": 420.43,
-      "rsi15m": 38.33,
-      "macd15m": 1.87599,
-      "hacim_orani": 0.36,
-      "puan": 62,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": false,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 65,
-      "long_puani": 14,
-      "short_puani": 62,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -3
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
-      ],
-      "makro_durumu": "FILTRE_BEKLE",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "AXTI-USDT-SWAP",
-      "anlik_fiyat": 38.83,
-      "hacim24h_usdt_tahmini": 29685679.06,
-      "spread_yuzde": 0.0515,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
-      },
-      "fiyat_kapanis": 38.9,
-      "rsi15m": 40.49,
-      "macd15m": 0.263957,
-      "hacim_orani": 0.277,
-      "puan": 62,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": false,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 65,
-      "long_puani": 14,
-      "short_puani": 62,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -3
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
-      ],
-      "makro_durumu": "RISK_UYARISI",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "INTW-USDT-SWAP",
-      "anlik_fiyat": 5.13,
-      "hacim24h_usdt_tahmini": 16283950.21,
-      "spread_yuzde": 0.039,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
-      },
-      "fiyat_kapanis": 5.13,
-      "rsi15m": 46.74,
-      "macd15m": 0.015893,
-      "hacim_orani": 0.434,
-      "puan": 62,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": false,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 65,
-      "long_puani": 14,
-      "short_puani": 62,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -3
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
-      ],
-      "makro_durumu": "FILTRE_BEKLE",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "MU-USDT-SWAP",
-      "anlik_fiyat": 692.47,
-      "hacim24h_usdt_tahmini": 368946118.63,
-      "spread_yuzde": 0.0029,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
-      },
-      "fiyat_kapanis": 689.09,
-      "rsi15m": 40.78,
-      "macd15m": 2.08735,
-      "hacim_orani": 0.332,
-      "puan": 62,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": false,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 65,
-      "long_puani": 14,
-      "short_puani": 62,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -3
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
-      ],
-      "makro_durumu": "FILTRE_BEKLE",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "MUU-USDT-SWAP",
-      "anlik_fiyat": 14.19,
-      "hacim24h_usdt_tahmini": 20092788.98,
-      "spread_yuzde": 0.1409,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
-      },
-      "fiyat_kapanis": 14.02,
-      "rsi15m": 40.47,
-      "macd15m": 0.099777,
-      "hacim_orani": 0.297,
-      "puan": 62,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": false,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 65,
-      "long_puani": 14,
-      "short_puani": 62,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -3
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
-      ],
-      "makro_durumu": "RISK_UYARISI",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "SNXX-USDT-SWAP",
-      "anlik_fiyat": 3.567,
-      "hacim24h_usdt_tahmini": 308575037.61,
-      "spread_yuzde": 0.028,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
-      },
-      "fiyat_kapanis": 3.535,
-      "rsi15m": 39.15,
-      "macd15m": 0.044786,
-      "hacim_orani": 0.455,
-      "puan": 62,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": false,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 65,
-      "long_puani": 14,
-      "short_puani": 62,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -3
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
-      ],
-      "makro_durumu": "RISK_UYARISI",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "SOXL-USDT-SWAP",
-      "anlik_fiyat": 47.66,
-      "hacim24h_usdt_tahmini": 1958447532.89,
-      "spread_yuzde": 0.042,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
-      },
-      "fiyat_kapanis": 47.56,
-      "rsi15m": 43.11,
-      "macd15m": 0.541008,
-      "hacim_orani": 0.435,
-      "puan": 62,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": false,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 65,
-      "long_puani": 14,
-      "short_puani": 62,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -3
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
-      ],
-      "makro_durumu": "RISK_UYARISI",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
-      "coin": "TQQQ-USDT-SWAP",
-      "anlik_fiyat": 52.96,
-      "hacim24h_usdt_tahmini": 55327269.63,
-      "spread_yuzde": 0.0189,
-      "yonler": {
-        "1Dutc": "SHORT",
-        "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
-      },
-      "fiyat_kapanis": 52.67,
-      "rsi15m": 38.75,
-      "macd15m": 0.231032,
-      "hacim_orani": 0.287,
-      "puan": 62,
-      "aday_yon": "SHORT",
-      "btc_filtre": false,
-      "trend_onayi": false,
-      "likidite_onayi": true,
-      "karar": "BEKLE",
-      "durum": "ANALIZ_EDILDI",
-      "mum_15m_ts": 1793907000000,
-      "teknik_long": 10,
-      "teknik_short": 65,
-      "long_puani": 14,
-      "short_puani": 62,
-      "makro_etki": {
-        "LONG": 4,
-        "SHORT": -3
-      },
-      "makro_notlari": [
-        "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI ve fiyat birlikte yükseldi: LONG +4 / SHORT -3"
-      ],
-      "makro_durumu": "FILTRE_BEKLE",
-      "yon_esigi": 60,
-      "yon_adayi": "SHORT",
-      "makro_onay": false,
-      "risk_freni": true
-    },
-    {
       "coin": "APP-USDT-SWAP",
       "anlik_fiyat": 354.67,
       "hacim24h_usdt_tahmini": 36330419.29,
@@ -7208,8 +7197,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -7962,8 +7950,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -8591,8 +8578,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -10981,8 +10967,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -11149,8 +11134,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -11903,8 +11887,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
@@ -12028,8 +12011,7 @@
       },
       "makro_notlari": [
         "Doğrulanmış dolar eğilimi yok: yön puanı değiştirilmedi",
-        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0",
-        "OI/fiyat değişim geçmişi henüz yok: ilave yön puanı yok"
+        "Tahvil getirileri nötr veya ayrışmış: yön etkisi 0"
       ],
       "makro_durumu": "FILTRE_BEKLE",
       "yon_esigi": 60,
