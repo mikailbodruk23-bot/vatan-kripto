@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-11-06T00:31:29.970883+00:00",
+  "updated_at": "2026-11-06T01:52:59.985477+00:00",
   "status": "MONITOR_ONLY",
   "note": "This monitor cannot approve leveraged trades or predict liquidations.",
   "auto_trade": false,
@@ -12,32 +12,32 @@
   "sources": {
     "okx_open_interest": {
       "status": "OK",
-      "retrieved_at": "2026-11-06T00:31:29.970883+00:00",
+      "retrieved_at": "2026-11-06T01:52:59.985477+00:00",
       "symbols": 540
     },
     "okx_tickers": {
       "status": "OK",
-      "retrieved_at": "2026-11-06T00:31:29.970883+00:00"
+      "retrieved_at": "2026-11-06T01:52:59.985477+00:00"
     },
     "okx_funding": {
       "status": "OK",
-      "retrieved_at": "2026-11-06T00:31:29.970883+00:00",
-      "ok_count": 61,
-      "requested": 61
+      "retrieved_at": "2026-11-06T01:52:59.985477+00:00",
+      "ok_count": 60,
+      "requested": 60
     },
     "bls_calendar": {
       "status": "OK",
-      "retrieved_at": "2026-11-06T00:31:29.970883+00:00",
+      "retrieved_at": "2026-11-06T01:52:59.985477+00:00",
       "url": "https://www.bls.gov/schedule/news_release/bls.ics"
     },
     "fed_calendar": {
       "status": "OK",
-      "retrieved_at": "2026-11-06T00:31:29.970883+00:00",
+      "retrieved_at": "2026-11-06T01:52:59.985477+00:00",
       "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
     },
     "us_treasury": {
       "status": "OK",
-      "retrieved_at": "2026-11-06T00:31:29.970883+00:00"
+      "retrieved_at": "2026-11-06T01:52:59.985477+00:00"
     }
   },
   "macro": {
@@ -107,255 +107,19 @@
   },
   "coins": [
     {
-      "coin": "CSOPSKHYNIX2L-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": -0.01,
-      "funding_pct": -1.0,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 1038326.72,
-      "oi_change_pct": 9.5,
-      "oi_ccy": 564308.0,
-      "oi_ccy_change_pct": 5.096,
-      "last_price": 1.838,
-      "last_price_change_pct": 4.077,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Aşırı pozitif/negatif fonlama: tek taraflı pozisyon yoğunluğu olabilir",
-        "Açık faiz önceki ölçüme göre hızla yükseldi",
-        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
-      ]
-    },
-    {
-      "coin": "CRV-USDT-SWAP",
+      "coin": "ZHIPU-USDT-SWAP",
       "status": "IZLE",
-      "funding_rate": 0.0001,
-      "funding_pct": 0.01,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 5334341.43,
-      "oi_change_pct": 1.088,
-      "oi_ccy": 20918986.0,
-      "oi_ccy_change_pct": -0.577,
-      "last_price": 0.2548,
-      "last_price_change_pct": 1.595,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "PUMP-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 2.09463843103e-05,
-      "funding_pct": 0.00209,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 21605380.36,
-      "oi_change_pct": 0.543,
-      "oi_ccy": 5568397000.0,
-      "oi_ccy_change_pct": 0.128,
-      "last_price": 0.00388,
-      "last_price_change_pct": 0.414,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "HUMA-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": -0.0038202969365691,
-      "funding_pct": -0.38203,
-      "next_funding_ms": "1793930400000",
-      "oi_usd": 2140736.0,
-      "oi_change_pct": 4.003,
-      "oi_ccy": 161200000.0,
-      "oi_ccy_change_pct": 3.768,
-      "last_price": 0.01327,
-      "last_price_change_pct": 0.151,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Aşırı pozitif/negatif fonlama: tek taraflı pozisyon yoğunluğu olabilir"
-      ]
-    },
-    {
-      "coin": "ENA-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -1.86912154932e-05,
-      "funding_pct": -0.00187,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 14162854.2012,
-      "oi_change_pct": 1.101,
-      "oi_ccy": 87279560.0,
-      "oi_ccy_change_pct": -0.469,
-      "last_price": 0.16221,
-      "last_price_change_pct": 1.553,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "ATOM-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -0.0006367204482394,
-      "funding_pct": -0.06367,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 4835299.92,
-      "oi_change_pct": 2.904,
-      "oi_ccy": 3496240.0,
-      "oi_ccy_change_pct": 0.746,
-      "last_price": 1.383,
-      "last_price_change_pct": 2.142,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "MERL-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -5.85797814757e-05,
-      "funding_pct": -0.00586,
-      "next_funding_ms": "1793937600000",
-      "oi_usd": 1594098.38208,
-      "oi_change_pct": 2.846,
-      "oi_ccy": 51689312.0,
-      "oi_ccy_change_pct": 0.679,
-      "last_price": 0.03084,
-      "last_price_change_pct": 2.052,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "LTC-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 2.6812230241e-05,
-      "funding_pct": 0.00268,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 27942236.683999993,
-      "oi_change_pct": 0.971,
-      "oi_ccy": 536731.3999999999,
-      "oi_ccy_change_pct": 0.098,
-      "last_price": 52.06,
-      "last_price_change_pct": 0.891,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "ONDO-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -6.79550539064e-05,
-      "funding_pct": -0.0068,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 10237078.44,
-      "oi_change_pct": 1.308,
-      "oi_ccy": 27742760.0,
-      "oi_ccy_change_pct": 0.265,
-      "last_price": 0.3689,
-      "last_price_change_pct": 1.041,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "ZEC-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0001,
-      "funding_pct": 0.01,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 166479808.01,
-      "oi_change_pct": 2.451,
-      "oi_ccy": 128506.22,
-      "oi_ccy_change_pct": 1.06,
-      "last_price": 1295.9,
-      "last_price_change_pct": 1.317,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "SKHYNIX-USDT-SWAP",
-      "status": "RISK_UYARISI",
       "funding_rate": 0.0,
       "funding_pct": 0.0,
       "next_funding_ms": "1793952000000",
-      "oi_usd": 59915903.895399995,
-      "oi_change_pct": 6.558,
-      "oi_ccy": 70539.09099999999,
-      "oi_ccy_change_pct": 1.603,
-      "last_price": 848.7,
-      "last_price_change_pct": 4.674,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 2919418.5546,
+      "oi_change_pct": -6.711,
+      "oi_ccy": 55260.619999999995,
+      "oi_ccy_change_pct": 1.995,
+      "last_price": 52.68,
+      "last_price_change_pct": -8.827,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -363,49 +127,22 @@
       "price_change_15m_pct": null,
       "oi_change_60m_pct": null,
       "price_change_60m_pct": null,
-      "warnings": [
-        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
-      ]
+      "warnings": []
     },
     {
-      "coin": "SKDD-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": -0.0015081606432939,
-      "funding_pct": -0.15082,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 975944.0349999999,
-      "oi_change_pct": -12.044,
-      "oi_ccy": 81396.5,
-      "oi_ccy_change_pct": -4.114,
-      "last_price": 12.018,
-      "last_price_change_pct": -8.028,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Aşırı pozitif/negatif fonlama: tek taraflı pozisyon yoğunluğu olabilir"
-      ]
-    },
-    {
-      "coin": "SAND-USDT-SWAP",
+      "coin": "ZRO-USDT-SWAP",
       "status": "IZLE",
-      "funding_rate": -8.24266345649e-05,
-      "funding_pct": -0.00824,
+      "funding_rate": 5e-05,
+      "funding_pct": 0.005,
       "next_funding_ms": "1793937600000",
-      "oi_usd": 2655028.9341,
-      "oi_change_pct": 2.244,
-      "oi_ccy": 61587310.0,
-      "oi_ccy_change_pct": 0.18,
-      "last_price": 0.0431,
-      "last_price_change_pct": 1.988,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 7836044.216,
+      "oi_change_pct": 0.559,
+      "oi_ccy": 4892635.0,
+      "oi_ccy_change_pct": 0.371,
+      "last_price": 1.6023,
+      "last_price_change_pct": 0.326,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -416,65 +153,19 @@
       "warnings": []
     },
     {
-      "coin": "OP-USDT-SWAP",
+      "coin": "XPL-USDT-SWAP",
       "status": "IZLE",
-      "funding_rate": -1.88889540101e-05,
-      "funding_pct": -0.00189,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 3776448.37387,
-      "oi_change_pct": 4.085,
-      "oi_ccy": 36739453.0,
-      "oi_ccy_change_pct": 2.09,
-      "last_price": 0.10282,
-      "last_price_change_pct": 2.014,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "DOT-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -2.41041886251e-05,
-      "funding_pct": -0.00241,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 7539370.915,
-      "oi_change_pct": 0.571,
-      "oi_ccy": 8217298.0,
-      "oi_ccy_change_pct": -0.679,
-      "last_price": 0.9174,
-      "last_price_change_pct": 1.236,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "AVAX-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 2.9419096173e-05,
-      "funding_pct": 0.00294,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 11811350.838800002,
-      "oi_change_pct": 0.899,
-      "oi_ccy": 1431331.9000000001,
-      "oi_ccy_change_pct": -0.213,
-      "last_price": 8.248,
-      "last_price_change_pct": 1.116,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "funding_rate": 5.709098582e-06,
+      "funding_pct": 0.00057,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 7357265.4986,
+      "oi_change_pct": -0.987,
+      "oi_ccy": 127774670.0,
+      "oi_ccy_change_pct": -0.574,
+      "last_price": 0.05761,
+      "last_price_change_pct": -0.311,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -490,14 +181,14 @@
       "funding_rate": 5e-05,
       "funding_pct": 0.005,
       "next_funding_ms": "1793937600000",
-      "oi_usd": 7416897.336,
-      "oi_change_pct": 2.638,
-      "oi_ccy": 40004840.0,
-      "oi_ccy_change_pct": -0.13,
-      "last_price": 0.1853,
-      "last_price_change_pct": 2.716,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 7390052.017,
+      "oi_change_pct": -0.362,
+      "oi_ccy": 40011110.0,
+      "oi_ccy_change_pct": 0.016,
+      "last_price": 0.1848,
+      "last_price_change_pct": -0.27,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -508,860 +199,19 @@
       "warnings": []
     },
     {
-      "coin": "BEAT-USDT-SWAP",
+      "coin": "MERL-USDT-SWAP",
       "status": "IZLE",
-      "funding_rate": 0.0001135643235208,
-      "funding_pct": 0.01136,
+      "funding_rate": -0.0001253090705221,
+      "funding_pct": -0.01253,
       "next_funding_ms": "1793937600000",
-      "oi_usd": 4159965.9991499977,
-      "oi_change_pct": 2.568,
-      "oi_ccy": 41454568.99999998,
-      "oi_ccy_change_pct": 0.728,
-      "last_price": 0.1004,
-      "last_price_change_pct": 1.898,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "ALGO-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -0.0002643429848447,
-      "funding_pct": -0.02643,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 3311484.2762,
-      "oi_change_pct": 4.743,
-      "oi_ccy": 35691790.0,
-      "oi_ccy_change_pct": 3.411,
-      "last_price": 0.09275,
-      "last_price_change_pct": 1.267,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "XPL-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 1.33370793278e-05,
-      "funding_pct": 0.00133,
-      "next_funding_ms": "1793937600000",
-      "oi_usd": 7430604.8922,
-      "oi_change_pct": 0.605,
-      "oi_ccy": 128512710.0,
-      "oi_ccy_change_pct": -0.613,
-      "last_price": 0.05779,
-      "last_price_change_pct": 1.191,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "UNI-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -3.0098278881e-05,
-      "funding_pct": -0.00301,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 43906624.81,
-      "oi_change_pct": 1.317,
-      "oi_ccy": 6356830.0,
-      "oi_ccy_change_pct": 0.026,
-      "last_price": 6.904,
-      "last_price_change_pct": 1.247,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "TRUMP-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 5e-05,
-      "funding_pct": 0.005,
-      "next_funding_ms": "1793937600000",
-      "oi_usd": 15090352.497,
-      "oi_change_pct": 0.221,
-      "oi_ccy": 12471365.7,
-      "oi_ccy_change_pct": -2.595,
-      "last_price": 1.209,
-      "last_price_change_pct": 2.894,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "TIA-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -3.99776339795e-05,
-      "funding_pct": -0.004,
-      "next_funding_ms": "1793937600000",
-      "oi_usd": 4678195.215,
-      "oi_change_pct": 1.921,
-      "oi_ccy": 11205258.0,
-      "oi_ccy_change_pct": 0.383,
-      "last_price": 0.4179,
-      "last_price_change_pct": 1.654,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "SUI-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -7.60164211354e-05,
-      "funding_pct": -0.0076,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 26118003.4056,
-      "oi_change_pct": 0.848,
-      "oi_ccy": 30651336.0,
-      "oi_ccy_change_pct": -0.667,
-      "last_price": 0.8519,
-      "last_price_change_pct": 1.501,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "STRK-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 3.49004135061e-05,
-      "funding_pct": 0.00349,
-      "next_funding_ms": "1793937600000",
-      "oi_usd": 4563234.7398,
-      "oi_change_pct": 1.765,
-      "oi_ccy": 114280860.0,
-      "oi_ccy_change_pct": 0.21,
-      "last_price": 0.03993,
-      "last_price_change_pct": 1.655,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "SOXS-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -0.0002490996100053,
-      "funding_pct": -0.02491,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 11394716.390999997,
-      "oi_change_pct": -12.699,
-      "oi_ccy": 150068.69999999998,
-      "oi_ccy_change_pct": -4.754,
-      "last_price": 76.28,
-      "last_price_change_pct": -7.908,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "SKUU-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": 0.0,
-      "funding_pct": 0.0,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 820175.958,
-      "oi_change_pct": 12.328,
-      "oi_ccy": 68462.1,
-      "oi_ccy_change_pct": 2.764,
-      "last_price": 11.95,
-      "last_price_change_pct": 8.933,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Açık faiz önceki ölçüme göre hızla yükseldi",
-        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
-      ]
-    },
-    {
-      "coin": "SKHY-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": 0.0,
-      "funding_pct": 0.0,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 25929000.4764,
-      "oi_change_pct": 5.649,
-      "oi_ccy": 205720.41,
-      "oi_ccy_change_pct": 1.03,
-      "last_price": 125.94,
-      "last_price_change_pct": 4.341,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
-      ]
-    },
-    {
-      "coin": "SHIB-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0001,
-      "funding_pct": 0.01,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 6605699.8936,
-      "oi_change_pct": 1.303,
-      "oi_ccy": 1451164300000.0,
-      "oi_ccy_change_pct": 0.302,
-      "last_price": 4.551e-06,
-      "last_price_change_pct": 0.976,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "SAMSUNG-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0,
-      "funding_pct": 0.0,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 7250424.396800001,
-      "oi_change_pct": 4.264,
-      "oi_ccy": 53015.68000000001,
-      "oi_ccy_change_pct": 0.346,
-      "last_price": 136.69,
-      "last_price_change_pct": 3.742,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "ORCL-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": 6.48511833403e-05,
-      "funding_pct": 0.00649,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 3267448.4348000004,
-      "oi_change_pct": 5.038,
-      "oi_ccy": 28262.680000000004,
-      "oi_ccy_change_pct": 3.249,
-      "last_price": 115.59,
-      "last_price_change_pct": 1.725,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
-      ]
-    },
-    {
-      "coin": "OKB-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 2.52389332646e-05,
-      "funding_pct": 0.00252,
-      "next_funding_ms": "1793937600000",
-      "oi_usd": 20625889.332,
-      "oi_change_pct": 0.822,
-      "oi_ccy": 193579.44,
-      "oi_ccy_change_pct": -0.181,
-      "last_price": 106.54,
-      "last_price_change_pct": 0.995,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "FIL-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -6.6970458081e-05,
-      "funding_pct": -0.0067,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 10384974.51732,
-      "oi_change_pct": 2.459,
-      "oi_ccy": 13053009.7,
-      "oi_ccy_change_pct": 0.875,
-      "last_price": 0.7959,
-      "last_price_change_pct": 1.596,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "EWY-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0002411100962986,
-      "funding_pct": 0.02411,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 4096645.0088,
-      "oi_change_pct": 4.021,
-      "oi_ccy": 30282.710000000003,
-      "oi_ccy_change_pct": 1.069,
-      "last_price": 135.1,
-      "last_price_change_pct": 2.73,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "COIN-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0,
-      "funding_pct": 0.0,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 5054874.0984,
-      "oi_change_pct": 0.849,
-      "oi_ccy": 36800.189999999995,
-      "oi_ccy_change_pct": -0.891,
-      "last_price": 137.3,
-      "last_price_change_pct": 1.711,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "CBRS-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0002897307951357,
-      "funding_pct": 0.02897,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 2562703.9094999996,
-      "oi_change_pct": 3.247,
-      "oi_ccy": 30636.03,
-      "oi_ccy_change_pct": 0.186,
-      "last_price": 83.61,
-      "last_price_change_pct": 3.006,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "ARM-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0,
-      "funding_pct": 0.0,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 1332245.8435999998,
-      "oi_change_pct": 0.191,
-      "oi_ccy": 7854.759999999998,
-      "oi_ccy_change_pct": -3.359,
-      "last_price": 169.53,
-      "last_price_change_pct": 3.625,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "ARB-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 1.91916030938e-05,
-      "funding_pct": 0.00192,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 13124674.856549999,
-      "oi_change_pct": 2.42,
-      "oi_ccy": 82034345.0,
-      "oi_ccy_change_pct": 0.231,
-      "last_price": 0.15991,
-      "last_price_change_pct": 2.133,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "AAVE-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 8.87982279607e-05,
-      "funding_pct": 0.00888,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 15045080.840699997,
-      "oi_change_pct": 0.955,
-      "oi_ccy": 115704.68999999997,
-      "oi_ccy_change_pct": -0.342,
-      "last_price": 130.03,
-      "last_price_change_pct": 1.301,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "TSLA-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0,
-      "funding_pct": 0.0,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 14988144.647800004,
-      "oi_change_pct": 2.8,
-      "oi_ccy": 43377.26000000002,
-      "oi_ccy_change_pct": 0.634,
-      "last_price": 345.56,
-      "last_price_change_pct": 2.203,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "TAO-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -0.0001367969665919,
-      "funding_pct": -0.01368,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 14408578.4425,
-      "oi_change_pct": 1.167,
-      "oi_ccy": 66048.95,
-      "oi_ccy_change_pct": -0.206,
-      "last_price": 218.08,
-      "last_price_change_pct": 1.334,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "SPY-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0002554862618646,
-      "funding_pct": 0.02555,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 8305105.2447999995,
-      "oi_change_pct": 1.356,
-      "oi_ccy": 11295.16,
-      "oi_ccy_change_pct": 0.732,
-      "last_price": 735.12,
-      "last_price_change_pct": 0.608,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "SOXL-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": 0.0001950945479404,
-      "funding_pct": 0.01951,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 62369938.35360001,
-      "oi_change_pct": 6.839,
-      "oi_ccy": 1429847.2800000003,
-      "oi_ccy_change_pct": -1.586,
-      "last_price": 43.44,
-      "last_price_change_pct": 8.06,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
-      ]
-    },
-    {
-      "coin": "SOL-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -2.03456664831e-05,
-      "funding_pct": -0.00203,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 308455965.5160002,
-      "oi_change_pct": 1.144,
-      "oi_ccy": 3431100.8400000026,
-      "oi_ccy_change_pct": 0.402,
-      "last_price": 89.87,
-      "last_price_change_pct": 0.706,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "PENGU-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -3.98168306807e-05,
-      "funding_pct": -0.00398,
-      "next_funding_ms": "1793937600000",
-      "oi_usd": 6820859.001,
-      "oi_change_pct": 2.365,
-      "oi_ccy": 1040558200.0,
-      "oi_ccy_change_pct": 0.538,
-      "last_price": 0.006555,
-      "last_price_change_pct": 1.849,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "NEAR-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0001,
-      "funding_pct": 0.01,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 47992342.85999999,
-      "oi_change_pct": 1.296,
-      "oi_ccy": 12911579.999999998,
-      "oi_ccy_change_pct": -0.121,
-      "last_price": 3.716,
-      "last_price_change_pct": 1.364,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "NBIS-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": 0.0,
-      "funding_pct": 0.0,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 4360410.2202,
-      "oi_change_pct": 5.445,
-      "oi_ccy": 35790.94,
-      "oi_ccy_change_pct": 1.49,
-      "last_price": 122.01,
-      "last_price_change_pct": 4.051,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
-      ]
-    },
-    {
-      "coin": "MUU-USDT-SWAP",
-      "status": "RISK_UYARISI",
-      "funding_rate": 0.0004850402791565,
-      "funding_pct": 0.0485,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 1261277.9999999998,
-      "oi_change_pct": 5.271,
-      "oi_ccy": 93427.99999999999,
-      "oi_ccy_change_pct": -2.683,
-      "last_price": 13.48,
-      "last_price_change_pct": 8.099,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": [
-        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
-      ]
-    },
-    {
-      "coin": "MU-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 0.0004240513808684,
-      "funding_pct": 0.04241,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 53894903.88940001,
-      "oi_change_pct": 3.533,
-      "oi_ccy": 78827.14000000001,
-      "oi_ccy_change_pct": -0.605,
-      "last_price": 683.1,
-      "last_price_change_pct": 4.034,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "LINK-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 1.2728734604e-05,
-      "funding_pct": 0.00127,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 23058421.476400003,
-      "oi_change_pct": 0.78,
-      "oi_ccy": 2140588.7,
-      "oi_ccy_change_pct": -0.128,
-      "last_price": 10.769,
-      "last_price_change_pct": 0.909,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "HBAR-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -1.73269330843e-05,
-      "funding_pct": -0.00173,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 6017061.196799999,
-      "oi_change_pct": 1.524,
-      "oi_ccy": 88278480.0,
-      "oi_ccy_change_pct": 0.422,
-      "last_price": 0.06814,
-      "last_price_change_pct": 1.098,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "DRAM-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 6.3473247612e-05,
-      "funding_pct": 0.00635,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 5343619.994,
-      "oi_change_pct": 1.684,
-      "oi_ccy": 138220.9,
-      "oi_ccy_change_pct": -2.708,
-      "last_price": 38.64,
-      "last_price_change_pct": 4.376,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "DOGE-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": 2.10126668135e-05,
-      "funding_pct": 0.0021,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 91926608.50799996,
-      "oi_change_pct": 1.542,
-      "oi_ccy": 1278178649.9999995,
-      "oi_ccy_change_pct": 0.356,
-      "last_price": 0.07191,
-      "last_price_change_pct": 1.168,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "DASH-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -5.35142477817e-05,
-      "funding_pct": -0.00535,
-      "next_funding_ms": "1793937600000",
-      "oi_usd": 2569344.375,
-      "oi_change_pct": 2.413,
-      "oi_ccy": 57287.5,
-      "oi_ccy_change_pct": 1.682,
-      "last_price": 44.84,
-      "last_price_change_pct": 0.696,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 1644720.94641,
+      "oi_change_pct": 3.176,
+      "oi_ccy": 53696407.0,
+      "oi_ccy_change_pct": 3.883,
+      "last_price": 0.03068,
+      "last_price_change_pct": -0.519,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -1374,17 +224,17 @@
     {
       "coin": "BTC-USDT-SWAP",
       "status": "IZLE",
-      "funding_rate": 3.14284008268e-05,
-      "funding_pct": 0.00314,
+      "funding_rate": 2.5038379722e-05,
+      "funding_pct": 0.0025,
       "next_funding_ms": "1793952000000",
-      "oi_usd": 2652053715.956411,
-      "oi_change_pct": 0.087,
-      "oi_ccy": 34822.77400000014,
-      "oi_ccy_change_pct": -0.131,
-      "last_price": 76127.1,
-      "last_price_change_pct": 0.177,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 2649053155.2416115,
+      "oi_change_pct": -0.113,
+      "oi_ccy": 34768.12730000015,
+      "oi_ccy_change_pct": -0.157,
+      "last_price": 76201.2,
+      "last_price_change_pct": 0.097,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -1395,19 +245,1114 @@
       "warnings": []
     },
     {
-      "coin": "BE-USDT-SWAP",
+      "coin": "XIAOMI-USDT-SWAP",
       "status": "IZLE",
-      "funding_rate": 0.0001851248236403,
-      "funding_pct": 0.01851,
+      "funding_rate": -0.0006428916765008,
+      "funding_pct": -0.06429,
       "next_funding_ms": "1793952000000",
-      "oi_usd": 1998739.1934,
-      "oi_change_pct": 4.199,
-      "oi_ccy": 11592.27,
-      "oi_ccy_change_pct": -0.932,
-      "last_price": 172.24,
-      "last_price_change_pct": 5.076,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 2962523.564,
+      "oi_change_pct": 4.062,
+      "oi_ccy": 739891.0,
+      "oi_ccy_change_pct": 0.943,
+      "last_price": 4.001,
+      "last_price_change_pct": 3.012,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "ZEC-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0001,
+      "funding_pct": 0.01,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 175687587.096,
+      "oi_change_pct": 5.531,
+      "oi_ccy": 133949.06,
+      "oi_ccy_change_pct": 4.235,
+      "last_price": 1311.99,
+      "last_price_change_pct": 1.242,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "AERO-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": -2.69566384e-07,
+      "funding_pct": -3e-05,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 4115115.708,
+      "oi_change_pct": -6.254,
+      "oi_ccy": 7079160.0,
+      "oi_ccy_change_pct": -2.497,
+      "last_price": 0.5814,
+      "last_price_change_pct": -3.821,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SOL-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 1.34254121442e-05,
+      "funding_pct": 0.00134,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 315070713.02400017,
+      "oi_change_pct": 2.144,
+      "oi_ccy": 3491475.100000002,
+      "oi_ccy_change_pct": 1.76,
+      "last_price": 90.27,
+      "last_price_change_pct": 0.445,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SKHYNIX-USDT-SWAP",
+      "status": "RISK_UYARISI",
+      "funding_rate": 0.0011621199627168,
+      "funding_pct": 0.11621,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 61178869.03730001,
+      "oi_change_pct": 2.108,
+      "oi_ccy": 71462.29300000002,
+      "oi_ccy_change_pct": 1.309,
+      "last_price": 856.8,
+      "last_price_change_pct": 0.954,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": [
+        "Aşırı pozitif/negatif fonlama: tek taraflı pozisyon yoğunluğu olabilir"
+      ]
+    },
+    {
+      "coin": "MINIMAX-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": -0.0002100928302265,
+      "funding_pct": -0.02101,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 2545657.9609999997,
+      "oi_change_pct": -3.528,
+      "oi_ccy": 129418.29999999999,
+      "oi_ccy_change_pct": 2.406,
+      "last_price": 19.69,
+      "last_price_change_pct": -5.654,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "INJ-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 8.71121896721e-05,
+      "funding_pct": 0.00871,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 5184123.4533,
+      "oi_change_pct": 1.297,
+      "oi_ccy": 625875.1,
+      "oi_ccy_change_pct": 1.04,
+      "last_price": 8.292,
+      "last_price_change_pct": 0.339,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "HUMA-USDT-SWAP",
+      "status": "RISK_UYARISI",
+      "funding_rate": -0.0037830699151871,
+      "funding_pct": -0.37831,
+      "next_funding_ms": "1793930400000",
+      "oi_usd": 2154690.526,
+      "oi_change_pct": 0.652,
+      "oi_ccy": 161642200.0,
+      "oi_ccy_change_pct": 0.274,
+      "last_price": 0.01334,
+      "last_price_change_pct": 0.528,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": [
+        "Aşırı pozitif/negatif fonlama: tek taraflı pozisyon yoğunluğu olabilir"
+      ]
+    },
+    {
+      "coin": "XRP-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 7.47263977722e-05,
+      "funding_pct": 0.00747,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 95648809.08479995,
+      "oi_change_pct": -2.072,
+      "oi_ccy": 78555197.99999996,
+      "oi_ccy_change_pct": -2.305,
+      "last_price": 1.2177,
+      "last_price_change_pct": 0.28,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "UVXY-USDT-SWAP",
+      "status": "RISK_UYARISI",
+      "funding_rate": -0.0020936602844599,
+      "funding_pct": -0.20937,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 1737282.8159999999,
+      "oi_change_pct": -4.319,
+      "oi_ccy": 75402.9,
+      "oi_ccy_change_pct": -4.07,
+      "last_price": 23.0,
+      "last_price_change_pct": -0.562,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": [
+        "Aşırı pozitif/negatif fonlama: tek taraflı pozisyon yoğunluğu olabilir"
+      ]
+    },
+    {
+      "coin": "SPY-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0002095021091914,
+      "funding_pct": 0.02095,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 8444084.1485,
+      "oi_change_pct": 1.673,
+      "oi_ccy": 11465.929999999998,
+      "oi_ccy_change_pct": 1.512,
+      "last_price": 736.52,
+      "last_price_change_pct": 0.19,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SOXL-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 63837454.31580002,
+      "oi_change_pct": 2.353,
+      "oi_ccy": 1424625.1800000004,
+      "oi_ccy_change_pct": -0.365,
+      "last_price": 44.79,
+      "last_price_change_pct": 3.108,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SNXX-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0005965550529212,
+      "funding_pct": 0.05966,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 7032188.1208,
+      "oi_change_pct": 2.197,
+      "oi_ccy": 2065860.2,
+      "oi_ccy_change_pct": 1.506,
+      "last_price": 3.401,
+      "last_price_change_pct": 0.89,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SKHY-USDT-SWAP",
+      "status": "RISK_UYARISI",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 27753391.9971,
+      "oi_change_pct": 7.036,
+      "oi_ccy": 219169.17,
+      "oi_ccy_change_pct": 6.537,
+      "last_price": 126.68,
+      "last_price_change_pct": 0.588,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": [
+        "Açık faiz önceki ölçüme göre hızla yükseldi"
+      ]
+    },
+    {
+      "coin": "SKDD-USDT-SWAP",
+      "status": "RISK_UYARISI",
+      "funding_rate": -0.0011097079535054,
+      "funding_pct": -0.11097,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 1019031.0945,
+      "oi_change_pct": 4.415,
+      "oi_ccy": 85596.90000000001,
+      "oi_ccy_change_pct": 5.16,
+      "last_price": 11.895,
+      "last_price_change_pct": -1.023,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": [
+        "Aşırı pozitif/negatif fonlama: tek taraflı pozisyon yoğunluğu olabilir"
+      ]
+    },
+    {
+      "coin": "PUMP-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 8.15250358659e-05,
+      "funding_pct": 0.00815,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 21805035.04,
+      "oi_change_pct": 0.924,
+      "oi_ccy": 5551180000.0,
+      "oi_ccy_change_pct": -0.309,
+      "last_price": 0.00393,
+      "last_price_change_pct": 1.289,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "KORU-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0001623592282473,
+      "funding_pct": 0.01624,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 10764268.491600003,
+      "oi_change_pct": 3.184,
+      "oi_ccy": 1592347.4100000004,
+      "oi_ccy_change_pct": 2.726,
+      "last_price": 6.77,
+      "last_price_change_pct": 0.744,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "EWY-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 3907529.8125000005,
+      "oi_change_pct": -4.616,
+      "oi_ccy": 28784.750000000004,
+      "oi_ccy_change_pct": -4.947,
+      "last_price": 135.77,
+      "last_price_change_pct": 0.496,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "DOGE-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 3.36643995681e-05,
+      "funding_pct": 0.00337,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 90989097.42959994,
+      "oi_change_pct": -1.02,
+      "oi_ccy": 1262334869.9999993,
+      "oi_ccy_change_pct": -1.24,
+      "last_price": 0.07209,
+      "last_price_change_pct": 0.25,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "CAP-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0003846996826313,
+      "funding_pct": 0.03847,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 8110266.948,
+      "oi_change_pct": 0.788,
+      "oi_ccy": 74556600.0,
+      "oi_ccy_change_pct": 0.955,
+      "last_price": 0.10858,
+      "last_price_change_pct": -0.385,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "APR-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0002595429301208,
+      "funding_pct": 0.02595,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 2010958.2045,
+      "oi_change_pct": 2.338,
+      "oi_ccy": 48051570.0,
+      "oi_ccy_change_pct": 4.025,
+      "last_price": 0.04183,
+      "last_price_change_pct": -1.437,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "ACT-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 2.95591710758e-05,
+      "funding_pct": 0.00296,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 698772.18456,
+      "oi_change_pct": -6.757,
+      "oi_ccy": 75233870.0,
+      "oi_ccy_change_pct": -5.853,
+      "last_price": 0.009299,
+      "last_price_change_pct": -0.832,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "AAOI-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 4598486.9667,
+      "oi_change_pct": 3.021,
+      "oi_ccy": 101984.63,
+      "oi_ccy_change_pct": -0.406,
+      "last_price": 45.39,
+      "last_price_change_pct": 4.225,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "XAU-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 151984645.73,
+      "oi_change_pct": -1.282,
+      "oi_ccy": 37294.1,
+      "oi_ccy_change_pct": -0.405,
+      "last_price": 4077.0,
+      "last_price_change_pct": -0.854,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "WLD-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": -0.0003433164967489,
+      "funding_pct": -0.03433,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 30447469.3296,
+      "oi_change_pct": 2.065,
+      "oi_ccy": 88355976.0,
+      "oi_ccy_change_pct": 0.17,
+      "last_price": 0.3449,
+      "last_price_change_pct": 2.011,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "ETH-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": -2.0226651569e-06,
+      "funding_pct": -0.0002,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 1501877369.8825524,
+      "oi_change_pct": 0.45,
+      "oi_ccy": 670352.2850000011,
+      "oi_ccy_change_pct": 0.454,
+      "last_price": 2240.51,
+      "last_price_change_pct": 0.046,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "BCH-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 6.82614372103e-05,
+      "funding_pct": 0.00683,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 22986018.033899996,
+      "oi_change_pct": 1.461,
+      "oi_ccy": 83527.80999999998,
+      "oi_ccy_change_pct": 1.715,
+      "last_price": 275.21,
+      "last_price_change_pct": -0.17,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "TQQQ-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0004212991737235,
+      "funding_pct": 0.04213,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 6553700.004999999,
+      "oi_change_pct": 3.04,
+      "oi_ccy": 126397.29999999999,
+      "oi_ccy_change_pct": 1.729,
+      "last_price": 51.85,
+      "last_price_change_pct": 1.349,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SQQQ-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 2888924.4300000006,
+      "oi_change_pct": 2.514,
+      "oi_ccy": 59812.10000000001,
+      "oi_ccy_change_pct": 3.893,
+      "last_price": 48.28,
+      "last_price_change_pct": -1.449,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SNDK-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 110393293.35490005,
+      "oi_change_pct": 0.567,
+      "oi_ccy": 129920.31700000005,
+      "oi_ccy_change_pct": 0.07,
+      "last_price": 849.2,
+      "last_price_change_pct": 0.628,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SAMSUNG-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 7.13220959486e-05,
+      "funding_pct": 0.00713,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 7556017.8344,
+      "oi_change_pct": 4.215,
+      "oi_ccy": 54297.340000000004,
+      "oi_ccy_change_pct": 2.418,
+      "last_price": 139.15,
+      "last_price_change_pct": 1.8,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "QQQ-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0002130515081162,
+      "funding_pct": 0.02131,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 38539047.082,
+      "oi_change_pct": 0.89,
+      "oi_ccy": 58802.33000000001,
+      "oi_ccy_change_pct": 0.417,
+      "last_price": 655.41,
+      "last_price_change_pct": 0.5,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "ONDO-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": -2.81025796018e-05,
+      "funding_pct": -0.00281,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 10440209.936,
+      "oi_change_pct": 1.984,
+      "oi_ccy": 27900080.0,
+      "oi_ccy_change_pct": 0.567,
+      "last_price": 0.3746,
+      "last_price_change_pct": 1.545,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "NVDA-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0001760163711848,
+      "funding_pct": 0.0176,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 22525509.956400007,
+      "oi_change_pct": 1.853,
+      "oi_ccy": 121346.28000000003,
+      "oi_ccy_change_pct": 1.183,
+      "last_price": 185.66,
+      "last_price_change_pct": 0.727,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "LITE-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 7.12597396569e-05,
+      "funding_pct": 0.00713,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 5428109.2134,
+      "oi_change_pct": 0.859,
+      "oi_ccy": 10195.93,
+      "oi_ccy_change_pct": -0.977,
+      "last_price": 532.01,
+      "last_price_change_pct": 1.777,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "INTW-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 1584539.2451999998,
+      "oi_change_pct": 3.738,
+      "oi_ccy": 323507.39999999997,
+      "oi_ccy_change_pct": 0.349,
+      "last_price": 4.901,
+      "last_price_change_pct": 3.615,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "INTC-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 5.87834768014e-05,
+      "funding_pct": 0.00588,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 35750166.63599999,
+      "oi_change_pct": 2.004,
+      "oi_ccy": 666110.7999999999,
+      "oi_ccy_change_pct": 0.351,
+      "last_price": 53.7,
+      "last_price_change_pct": 1.762,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "DRAM-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 4.43418842806e-05,
+      "funding_pct": 0.00443,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 5435361.959999999,
+      "oi_change_pct": 1.717,
+      "oi_ccy": 139403.99999999997,
+      "oi_ccy_change_pct": 0.856,
+      "last_price": 38.99,
+      "last_price_change_pct": 0.906,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "AXTI-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 2659975.711,
+      "oi_change_pct": 3.373,
+      "oi_ccy": 68822.14,
+      "oi_ccy_change_pct": -0.451,
+      "last_price": 38.71,
+      "last_price_change_pct": 3.919,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "ANTHROPIC-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 6898291.452319999,
+      "oi_change_pct": -1.219,
+      "oi_ccy": 45599.49399999999,
+      "oi_ccy_change_pct": 0.609,
+      "last_price": 151.13,
+      "last_price_change_pct": -1.953,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "XAG-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0,
+      "funding_pct": 0.0,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 46270347.7848,
+      "oi_change_pct": -0.344,
+      "oi_ccy": 890499.38,
+      "oi_ccy_change_pct": 0.059,
+      "last_price": 51.97,
+      "last_price_change_pct": -0.383,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "WLFI-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 5e-05,
+      "funding_pct": 0.005,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 8338407.976,
+      "oi_change_pct": -0.929,
+      "oi_ccy": 177980960.0,
+      "oi_ccy_change_pct": -1.901,
+      "last_price": 0.04688,
+      "last_price_change_pct": 1.209,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "SPCX-USDT-SWAP",
+      "status": "RISK_UYARISI",
+      "funding_rate": 0.0001191249564368,
+      "funding_pct": 0.01191,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 52737081.551599994,
+      "oi_change_pct": 5.185,
+      "oi_ccy": 412395.06999999995,
+      "oi_ccy_change_pct": 3.408,
+      "last_price": 127.91,
+      "last_price_change_pct": 1.831,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": [
+        "Açık faiz ve fiyat aynı dönemde sert değişti: sıkışma olasılığını kontrol et"
+      ]
+    },
+    {
+      "coin": "FARTCOIN-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 5e-05,
+      "funding_pct": 0.005,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 2010552.9575,
+      "oi_change_pct": 4.892,
+      "oi_ccy": 17111089.0,
+      "oi_ccy_change_pct": 3.731,
+      "last_price": 0.1176,
+      "last_price_change_pct": 1.205,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "ETHFI-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": -7.5462231365e-05,
+      "funding_pct": -0.00755,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 4205841.68,
+      "oi_change_pct": 0.36,
+      "oi_ccy": 7515800.0,
+      "oi_ccy_change_pct": -1.99,
+      "last_price": 0.5597,
+      "last_price_change_pct": 2.415,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "ENA-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": -6.04450790614e-05,
+      "funding_pct": -0.00604,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 14223851.07,
+      "oi_change_pct": 0.431,
+      "oi_ccy": 87262890.0,
+      "oi_ccy_change_pct": -0.019,
+      "last_price": 0.16309,
+      "last_price_change_pct": 0.543,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "CXMT-USDT-SWAP",
+      "status": "RISK_UYARISI",
+      "funding_rate": 0.0009992132817416,
+      "funding_pct": 0.09992,
+      "next_funding_ms": "1793952000000",
+      "oi_usd": 3523794.12,
+      "oi_change_pct": 14.62,
+      "oi_ccy": 580335.0,
+      "oi_ccy_change_pct": 13.6,
+      "last_price": 6.085,
+      "last_price_change_pct": 1.197,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": [
+        "Açık faiz önceki ölçüme göre hızla yükseldi"
+      ]
+    },
+    {
+      "coin": "BEAT-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 0.0001164615507175,
+      "funding_pct": 0.01165,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 4127362.0372599983,
+      "oi_change_pct": -0.784,
+      "oi_ccy": 41261241.999999985,
+      "oi_ccy_change_pct": -0.466,
+      "last_price": 0.10003,
+      "last_price_change_pct": -0.369,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -1423,14 +1368,14 @@
       "funding_rate": 5e-05,
       "funding_pct": 0.005,
       "next_funding_ms": "1793937600000",
-      "oi_usd": 10303236.7272,
-      "oi_change_pct": 1.061,
-      "oi_ccy": 14876172.0,
-      "oi_ccy_change_pct": 0.127,
-      "last_price": 0.6926,
-      "last_price_change_pct": 0.962,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 10686354.9587,
+      "oi_change_pct": 3.718,
+      "oi_ccy": 15378263.0,
+      "oi_ccy_change_pct": 3.375,
+      "last_price": 0.6951,
+      "last_price_change_pct": 0.361,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -1441,19 +1386,19 @@
       "warnings": []
     },
     {
-      "coin": "ADA-USDT-SWAP",
+      "coin": "ARB-USDT-SWAP",
       "status": "IZLE",
-      "funding_rate": -0.0001272853389005,
-      "funding_pct": -0.01273,
+      "funding_rate": 3.68433910842e-05,
+      "funding_pct": 0.00368,
       "next_funding_ms": "1793952000000",
-      "oi_usd": 24658005.600000005,
-      "oi_change_pct": 1.774,
-      "oi_ccy": 134743200.00000003,
-      "oi_ccy_change_pct": 0.384,
-      "last_price": 0.1829,
-      "last_price_change_pct": 1.33,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 13740532.4295,
+      "oi_change_pct": 4.692,
+      "oi_ccy": 83326455.0,
+      "oi_ccy_change_pct": 1.575,
+      "last_price": 0.16491,
+      "last_price_change_pct": 3.127,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -1464,19 +1409,65 @@
       "warnings": []
     },
     {
-      "coin": "ZHIPU-USDT-SWAP",
+      "coin": "ZAMA-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": -6.51614717768e-05,
+      "funding_pct": -0.00652,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 3124445.2624,
+      "oi_change_pct": 4.854,
+      "oi_ccy": 44368720.0,
+      "oi_ccy_change_pct": 3.365,
+      "last_price": 0.07047,
+      "last_price_change_pct": 1.556,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "STRK-USDT-SWAP",
+      "status": "IZLE",
+      "funding_rate": 5e-05,
+      "funding_pct": 0.005,
+      "next_funding_ms": "1793937600000",
+      "oi_usd": 4698645.41118,
+      "oi_change_pct": 2.967,
+      "oi_ccy": 116130633.0,
+      "oi_ccy_change_pct": 1.619,
+      "last_price": 0.04048,
+      "last_price_change_pct": 1.377,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
+      "comparison_status": "OK",
+      "oi_change_5m_pct": null,
+      "price_change_5m_pct": null,
+      "oi_change_15m_pct": null,
+      "price_change_15m_pct": null,
+      "oi_change_60m_pct": null,
+      "price_change_60m_pct": null,
+      "warnings": []
+    },
+    {
+      "coin": "IREN-USDT-SWAP",
       "status": "IZLE",
       "funding_rate": 0.0,
       "funding_pct": 0.0,
       "next_funding_ms": "1793952000000",
-      "oi_usd": 3129420.6272000005,
-      "oi_change_pct": 1.293,
-      "oi_ccy": 54179.72000000001,
-      "oi_ccy_change_pct": 0.206,
-      "last_price": 57.78,
-      "last_price_change_pct": 1.049,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 723424.9619999999,
+      "oi_change_pct": 4.991,
+      "oi_ccy": 35220.3,
+      "oi_ccy_change_pct": -0.12,
+      "last_price": 20.49,
+      "last_price_change_pct": 5.131,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -1487,42 +1478,19 @@
       "warnings": []
     },
     {
-      "coin": "XRP-USDT-SWAP",
+      "coin": "GOOGL-USDT-SWAP",
       "status": "IZLE",
-      "funding_rate": 4.12205411727e-05,
-      "funding_pct": 0.00412,
+      "funding_rate": 2.92716566131e-05,
+      "funding_pct": 0.00293,
       "next_funding_ms": "1793952000000",
-      "oi_usd": 97672382.29619993,
-      "oi_change_pct": 0.775,
-      "oi_ccy": 80408645.99999994,
-      "oi_ccy_change_pct": 0.161,
-      "last_price": 1.2143,
-      "last_price_change_pct": 0.588,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
-      "comparison_status": "OK",
-      "oi_change_5m_pct": null,
-      "price_change_5m_pct": null,
-      "oi_change_15m_pct": null,
-      "price_change_15m_pct": null,
-      "oi_change_60m_pct": null,
-      "price_change_60m_pct": null,
-      "warnings": []
-    },
-    {
-      "coin": "ETH-USDT-SWAP",
-      "status": "IZLE",
-      "funding_rate": -2.64034848074e-05,
-      "funding_pct": -0.00264,
-      "next_funding_ms": "1793952000000",
-      "oi_usd": 1495144930.1748025,
-      "oi_change_pct": 0.34,
-      "oi_ccy": 667323.4800000011,
-      "oi_ccy_change_pct": 0.108,
-      "last_price": 2239.47,
-      "last_price_change_pct": 0.186,
-      "change_reference_at": "2026-11-05T23:51:20.710606+00:00",
-      "change_period_minutes": 40.2,
+      "oi_usd": 38637173.727000006,
+      "oi_change_pct": -0.215,
+      "oi_ccy": 136171.05000000002,
+      "oi_ccy_change_pct": -0.476,
+      "last_price": 283.91,
+      "last_price_change_pct": 0.318,
+      "change_reference_at": "2026-11-06T00:31:29.970883+00:00",
+      "change_period_minutes": 81.5,
       "comparison_status": "OK",
       "oi_change_5m_pct": null,
       "price_change_5m_pct": null,
@@ -1536,16 +1504,16 @@
   "errors": [],
   "market_comparison": {
     "max_comparison_minutes": 180,
-    "history_samples": 8,
+    "history_samples": 9,
     "note": "Percent changes require a prior observation; OI_USD also moves with price.",
     "current_symbols": 525,
-    "comparable_coins": 61
+    "comparable_coins": 60
   },
   "analysis_source": {
     "file": "son-tum-analiz.json",
-    "updated_at": "2026-11-06T00:30:16.571728+00:00",
+    "updated_at": "2026-11-06T01:51:46.209995+00:00",
     "considered_count": 525,
-    "risk_checked_count": 61
+    "risk_checked_count": 60
   },
   "market_history": [
     {
@@ -22900,6 +22868,2636 @@
           28627.199999999997,
           48.0,
           596.4
+        ]
+      }
+    },
+    {
+      "at": "2026-11-06T01:52:59.985477+00:00",
+      "values": {
+        "BASED-USDT-SWAP": [
+          1828425.9438,
+          0.04267,
+          42860430.0
+        ],
+        "AAPL-USDT-SWAP": [
+          10920887.917200001,
+          343.87,
+          31770.780000000002
+        ],
+        "TWST-USDT-SWAP": [
+          40300.1218,
+          123.02,
+          327.59000000000003
+        ],
+        "2Z-USDT-SWAP": [
+          640840.8402,
+          0.02137,
+          30030030.0
+        ],
+        "KIOXIA-USDT-SWAP": [
+          561365.5736,
+          53.62,
+          10481.06
+        ],
+        "PEOPLE-USDT-SWAP": [
+          1793200.056,
+          0.00606,
+          295907600.0
+        ],
+        "GRAM-USDT-SWAP": [
+          8041714.047,
+          1.107,
+          7264421.0
+        ],
+        "CSCO-USDT-SWAP": [
+          240986.6697,
+          96.49,
+          2497.53
+        ],
+        "VRT-USDT-SWAP": [
+          192667.068,
+          181.83,
+          1059.6
+        ],
+        "LDO-USDT-SWAP": [
+          2855596.2696,
+          0.3296,
+          8669084.0
+        ],
+        "YGG-USDT-SWAP": [
+          636723.80552,
+          0.02264,
+          28123843.0
+        ],
+        "RAVE-USDT-SWAP": [
+          1137560.70298,
+          0.1307,
+          8703601.4
+        ],
+        "MELI-USDT-SWAP": [
+          56944.864199999996,
+          1539.3,
+          36.994
+        ],
+        "LLY-USDT-SWAP": [
+          734578.416,
+          1366.0,
+          537.68
+        ],
+        "EWJ-USDT-SWAP": [
+          329764.974,
+          87.58,
+          3765.2999999999997
+        ],
+        "ALAB-USDT-SWAP": [
+          291933.56399999995,
+          187.7,
+          1555.3199999999997
+        ],
+        "XOM-USDT-SWAP": [
+          56751.2512,
+          165.76,
+          342.37
+        ],
+        "XCU-USDT-SWAP": [
+          556256.4762,
+          6.2807,
+          88566.0
+        ],
+        "KORU-USDT-SWAP": [
+          10764268.491600003,
+          6.77,
+          1592347.4100000004
+        ],
+        "PYPL-USDT-SWAP": [
+          77214.15000000001,
+          58.52,
+          1319.9
+        ],
+        "RE-USDT-SWAP": [
+          704480.5558,
+          0.30663,
+          2296670.0
+        ],
+        "LA-USDT-SWAP": [
+          778842.3375,
+          0.05805,
+          13416750.0
+        ],
+        "ASML-USDT-SWAP": [
+          948949.9717999998,
+          1393.7,
+          681.6189999999999
+        ],
+        "W-USDT-SWAP": [
+          1650703.665776,
+          0.010657,
+          155024762.0
+        ],
+        "TRB-USDT-SWAP": [
+          2723828.822,
+          15.75,
+          173161.4
+        ],
+        "INJ-USDT-SWAP": [
+          5184123.4533,
+          8.292,
+          625875.1
+        ],
+        "TQQQ-USDT-SWAP": [
+          6553700.004999999,
+          51.85,
+          126397.29999999999
+        ],
+        "ACT-USDT-SWAP": [
+          698772.18456,
+          0.009299,
+          75233870.0
+        ],
+        "TAO-USDT-SWAP": [
+          14536411.0857,
+          220.25,
+          66005.59
+        ],
+        "VANA-USDT-SWAP": [
+          79882.10124,
+          0.7393,
+          108153.4
+        ],
+        "EIGEN-USDT-SWAP": [
+          1183527.002,
+          0.1708,
+          6929315.0
+        ],
+        "SKHY-USDT-SWAP": [
+          27753391.9971,
+          126.68,
+          219169.17
+        ],
+        "MINIMAX-USDT-SWAP": [
+          2545657.9609999997,
+          19.69,
+          129418.29999999999
+        ],
+        "SLX-USDT-SWAP": [
+          1157626.9684,
+          0.03678,
+          31482920.0
+        ],
+        "H100-USDT-SWAP": [
+          84530.78,
+          3.31,
+          25538.0
+        ],
+        "TEAM-USDT-SWAP": [
+          56279.059199999996,
+          154.62,
+          362.88
+        ],
+        "VICR-USDT-SWAP": [
+          24020.625000000004,
+          139.68,
+          172.50000000000003
+        ],
+        "ENA-USDT-SWAP": [
+          14223851.07,
+          0.16309,
+          87262890.0
+        ],
+        "OSCR-USDT-SWAP": [
+          46020.43,
+          32.86,
+          1400.5
+        ],
+        "TRIA-USDT-SWAP": [
+          302235.516,
+          0.002379,
+          127203500.0
+        ],
+        "KO-USDT-SWAP": [
+          322009.741,
+          95.21,
+          3382.1
+        ],
+        "OURA-USDT-SWAP": [
+          328478.528,
+          48.58,
+          6761.6
+        ],
+        "S-USDT-SWAP": [
+          969950.1636,
+          0.03855,
+          25180430.0
+        ],
+        "SOL-USDT-SWAP": [
+          315070713.02400017,
+          90.27,
+          3491475.100000002
+        ],
+        "MUU-USDT-SWAP": [
+          1213494.6716999998,
+          13.55,
+          89424.80999999998
+        ],
+        "MCD-USDT-SWAP": [
+          258152.38240000003,
+          274.42,
+          940.7200000000001
+        ],
+        "BIO-USDT-SWAP": [
+          917155.18674,
+          0.01999,
+          45903663.0
+        ],
+        "MANA-USDT-SWAP": [
+          556182.7938,
+          0.0707,
+          7870140.0
+        ],
+        "POPMART-USDT-SWAP": [
+          632073.044,
+          18.28,
+          34577.299999999996
+        ],
+        "CVNA-USDT-SWAP": [
+          85085.5928,
+          72.082,
+          1180.3999999999999
+        ],
+        "RIVER-USDT-SWAP": [
+          1098410.11252,
+          0.781,
+          1407496.3
+        ],
+        "IONQ-USDT-SWAP": [
+          292487.36799999996,
+          28.12,
+          10401.4
+        ],
+        "ZIL-USDT-SWAP": [
+          548891.3577,
+          0.001658,
+          331256100.0
+        ],
+        "HYPE-USDT-SWAP": [
+          127373768.5276,
+          77.832,
+          1636059.4
+        ],
+        "SPCX-USDT-SWAP": [
+          52737081.551599994,
+          127.91,
+          412395.06999999995
+        ],
+        "CRCL-USDT-SWAP": [
+          26808787.456,
+          69.09,
+          388083.2
+        ],
+        "BERA-USDT-SWAP": [
+          817171.76543,
+          0.1147,
+          7124426.9
+        ],
+        "NBIS-USDT-SWAP": [
+          4476401.0844,
+          125.53,
+          35651.490000000005
+        ],
+        "ADBE-USDT-SWAP": [
+          268034.8164,
+          244.66,
+          1095.54
+        ],
+        "GRT-USDT-SWAP": [
+          598276.558,
+          0.0191,
+          31323380.0
+        ],
+        "INFQ-USDT-SWAP": [
+          88239.53600000001,
+          7.504,
+          11759.0
+        ],
+        "GPRO-USDT-SWAP": [
+          153229.68,
+          0.8559,
+          179216.0
+        ],
+        "FLOKI-USDT-SWAP": [
+          688848.063,
+          2.143e-05,
+          32144100000.0
+        ],
+        "BSP-USDT-SWAP": [
+          331993.299,
+          45.87,
+          7237.7
+        ],
+        "GTLB-USDT-SWAP": [
+          29188.1583,
+          48.429,
+          602.6999999999999
+        ],
+        "ISRG-USDT-SWAP": [
+          140263.74180000002,
+          466.83,
+          300.46000000000004
+        ],
+        "RUM-USDT-SWAP": [
+          17259.6272,
+          4.7521,
+          3632.0
+        ],
+        "IBM-USDT-SWAP": [
+          579001.564,
+          245.8,
+          2355.58
+        ],
+        "MARA-USDT-SWAP": [
+          354561.88379999995,
+          6.001,
+          59083.79999999999
+        ],
+        "SAPIEN-USDT-SWAP": [
+          143963.2545,
+          0.04698,
+          3066310.0
+        ],
+        "SENT-USDT-SWAP": [
+          826605.9,
+          0.0185,
+          44681400.0
+        ],
+        "HOOD-USDT-SWAP": [
+          2579526.9850000003,
+          79.42,
+          32467.300000000003
+        ],
+        "MUBARAK-USDT-SWAP": [
+          3715499.0948,
+          0.040505,
+          91817800.0
+        ],
+        "ZEC-USDT-SWAP": [
+          175687587.096,
+          1311.99,
+          133949.06
+        ],
+        "ADI-USDT-SWAP": [
+          35391.4694,
+          367.94,
+          96.23
+        ],
+        "WDC-USDT-SWAP": [
+          1785998.5584999996,
+          277.11,
+          6446.949999999999
+        ],
+        "BCH-USDT-SWAP": [
+          22986018.033899996,
+          275.21,
+          83527.80999999998
+        ],
+        "SAHARA-USDT-SWAP": [
+          639146.4738,
+          0.006479,
+          98679400.0
+        ],
+        "PURR-USDT-SWAP": [
+          791975.2404,
+          9.027,
+          87792.40000000001
+        ],
+        "APE-USDT-SWAP": [
+          915409.602612,
+          0.1091,
+          8392093.9
+        ],
+        "SKY-USDT-SWAP": [
+          880281.573,
+          0.06467,
+          13611900.0
+        ],
+        "DATA-USDT-SWAP": [
+          807294.725,
+          0.1139,
+          7087750.0
+        ],
+        "NIGHT-USDT-SWAP": [
+          2392734.597,
+          0.039202,
+          61015800.0
+        ],
+        "IOTA-USDT-SWAP": [
+          515752.9536,
+          0.03792,
+          13601080.0
+        ],
+        "UNI-USDT-SWAP": [
+          44282851.887,
+          6.962,
+          6363393.0
+        ],
+        "SAMSUNG-USDT-SWAP": [
+          7556017.8344,
+          139.15,
+          54297.340000000004
+        ],
+        "PEPE-USDT-SWAP": [
+          35912364.5661,
+          4.9185e-06,
+          7302081000000.0
+        ],
+        "WIF-USDT-SWAP": [
+          3541395.3096,
+          0.1645,
+          21541334.0
+        ],
+        "BRKB-USDT-SWAP": [
+          297068.7033,
+          569.61,
+          521.53
+        ],
+        "H-USDT-SWAP": [
+          1008772.0755999999,
+          0.05006,
+          20151259.999999996
+        ],
+        "MEW-USDT-SWAP": [
+          711897.8784,
+          0.0003553,
+          2004217000.0
+        ],
+        "JELLYJELLY-USDT-SWAP": [
+          954307.43,
+          0.0409,
+          23332700.0
+        ],
+        "KLAC-USDT-SWAP": [
+          225400.7399,
+          134.07,
+          1695.8899999999999
+        ],
+        "ONDO-USDT-SWAP": [
+          10440209.936,
+          0.3746,
+          27900080.0
+        ],
+        "SOPH-USDT-SWAP": [
+          514937.7416,
+          0.001367,
+          376967600.0
+        ],
+        "QTUM-USDT-SWAP": [
+          439545.2408,
+          0.7174,
+          612692.0
+        ],
+        "FLNC-USDT-SWAP": [
+          277879.513,
+          5.162,
+          53873.5
+        ],
+        "EWT-USDT-SWAP": [
+          120070.01789999999,
+          86.83,
+          1385.37
+        ],
+        "SMH-USDT-SWAP": [
+          479782.1412999999,
+          459.48,
+          1044.8899999999999
+        ],
+        "WMT-USDT-SWAP": [
+          184342.84879999998,
+          127.46,
+          1446.28
+        ],
+        "ASTS-USDT-SWAP": [
+          511769.5458,
+          31.47,
+          16262.140000000001
+        ],
+        "OUST-USDT-SWAP": [
+          42472.848,
+          30.84,
+          1377.2
+        ],
+        "1INCH-USDT-SWAP": [
+          407093.57382,
+          0.08013,
+          5080414.0
+        ],
+        "KITE-USDT-SWAP": [
+          1041443.0586,
+          0.11217,
+          9286990.0
+        ],
+        "SHLD-USDT-SWAP": [
+          51379.272,
+          57.84,
+          888.3
+        ],
+        "UMA-USDT-SWAP": [
+          244624.5972,
+          0.326,
+          750382.2
+        ],
+        "INTC-USDT-SWAP": [
+          35750166.63599999,
+          53.7,
+          666110.7999999999
+        ],
+        "AMD-USDT-SWAP": [
+          5557274.6995,
+          425.1,
+          13062.11
+        ],
+        "BAT-USDT-SWAP": [
+          2029310.8627,
+          0.1296,
+          15649810.0
+        ],
+        "XPT-USDT-SWAP": [
+          685759.5717,
+          1524.7,
+          450.003
+        ],
+        "MSTR-USDT-SWAP": [
+          22129803.229900002,
+          130.35,
+          169824.29000000004
+        ],
+        "NOK-USDT-SWAP": [
+          796188.1654999999,
+          7.553,
+          105413.49999999999
+        ],
+        "ACN-USDT-SWAP": [
+          119904.2831,
+          263.81,
+          454.51
+        ],
+        "CBRS-USDT-SWAP": [
+          2560470.4545,
+          83.71,
+          30609.33
+        ],
+        "SSV-USDT-SWAP": [
+          592802.8757,
+          2.191,
+          270562.7
+        ],
+        "GAS-USDT-SWAP": [
+          283062.214,
+          1.0989,
+          257540.0
+        ],
+        "TWLO-USDT-SWAP": [
+          94388.56899999999,
+          199.09,
+          474.09999999999997
+        ],
+        "CELO-USDT-SWAP": [
+          372980.281,
+          0.06779,
+          5505244.0
+        ],
+        "CIEN-USDT-SWAP": [
+          89186.1516,
+          235.27,
+          379.08
+        ],
+        "ENSO-USDT-SWAP": [
+          575339.3408,
+          0.4721,
+          1219456.0
+        ],
+        "F-USDT-SWAP": [
+          161428.9462,
+          0.002575,
+          62617900.0
+        ],
+        "CVX-USDT-SWAP": [
+          325542.645,
+          1.831,
+          177795.0
+        ],
+        "GRVT-USDT-SWAP": [
+          2763214.8052,
+          0.19793,
+          13973980.0
+        ],
+        "EGLD-USDT-SWAP": [
+          419370.3708,
+          3.244,
+          129275.7
+        ],
+        "BARD-USDT-SWAP": [
+          519021.904,
+          0.1071,
+          4850672.0
+        ],
+        "LQTY-USDT-SWAP": [
+          211610.656,
+          0.1724,
+          1227440.0
+        ],
+        "BONK-USDT-SWAP": [
+          1694990.5421,
+          2.884e-06,
+          588334100000.0
+        ],
+        "AMC-USDT-SWAP": [
+          64572.135,
+          3.087,
+          20931.0
+        ],
+        "FLY-USDT-SWAP": [
+          84939.12,
+          15.2,
+          5588.099999999999
+        ],
+        "YB-USDT-SWAP": [
+          270834.47188,
+          0.05689,
+          4764857.0
+        ],
+        "DOS-USDT-SWAP": [
+          1330551.285,
+          0.1995,
+          6669430.0
+        ],
+        "AXS-USDT-SWAP": [
+          1165781.06078,
+          0.8357,
+          1395977.8
+        ],
+        "PEP-USDT-SWAP": [
+          33994.820999999996,
+          141.38,
+          240.45
+        ],
+        "VST-USDT-SWAP": [
+          130870.99899999998,
+          114.91,
+          1138.8999999999999
+        ],
+        "OKLO-USDT-SWAP": [
+          156977.9328,
+          19.776,
+          7937.8
+        ],
+        "API3-USDT-SWAP": [
+          449873.9902,
+          0.2264,
+          1987954.0
+        ],
+        "ONDS-USDT-SWAP": [
+          152265.316,
+          4.627,
+          32908.0
+        ],
+        "POPCAT-USDT-SWAP": [
+          389066.503,
+          0.03695,
+          10529540.0
+        ],
+        "PFE-USDT-SWAP": [
+          504723.4788,
+          29.354,
+          17201.4
+        ],
+        "RENDER-USDT-SWAP": [
+          2539744.92,
+          1.531,
+          1659964.0
+        ],
+        "UNITREE-USDT-SWAP": [
+          8506632.9005,
+          98.88,
+          85882.21
+        ],
+        "NEO-USDT-SWAP": [
+          221400.096,
+          1.888,
+          117267.0
+        ],
+        "AERO-USDT-SWAP": [
+          4115115.708,
+          0.5814,
+          7079160.0
+        ],
+        "LGELECTRONICS-USDT-SWAP": [
+          41612.8955,
+          99.55,
+          418.01
+        ],
+        "ZORA-USDT-SWAP": [
+          291529.0311,
+          0.005205,
+          56009420.0
+        ],
+        "KR200-USDT-SWAP": [
+          82154.247,
+          780.6,
+          105.24499999999999
+        ],
+        "AMZN-USDT-SWAP": [
+          4243225.3721,
+          258.83,
+          16393.87
+        ],
+        "ARKM-USDT-SWAP": [
+          432570.96978,
+          0.10338,
+          4184281.0
+        ],
+        "CRM-USDT-SWAP": [
+          305012.0504,
+          218.86,
+          1393.6399999999999
+        ],
+        "US500-USDT-SWAP": [
+          386188.803,
+          7371.0,
+          52.39300000000001
+        ],
+        "USDC-USDT-SWAP": [
+          827454.21548,
+          1.000876,
+          826730.0
+        ],
+        "TEM-USDT-SWAP": [
+          251914.93750000003,
+          70.025,
+          3597.5000000000005
+        ],
+        "LIGHT-USDT-SWAP": [
+          779930.6082,
+          0.2311,
+          3374862.0
+        ],
+        "XRP-USDT-SWAP": [
+          95648809.08479995,
+          1.2177,
+          78555197.99999996
+        ],
+        "WUXIBIO-USDT-SWAP": [
+          21008.6358,
+          6.0666,
+          3463.0
+        ],
+        "CHZ-USDT-SWAP": [
+          1047224.0499,
+          0.01139,
+          91942410.0
+        ],
+        "FLOW-USDT-SWAP": [
+          434349.209,
+          0.02065,
+          21033860.0
+        ],
+        "TSEM-USDT-SWAP": [
+          76049.8968,
+          133.08,
+          571.46
+        ],
+        "NEAR-USDT-SWAP": [
+          48461515.011,
+          3.732,
+          12988881.0
+        ],
+        "TRUTH-USDT-SWAP": [
+          997719.8,
+          0.019067,
+          52360000.0
+        ],
+        "GS-USDT-SWAP": [
+          55051.0455,
+          868.45,
+          63.39
+        ],
+        "MASK-USDT-SWAP": [
+          482154.039,
+          0.3644,
+          1322782.0
+        ],
+        "AR-USDT-SWAP": [
+          1192647.5132,
+          3.092,
+          385845.2
+        ],
+        "LINK-USDT-SWAP": [
+          23153842.888200004,
+          10.859,
+          2133208.3000000003
+        ],
+        "OFC-USDT-SWAP": [
+          494883.5935,
+          0.005249,
+          94281500.0
+        ],
+        "DNA-USDT-SWAP": [
+          1837202.511,
+          0.1566,
+          11724330.0
+        ],
+        "FLEX-USDT-SWAP": [
+          25900.497600000002,
+          68.303,
+          379.2
+        ],
+        "HYUNDAI-USDT-SWAP": [
+          150258.02500000002,
+          202.75,
+          741.1000000000001
+        ],
+        "SOFI-USDT-SWAP": [
+          37368.0,
+          16.0,
+          2335.5
+        ],
+        "YFI-USDT-SWAP": [
+          585958.653,
+          1983.0,
+          295.491
+        ],
+        "FWDI-USDT-SWAP": [
+          107717.6,
+          5.8,
+          18572.0
+        ],
+        "BOT-USDT-SWAP": [
+          160507.893,
+          21.14,
+          7574.7
+        ],
+        "ZRX-USDT-SWAP": [
+          335480.2275,
+          0.09339,
+          3592250.0
+        ],
+        "ETC-USDT-SWAP": [
+          5917287.191800002,
+          6.98,
+          848113.4000000003
+        ],
+        "KSM-USDT-SWAP": [
+          471390.0437,
+          3.248,
+          145177.1
+        ],
+        "HIMS-USDT-SWAP": [
+          256419.72,
+          24.07,
+          10631.0
+        ],
+        "AKE-USDT-SWAP": [
+          2440841.4945,
+          0.002264,
+          1076683500.0
+        ],
+        "ORCL-USDT-SWAP": [
+          3297888.2367000002,
+          117.03,
+          28184.670000000002
+        ],
+        "CEG-USDT-SWAP": [
+          46928.2178,
+          239.21,
+          196.18
+        ],
+        "SUI-USDT-SWAP": [
+          26318428.0029,
+          0.8615,
+          30556633.0
+        ],
+        "MSTU-USDT-SWAP": [
+          571223.4048,
+          26.472,
+          21578.4
+        ],
+        "ROBO-USDT-SWAP": [
+          436731.086,
+          0.004632,
+          94306000.0
+        ],
+        "OPENAI-USDT-SWAP": [
+          3107929.7646,
+          134.99,
+          23037.059999999998
+        ],
+        "MOODENG-USDT-SWAP": [
+          966130.3326,
+          0.03289,
+          29401410.0
+        ],
+        "TMF-USDT-SWAP": [
+          342388.056,
+          30.21,
+          11333.6
+        ],
+        "PYTH-USDT-SWAP": [
+          1858703.8192,
+          0.06355,
+          29261710.0
+        ],
+        "SMR-USDT-SWAP": [
+          32950.7838,
+          4.4253,
+          7446.0
+        ],
+        "INIT-USDT-SWAP": [
+          1115591.1928,
+          0.13357,
+          8342740.0
+        ],
+        "AGLD-USDT-SWAP": [
+          538700.8452,
+          0.1652,
+          3260901.0
+        ],
+        "ZHIPU-USDT-SWAP": [
+          2919418.5546,
+          52.68,
+          55260.619999999995
+        ],
+        "RVN-USDT-SWAP": [
+          432417.39072,
+          0.001266,
+          341561920.0
+        ],
+        "PDD-USDT-SWAP": [
+          277313.89200000005,
+          83.925,
+          3306.0000000000005
+        ],
+        "0G-USDT-SWAP": [
+          619398.3128,
+          0.1444,
+          4289462.0
+        ],
+        "HUT-USDT-SWAP": [
+          57027.634300000005,
+          48.23,
+          1182.41
+        ],
+        "GEV-USDT-SWAP": [
+          397050.09553000005,
+          788.52,
+          504.19700000000006
+        ],
+        "SATS-USDT-SWAP": [
+          626670.33666,
+          8.467e-09,
+          74022010000000.0
+        ],
+        "ETH-USDT-SWAP": [
+          1501877369.8825524,
+          2240.51,
+          670352.2850000011
+        ],
+        "CRDO-USDT-SWAP": [
+          309524.44379999995,
+          119.46,
+          2591.0299999999997
+        ],
+        "MMT-USDT-SWAP": [
+          1075726.04,
+          0.1178,
+          9131800.0
+        ],
+        "AAOI-USDT-SWAP": [
+          4598486.9667,
+          45.39,
+          101984.63
+        ],
+        "COHR-USDT-SWAP": [
+          979079.7089999999,
+          176.13,
+          5564.849999999999
+        ],
+        "CP-USDT-SWAP": [
+          1255238.9875,
+          0.007225,
+          173735500.0
+        ],
+        "BICO-USDT-SWAP": [
+          922065.28713,
+          0.0136,
+          67848807.0
+        ],
+        "EDEN-USDT-SWAP": [
+          417460.90304,
+          0.0511,
+          8172688.0
+        ],
+        "ORDI-USDT-SWAP": [
+          2852500.6376,
+          3.208,
+          888906.4
+        ],
+        "KAITO-USDT-SWAP": [
+          2335600.8128,
+          0.2137,
+          10929344.0
+        ],
+        "SOXS-USDT-SWAP": [
+          11112956.344999999,
+          73.59,
+          151093.89999999997
+        ],
+        "BWET-USDT-SWAP": [
+          87069.59999999999,
+          720.0,
+          120.92999999999999
+        ],
+        "DOGE-USDT-SWAP": [
+          90989097.42959994,
+          0.07209,
+          1262334869.9999993
+        ],
+        "AAVE-USDT-SWAP": [
+          15229668.193999998,
+          131.39,
+          115991.37999999999
+        ],
+        "BIDU-USDT-SWAP": [
+          29157.598800000003,
+          79.362,
+          367.40000000000003
+        ],
+        "XPL-USDT-SWAP": [
+          7357265.4986,
+          0.05761,
+          127774670.0
+        ],
+        "AEON-USDT-SWAP": [
+          703672.5696,
+          0.02443,
+          28791840.0
+        ],
+        "TRX-USDT-SWAP": [
+          24469157.8502,
+          0.31871,
+          76775620.00000001
+        ],
+        "TTWO-USDT-SWAP": [
+          318486.7344,
+          213.24,
+          1493.5600000000002
+        ],
+        "STRK-USDT-SWAP": [
+          4698645.41118,
+          0.04048,
+          116130633.0
+        ],
+        "PUMP-USDT-SWAP": [
+          21805035.04,
+          0.00393,
+          5551180000.0
+        ],
+        "WOO-USDT-SWAP": [
+          244085.8742,
+          0.012002,
+          20337100.0
+        ],
+        "MPWR-USDT-SWAP": [
+          19220.626200000002,
+          1154.6,
+          16.647000000000002
+        ],
+        "WCT-USDT-SWAP": [
+          417699.0625,
+          0.03127,
+          13366370.0
+        ],
+        "XBI-USDT-SWAP": [
+          135016.8508,
+          149.18,
+          905.06
+        ],
+        "AZTEC-USDT-SWAP": [
+          239334.57,
+          0.01395,
+          17156600.0
+        ],
+        "WET-USDT-SWAP": [
+          370552.0087,
+          0.05231,
+          7083770.0
+        ],
+        "NVDA-USDT-SWAP": [
+          22525509.956400007,
+          185.66,
+          121346.28000000003
+        ],
+        "VIRTUAL-USDT-SWAP": [
+          2096129.4328,
+          0.571,
+          3672266.0
+        ],
+        "BREV-USDT-SWAP": [
+          383627.248,
+          0.07402,
+          5184152.0
+        ],
+        "NAVER-USDT-SWAP": [
+          21114.7456,
+          133.57,
+          158.08
+        ],
+        "DOOD-USDT-SWAP": [
+          1347652.14,
+          0.001679,
+          803130000.0
+        ],
+        "AVGO-USDT-SWAP": [
+          3963744.8704,
+          300.17,
+          13205.44
+        ],
+        "PIPPIN-USDT-SWAP": [
+          1018630.9699,
+          0.01309,
+          77936570.0
+        ],
+        "CASHCAT-USDT-SWAP": [
+          920330.7993,
+          0.09212,
+          9995990.0
+        ],
+        "SNXX-USDT-SWAP": [
+          7032188.1208,
+          3.401,
+          2065860.2
+        ],
+        "ENJ-USDT-SWAP": [
+          237063.6324,
+          0.02333,
+          10170040.0
+        ],
+        "SHELL-USDT-SWAP": [
+          164261.104,
+          0.0203,
+          8091680.0
+        ],
+        "HBAR-USDT-SWAP": [
+          6049416.4794,
+          0.06854,
+          88261110.0
+        ],
+        "CSOPSKHYNIX2L-USDT-SWAP": [
+          1085038.128,
+          1.866,
+          582102.0
+        ],
+        "ALLO-USDT-SWAP": [
+          1438318.0076,
+          0.14714,
+          9777160.0
+        ],
+        "JPM-USDT-SWAP": [
+          58934.304,
+          336.96,
+          174.9
+        ],
+        "BLEND-USDT-SWAP": [
+          224965.1208,
+          0.05032,
+          4470690.0
+        ],
+        "SPK-USDT-SWAP": [
+          553785.36,
+          0.0164,
+          33767400.0
+        ],
+        "SIMO-USDT-SWAP": [
+          46991.6964,
+          156.42,
+          300.42
+        ],
+        "PONS-USDT-SWAP": [
+          7390052.017,
+          0.1848,
+          40011110.0
+        ],
+        "IOST-USDT-SWAP": [
+          817583.5158,
+          0.0006758,
+          1209801000.0
+        ],
+        "SOFTBANK-USDT-SWAP": [
+          143862.33599999998,
+          22.8,
+          6326.4
+        ],
+        "TTMI-USDT-SWAP": [
+          79453.06360000001,
+          64.36,
+          1234.51
+        ],
+        "QQQ-USDT-SWAP": [
+          38539047.082,
+          655.41,
+          58802.33000000001
+        ],
+        "ZEN-USDT-SWAP": [
+          954154.894,
+          5.07,
+          188270.5
+        ],
+        "UB-USDT-SWAP": [
+          518465.589,
+          0.10558,
+          4913900.0
+        ],
+        "ONT-USDT-SWAP": [
+          426914.3268,
+          0.04253,
+          10042680.0
+        ],
+        "NG-USDT-SWAP": [
+          2757851.663,
+          2.989,
+          922667.0
+        ],
+        "APLD-USDT-SWAP": [
+          101469.096,
+          14.76,
+          6874.6
+        ],
+        "SMCI-USDT-SWAP": [
+          544774.0220000001,
+          27.79,
+          19582.100000000002
+        ],
+        "LYTE-USDT-SWAP": [
+          122248.50399999999,
+          13.16,
+          9289.4
+        ],
+        "GOOGL-USDT-SWAP": [
+          38637173.727000006,
+          283.91,
+          136171.05000000002
+        ],
+        "IBKR-USDT-SWAP": [
+          21208.212900000002,
+          73.563,
+          288.3
+        ],
+        "USO-USDT-SWAP": [
+          140161.5375,
+          148.91,
+          941.25
+        ],
+        "CRML-USDT-SWAP": [
+          26252.7447,
+          5.6567,
+          4641.0
+        ],
+        "JP225-USDT-SWAP": [
+          150031.01880000002,
+          57762.0,
+          2.5974
+        ],
+        "US100-USDT-SWAP": [
+          893154.0390000001,
+          26915.0,
+          33.2151
+        ],
+        "IRYS-USDT-SWAP": [
+          1407520.075,
+          0.0188,
+          74669500.0
+        ],
+        "PARTI-USDT-SWAP": [
+          1177080.1926,
+          0.04757,
+          24738970.0
+        ],
+        "TIA-USDT-SWAP": [
+          4713465.3475,
+          0.4226,
+          11156131.0
+        ],
+        "VVV-USDT-SWAP": [
+          3572463.774,
+          21.079,
+          169681.0
+        ],
+        "SPCH-USDT-SWAP": [
+          101273.677,
+          6.679,
+          15163.0
+        ],
+        "ZK-USDT-SWAP": [
+          1346095.9941,
+          0.00952,
+          141470940.0
+        ],
+        "CT-USDT-SWAP": [
+          2314640.0704,
+          0.1223,
+          18935210.0
+        ],
+        "IMX-USDT-SWAP": [
+          1158135.91504,
+          0.11639,
+          9947912.0
+        ],
+        "SKHYNIX-USDT-SWAP": [
+          61178869.03730001,
+          856.8,
+          71462.29300000002
+        ],
+        "KII-USDT-SWAP": [
+          456789.724,
+          0.08516,
+          5363900.0
+        ],
+        "AVNT-USDT-SWAP": [
+          592371.06077,
+          0.08525,
+          6958429.0
+        ],
+        "PLUME-USDT-SWAP": [
+          561452.5158,
+          0.013535,
+          41496860.0
+        ],
+        "AT-USDT-SWAP": [
+          157813.344,
+          0.0976,
+          1616940.0
+        ],
+        "DKNG-USDT-SWAP": [
+          151462.72400000002,
+          18.34,
+          8258.6
+        ],
+        "GMX-USDT-SWAP": [
+          415549.7334,
+          8.314,
+          50078.3
+        ],
+        "MVLL-USDT-SWAP": [
+          700261.632,
+          8.61,
+          81331.2
+        ],
+        "RESOLV-USDT-SWAP": [
+          797101.4021,
+          0.01403,
+          56814070.0
+        ],
+        "TXN-USDT-SWAP": [
+          81258.74119999999,
+          284.38,
+          285.73999999999995
+        ],
+        "BTW-USDT-SWAP": [
+          1914291.0405,
+          1.144,
+          1674063.0
+        ],
+        "BZ-USDT-SWAP": [
+          16873116.2548,
+          99.31,
+          169886.39
+        ],
+        "BLUR-USDT-SWAP": [
+          1200613.35588,
+          0.007387,
+          162552580.0
+        ],
+        "STABLE-USDT-SWAP": [
+          214494.712,
+          0.02631,
+          8146400.0
+        ],
+        "SNOW-USDT-SWAP": [
+          207606.58560000002,
+          273.44,
+          759.2400000000001
+        ],
+        "GILD-USDT-SWAP": [
+          46850.3727,
+          168.23,
+          278.49
+        ],
+        "CGNX-USDT-SWAP": [
+          66904.5,
+          47.45,
+          1410.0
+        ],
+        "SHAZ-USDT-SWAP": [
+          174508.95,
+          20.29,
+          8596.5
+        ],
+        "LINEA-USDT-SWAP": [
+          1001706.125,
+          0.002226,
+          450205000.0
+        ],
+        "SPY-USDT-SWAP": [
+          8444084.1485,
+          736.52,
+          11465.929999999998
+        ],
+        "PI-USDT-SWAP": [
+          1987435.75205,
+          0.07556,
+          26306231.0
+        ],
+        "NET-USDT-SWAP": [
+          221194.692,
+          280.05,
+          789.84
+        ],
+        "XPD-USDT-SWAP": [
+          690643.1922,
+          1030.6,
+          670.137
+        ],
+        "STRC-USDT-SWAP": [
+          1167484.7519999999,
+          99.54,
+          11728.8
+        ],
+        "CFX-USDT-SWAP": [
+          1816380.0363,
+          0.04287,
+          42369490.0
+        ],
+        "USELESS-USDT-SWAP": [
+          2983308.1758,
+          0.12856,
+          23229060.0
+        ],
+        "GLM-USDT-SWAP": [
+          220912.992,
+          0.1062,
+          2080160.0
+        ],
+        "ZRO-USDT-SWAP": [
+          7836044.216,
+          1.6023,
+          4892635.0
+        ],
+        "JTO-USDT-SWAP": [
+          2152460.9986,
+          0.3324,
+          6479413.0
+        ],
+        "PENDLE-USDT-SWAP": [
+          2919317.58,
+          1.692,
+          1725365.0
+        ],
+        "APT-USDT-SWAP": [
+          4222770.928,
+          0.6024,
+          7012240.0
+        ],
+        "ZETA-USDT-SWAP": [
+          871709.8126,
+          0.03454,
+          25237690.0
+        ],
+        "SNDK-USDT-SWAP": [
+          110393293.35490005,
+          849.2,
+          129920.31700000005
+        ],
+        "ETHW-USDT-SWAP": [
+          582256.1655,
+          0.2097,
+          2776615.0
+        ],
+        "MAGIC-USDT-SWAP": [
+          1478210.87802,
+          0.08489,
+          17419407.0
+        ],
+        "GALA-USDT-SWAP": [
+          1230156.58348,
+          0.001574,
+          781548020.0
+        ],
+        "DASH-USDT-SWAP": [
+          2641404.7872,
+          45.18,
+          58489.92
+        ],
+        "DELL-USDT-SWAP": [
+          2003639.5321999998,
+          327.2,
+          6122.469999999999
+        ],
+        "SHOP-USDT-SWAP": [
+          108005.21639999999,
+          144.03,
+          749.88
+        ],
+        "V-USDT-SWAP": [
+          75630.84,
+          422.0,
+          179.22
+        ],
+        "MEME-USDT-SWAP": [
+          337643.60139,
+          0.0003978,
+          848990700.0
+        ],
+        "MP-USDT-SWAP": [
+          76153.254,
+          34.77,
+          2190.2
+        ],
+        "INTW-USDT-SWAP": [
+          1584539.2451999998,
+          4.901,
+          323507.39999999997
+        ],
+        "EWZ-USDT-SWAP": [
+          533500.047,
+          31.63,
+          16866.9
+        ],
+        "SOXL-USDT-SWAP": [
+          63837454.31580002,
+          44.79,
+          1424625.1800000004
+        ],
+        "SYRUP-USDT-SWAP": [
+          828968.283,
+          0.1431,
+          5792930.0
+        ],
+        "AI-USDT-SWAP": [
+          551445.028,
+          0.01487,
+          37084400.0
+        ],
+        "WLD-USDT-SWAP": [
+          30447469.3296,
+          0.3449,
+          88355976.0
+        ],
+        "RLS-USDT-SWAP": [
+          287858.077,
+          0.00199,
+          144652300.0
+        ],
+        "LUNR-USDT-SWAP": [
+          81268.56999999999,
+          8.9,
+          9131.3
+        ],
+        "QCOM-USDT-SWAP": [
+          1163069.9919999999,
+          160.32,
+          7258.299999999999
+        ],
+        "AXTI-USDT-SWAP": [
+          2659975.711,
+          38.71,
+          68822.14
+        ],
+        "APP-USDT-SWAP": [
+          1505661.5869999996,
+          352.42,
+          4272.3499999999985
+        ],
+        "XAU-USDT-SWAP": [
+          151984645.73,
+          4077.0,
+          37294.1
+        ],
+        "FOGO-USDT-SWAP": [
+          572340.8418,
+          0.00236,
+          242929050.0
+        ],
+        "NOW-USDT-SWAP": [
+          437959.54319999996,
+          102.36,
+          4278.62
+        ],
+        "SNX-USDT-SWAP": [
+          511605.4411,
+          0.1652,
+          3098761.0
+        ],
+        "GPS-USDT-SWAP": [
+          397926.62169,
+          0.008013,
+          49660130.0
+        ],
+        "CRO-USDT-SWAP": [
+          913805.2968,
+          0.04906,
+          18626280.0
+        ],
+        "ZBT-USDT-SWAP": [
+          367712.56989,
+          0.06389,
+          5755401.0
+        ],
+        "QNT-USDT-SWAP": [
+          320813.808,
+          30.57,
+          10494.4
+        ],
+        "CL-USDT-SWAP": [
+          32300264.375,
+          91.24,
+          353975.5
+        ],
+        "NMR-USDT-SWAP": [
+          767937.6498,
+          9.213,
+          83371.8
+        ],
+        "BTC-USDT-SWAP": [
+          2649053155.2416115,
+          76201.2,
+          34768.12730000015
+        ],
+        "MOONSHOT-USDT-SWAP": [
+          511660.13600000006,
+          62.27,
+          8216.800000000001
+        ],
+        "ZAMA-USDT-SWAP": [
+          3124445.2624,
+          0.07047,
+          44368720.0
+        ],
+        "XLE-USDT-SWAP": [
+          338533.589,
+          61.99,
+          5461.099999999999
+        ],
+        "LIT-USDT-SWAP": [
+          23579868.9078,
+          3.4048,
+          6928938.0
+        ],
+        "NFLX-USDT-SWAP": [
+          998436.4907999998,
+          64.91,
+          15379.489999999998
+        ],
+        "PLTR-USDT-SWAP": [
+          1646581.8143999998,
+          156.92,
+          10506.519999999999
+        ],
+        "RIOT-USDT-SWAP": [
+          55924.56,
+          15.23,
+          3672.0
+        ],
+        "CC-USDT-SWAP": [
+          2829823.5636,
+          0.09603,
+          29468120.0
+        ],
+        "POET-USDT-SWAP": [
+          134750.5153,
+          4.289,
+          31417.7
+        ],
+        "GIGGLE-USDT-SWAP": [
+          706215.6864,
+          28.59,
+          24727.44
+        ],
+        "EWY-USDT-SWAP": [
+          3907529.8125000005,
+          135.77,
+          28784.750000000004
+        ],
+        "PROVE-USDT-SWAP": [
+          346263.4592,
+          0.1808,
+          1915174.0
+        ],
+        "FLOCK-USDT-SWAP": [
+          512521.868,
+          0.03716,
+          13792300.0
+        ],
+        "AXIS-USDT-SWAP": [
+          992140.144,
+          0.1264,
+          7849210.0
+        ],
+        "SAND-USDT-SWAP": [
+          2654878.688,
+          0.04343,
+          61172320.0
+        ],
+        "OKB-USDT-SWAP": [
+          20629681.0568,
+          106.8,
+          193234.18
+        ],
+        "ACH-USDT-SWAP": [
+          231966.6888,
+          0.004424,
+          52433700.0
+        ],
+        "COMP-USDT-SWAP": [
+          1199826.624,
+          19.68,
+          60966.8
+        ],
+        "MET-USDT-SWAP": [
+          1087842.864,
+          0.2714,
+          4011220.0
+        ],
+        "ONE-USDT-SWAP": [
+          614284.83468,
+          0.001087,
+          565483600.0
+        ],
+        "RDDT-USDT-SWAP": [
+          204523.16199999998,
+          94.42,
+          2166.1
+        ],
+        "HOME-USDT-SWAP": [
+          952714.5872,
+          0.005483,
+          173789600.0
+        ],
+        "FARTCOIN-USDT-SWAP": [
+          2010552.9575,
+          0.1176,
+          17111089.0
+        ],
+        "DDOG-USDT-SWAP": [
+          72796.866,
+          176.7,
+          411.97999999999996
+        ],
+        "MRVL-USDT-SWAP": [
+          7893323.736900001,
+          140.53,
+          56136.29
+        ],
+        "UP-USDT-SWAP": [
+          376453.891,
+          0.0979,
+          3845290.0
+        ],
+        "APR-USDT-SWAP": [
+          2010958.2045,
+          0.04183,
+          48051570.0
+        ],
+        "BB-USDT-SWAP": [
+          274888.769,
+          8.419,
+          32651.0
+        ],
+        "PENGU-USDT-SWAP": [
+          6890188.6344,
+          0.006648,
+          1036430300.0
+        ],
+        "RAM-USDT-SWAP": [
+          249783.33599999998,
+          5.077,
+          49121.6
+        ],
+        "SUSHI-USDT-SWAP": [
+          817413.5616,
+          0.1825,
+          4481434.0
+        ],
+        "ASTER-USDT-SWAP": [
+          10686354.9587,
+          0.6951,
+          15378263.0
+        ],
+        "TURBO-USDT-SWAP": [
+          602487.3659999999,
+          0.0007125,
+          845715000.0
+        ],
+        "ATH-USDT-SWAP": [
+          689809.9992,
+          0.004874,
+          141761200.0
+        ],
+        "ARX-USDT-SWAP": [
+          1191955.344,
+          0.242,
+          4933590.0
+        ],
+        "OPN-USDT-SWAP": [
+          490464.9792,
+          0.03888,
+          12614840.0
+        ],
+        "MEGA-USDT-SWAP": [
+          1133961.3387,
+          0.0462,
+          24528690.0
+        ],
+        "LTC-USDT-SWAP": [
+          28099292.451999996,
+          52.38,
+          536655.7
+        ],
+        "MRK-USDT-SWAP": [
+          133035.38559999998,
+          146.36,
+          908.9599999999999
+        ],
+        "TSM-USDT-SWAP": [
+          4815596.9108,
+          366.89,
+          13141.57
+        ],
+        "SIGN-USDT-SWAP": [
+          480164.295,
+          0.009386,
+          51157500.0
+        ],
+        "BILL-USDT-SWAP": [
+          610342.605,
+          0.004714,
+          129447000.0
+        ],
+        "ARB-USDT-SWAP": [
+          13740532.4295,
+          0.16491,
+          83326455.0
+        ],
+        "ACU-USDT-SWAP": [
+          114047.616,
+          0.1184,
+          963240.0
+        ],
+        "OL-USDT-SWAP": [
+          554826.3525,
+          0.005727,
+          96912900.0
+        ],
+        "WEN-USDT-SWAP": [
+          120644.235,
+          7.857,
+          15355.0
+        ],
+        "NVDL-USDT-SWAP": [
+          105120.59699999998,
+          23.37,
+          4498.099999999999
+        ],
+        "BAND-USDT-SWAP": [
+          199670.9267,
+          0.1801,
+          1108667.0
+        ],
+        "BAC-USDT-SWAP": [
+          68321.61,
+          49.95,
+          1367.8000000000002
+        ],
+        "SPX-USDT-SWAP": [
+          458448.8384,
+          0.3451,
+          1329608.0
+        ],
+        "MINA-USDT-SWAP": [
+          1145879.35248,
+          0.05395,
+          21243592.0
+        ],
+        "ME-USDT-SWAP": [
+          259614.00156,
+          0.04601,
+          5642556.0
+        ],
+        "RSR-USDT-SWAP": [
+          883015.26,
+          0.001471,
+          603152500.0
+        ],
+        "WLFI-USDT-SWAP": [
+          8338407.976,
+          0.04688,
+          177980960.0
+        ],
+        "BMNR-USDT-SWAP": [
+          3333483.197,
+          19.03,
+          175169.9
+        ],
+        "BEAT-USDT-SWAP": [
+          4127362.0372599983,
+          0.10003,
+          41261241.999999985
+        ],
+        "ZKP-USDT-SWAP": [
+          205690.9824,
+          0.03684,
+          5583360.0
+        ],
+        "AUCTION-USDT-SWAP": [
+          764823.585,
+          3.005,
+          254517.0
+        ],
+        "NKE-USDT-SWAP": [
+          220952.7858,
+          39.097,
+          5651.400000000001
+        ],
+        "ANIME-USDT-SWAP": [
+          405118.23651,
+          0.002511,
+          161337410.0
+        ],
+        "PANW-USDT-SWAP": [
+          46843.221,
+          318.9,
+          146.89000000000001
+        ],
+        "KAT-USDT-SWAP": [
+          601012.062,
+          0.003557,
+          168966000.0
+        ],
+        "META-USDT-SWAP": [
+          4092514.056,
+          606.0,
+          6750.65
+        ],
+        "DGAI-USDT-SWAP": [
+          1356453.041,
+          0.7577,
+          1791170.0
+        ],
+        "OXY-USDT-SWAP": [
+          16407.6894,
+          56.442,
+          290.7
+        ],
+        "SEI-USDT-SWAP": [
+          2045638.6034,
+          0.04572,
+          44752540.0
+        ],
+        "ARM-USDT-SWAP": [
+          1314122.832,
+          172.82,
+          7599.599999999999
+        ],
+        "CAP-USDT-SWAP": [
+          8110266.948,
+          0.10858,
+          74556600.0
+        ],
+        "HMSTR-USDT-SWAP": [
+          371622.403,
+          0.000128,
+          2905570000.0
+        ],
+        "NVO-USDT-SWAP": [
+          69563.478,
+          40.002,
+          1739.0
+        ],
+        "ABBV-USDT-SWAP": [
+          40333.078199999996,
+          287.97,
+          140.06
+        ],
+        "PIEVERSE-USDT-SWAP": [
+          4284227.05,
+          1.2574,
+          3406940.0
+        ],
+        "ALGO-USDT-SWAP": [
+          3337996.7934,
+          0.09301,
+          35915610.0
+        ],
+        "CRWD-USDT-SWAP": [
+          282182.25,
+          221.25,
+          1275.3999999999999
+        ],
+        "MON-USDT-SWAP": [
+          2670940.4738,
+          0.017,
+          157206620.0
+        ],
+        "BRETT-USDT-SWAP": [
+          105386.7958,
+          0.003926,
+          26843300.0
+        ],
+        "COAI-USDT-SWAP": [
+          661754.20399,
+          0.219,
+          3023089.1
+        ],
+        "SHEIN-USDT-SWAP": [
+          162569.878,
+          5.003,
+          32638.0
+        ],
+        "HPE-USDT-SWAP": [
+          149406.57599999997,
+          44.96,
+          3323.0999999999995
+        ],
+        "TER-USDT-SWAP": [
+          187653.743,
+          220.3,
+          851.81
+        ],
+        "XDP-USDT-SWAP": [
+          1175815.1123,
+          0.016346,
+          71946100.0
+        ],
+        "TSLA-USDT-SWAP": [
+          14935741.180000003,
+          349.14,
+          42795.820000000014
+        ],
+        "HANMI-USDT-SWAP": [
+          33876.9606,
+          114.06,
+          297.01
+        ],
+        "ATOM-USDT-SWAP": [
+          4828392.504,
+          1.405,
+          3439026.0
+        ],
+        "QUANT-USDT-SWAP": [
+          971707.385,
+          191.5,
+          5074.19
+        ],
+        "RIVN-USDT-SWAP": [
+          198248.90399999998,
+          13.23,
+          14984.8
+        ],
+        "SQQQ-USDT-SWAP": [
+          2888924.4300000006,
+          48.28,
+          59812.10000000001
+        ],
+        "LITE-USDT-SWAP": [
+          5428109.2134,
+          532.01,
+          10195.93
+        ],
+        "SECZ-USDT-SWAP": [
+          221147.2312,
+          7.399,
+          29888.8
+        ],
+        "BOME-USDT-SWAP": [
+          1268442.8985,
+          0.0006315,
+          2008619000.0
+        ],
+        "XIAOMI-USDT-SWAP": [
+          2962523.564,
+          4.001,
+          739891.0
+        ],
+        "OKTA-USDT-SWAP": [
+          162905.73710000003,
+          173.21,
+          940.5100000000002
+        ],
+        "CRV-USDT-SWAP": [
+          5321981.247,
+          0.2555,
+          20845990.0
+        ],
+        "XLM-USDT-SWAP": [
+          9735177.588399999,
+          0.15487,
+          62880619.99999999
+        ],
+        "BNB-USDT-SWAP": [
+          46234859.415,
+          694.52,
+          66581.5
+        ],
+        "CHIP-USDT-SWAP": [
+          1874217.12,
+          0.03764,
+          49846200.0
+        ],
+        "AMGN-USDT-SWAP": [
+          48608.08959999999,
+          461.44,
+          105.33999999999999
+        ],
+        "RKLB-USDT-SWAP": [
+          2122143.5025,
+          47.25,
+          44913.090000000004
+        ],
+        "ENS-USDT-SWAP": [
+          1488404.4896,
+          4.636,
+          321053.6
+        ],
+        "ICP-USDT-SWAP": [
+          5682601.8781,
+          2.423,
+          2346243.55
+        ],
+        "AMAT-USDT-SWAP": [
+          532318.2570000001,
+          331.26,
+          1606.9500000000003
+        ],
+        "MRNA-USDT-SWAP": [
+          1809667.7423999999,
+          244.28,
+          7441.679999999999
+        ],
+        "ON-USDT-SWAP": [
+          222749.96,
+          64.36,
+          3460.9999999999995
+        ],
+        "THETA-USDT-SWAP": [
+          457134.32499999995,
+          0.144,
+          3176749.9999999995
+        ],
+        "LAYER-USDT-SWAP": [
+          264345.50772,
+          0.05292,
+          4995191.0
+        ],
+        "BE-USDT-SWAP": [
+          2008410.7644,
+          175.88,
+          11409.48
+        ],
+        "UNH-USDT-SWAP": [
+          75177.76,
+          392.0,
+          191.78
+        ],
+        "LUNA-USDT-SWAP": [
+          590132.11191,
+          0.0373,
+          15825479.0
+        ],
+        "ESP-USDT-SWAP": [
+          604181.02,
+          0.0782,
+          7726100.0
+        ],
+        "BIGTIME-USDT-SWAP": [
+          230578.83464,
+          0.005944,
+          38804920.0
+        ],
+        "HUMA-USDT-SWAP": [
+          2154690.526,
+          0.01334,
+          161642200.0
+        ],
+        "AEVO-USDT-SWAP": [
+          242496.11027,
+          0.01891,
+          12823697.0
+        ],
+        "ROK-USDT-SWAP": [
+          67209.9337,
+          382.07,
+          175.91
+        ],
+        "GIGADEV-USDT-SWAP": [
+          281433.5223,
+          37.191,
+          7557.9
+        ],
+        "ZHONGJI-USDT-SWAP": [
+          3724321.97,
+          70.08,
+          53197.0
+        ],
+        "DOT-USDT-SWAP": [
+          7650723.2158,
+          0.9258,
+          8267477.0
+        ],
+        "FIL-USDT-SWAP": [
+          10564816.32,
+          0.803,
+          13161600.0
+        ],
+        "COIN-USDT-SWAP": [
+          5041455.897600001,
+          137.61,
+          36627.840000000004
+        ],
+        "CORE-USDT-SWAP": [
+          1083819.90603,
+          0.0129,
+          84082227.0
+        ],
+        "RAY-USDT-SWAP": [
+          2791126.6628,
+          1.7194,
+          1623881.0
+        ],
+        "USAR-USDT-SWAP": [
+          856701.9617,
+          7.501,
+          114211.70000000001
+        ],
+        "JUP-USDT-SWAP": [
+          3020547.076,
+          0.2462,
+          12283640.0
+        ],
+        "NOT-USDT-SWAP": [
+          456171.5275,
+          0.0003251,
+          1403604700.0
+        ],
+        "WAL-USDT-SWAP": [
+          316114.6389,
+          0.02789,
+          11342470.0
+        ],
+        "LRCX-USDT-SWAP": [
+          356518.2648,
+          197.04,
+          1809.3700000000001
+        ],
+        "SHIB-USDT-SWAP": [
+          6614028.6588,
+          4.595e-06,
+          1439710200000.0
+        ],
+        "DRAM-USDT-SWAP": [
+          5435361.959999999,
+          38.99,
+          139403.99999999997
+        ],
+        "CYPH-USDT-SWAP": [
+          130449.275,
+          2.6124,
+          49885.0
+        ],
+        "LPT-USDT-SWAP": [
+          1034132.076,
+          1.368,
+          755944.5
+        ],
+        "GME-USDT-SWAP": [
+          310394.07700000005,
+          24.01,
+          12927.7
+        ],
+        "COST-USDT-SWAP": [
+          217671.84175,
+          1059.05,
+          205.535
+        ],
+        "ADA-USDT-SWAP": [
+          24531825.68200001,
+          0.1849,
+          132676180.00000006
+        ],
+        "TRUST-USDT-SWAP": [
+          131842.9101,
+          0.05797,
+          2274330.0
+        ],
+        "DYDX-USDT-SWAP": [
+          1126333.95456,
+          0.096,
+          11737536.0
+        ],
+        "SKUU-USDT-SWAP": [
+          820255.5499999999,
+          12.07,
+          68071.0
+        ],
+        "TLT-USDT-SWAP": [
+          67626.5658,
+          82.091,
+          823.8
+        ],
+        "SKDD-USDT-SWAP": [
+          1019031.0945,
+          11.895,
+          85596.90000000001
+        ],
+        "MURATA-USDT-SWAP": [
+          27654.9285,
+          29.266,
+          943.5
+        ],
+        "PENG-USDT-SWAP": [
+          139505.4,
+          38.82,
+          3595.4999999999995
+        ],
+        "URNM-USDT-SWAP": [
+          174539.22599999994,
+          39.99,
+          4361.299999999998
+        ],
+        "NEIRO-USDT-SWAP": [
+          414790.8182,
+          6.051e-05,
+          6857180000.0
+        ],
+        "O-USDT-SWAP": [
+          1111287.04,
+          0.4239,
+          2620960.0
+        ],
+        "TRUMP-USDT-SWAP": [
+          15204930.1383,
+          1.217,
+          12493779.9
+        ],
+        "UMC-USDT-SWAP": [
+          20024.5115,
+          13.853,
+          1445.5
+        ],
+        "GMT-USDT-SWAP": [
+          318369.325986,
+          0.005994,
+          53114669.0
+        ],
+        "EDGE-USDT-SWAP": [
+          1770803.166,
+          0.3179,
+          5579090.0
+        ],
+        "ORDER-USDT-SWAP": [
+          484630.347,
+          0.03194,
+          15177900.0
+        ],
+        "ANTHROPIC-USDT-SWAP": [
+          6898291.452319999,
+          151.13,
+          45599.49399999999
+        ],
+        "FET-USDT-SWAP": [
+          1218737.52,
+          0.1464,
+          8330400.0
+        ],
+        "MORPHO-USDT-SWAP": [
+          3333825.4485,
+          2.1208,
+          1572485.0
+        ],
+        "ZM-USDT-SWAP": [
+          106091.376,
+          88.72,
+          1195.8
+        ],
+        "MERL-USDT-SWAP": [
+          1644720.94641,
+          0.03068,
+          53696407.0
+        ],
+        "PROS-USDT-SWAP": [
+          813287.7852,
+          0.5139,
+          1583196.0
+        ],
+        "CNPY-USDT-SWAP": [
+          299326.368,
+          0.1639,
+          1820720.0
+        ],
+        "KMNO-USDT-SWAP": [
+          800308.18,
+          0.0343,
+          23332600.0
+        ],
+        "PNUT-USDT-SWAP": [
+          898582.2637,
+          0.03511,
+          25607930.0
+        ],
+        "OPG-USDT-SWAP": [
+          327184.062,
+          0.11523,
+          2839400.0
+        ],
+        "LAB-USDT-SWAP": [
+          2417371.08886,
+          0.04189,
+          57748951.0
+        ],
+        "ETHFI-USDT-SWAP": [
+          4205841.68,
+          0.5597,
+          7515800.0
+        ],
+        "STX-USDT-SWAP": [
+          2889557.165600001,
+          0.3416,
+          8458891.000000004
+        ],
+        "UVXY-USDT-SWAP": [
+          1737282.8159999999,
+          23.0,
+          75402.9
+        ],
+        "CXMT-USDT-SWAP": [
+          3523794.12,
+          6.085,
+          580335.0
+        ],
+        "SONY-USDT-SWAP": [
+          138524.042,
+          26.74,
+          5174.599999999999
+        ],
+        "CRWV-USDT-SWAP": [
+          2097915.2961999997,
+          44.89,
+          46734.58
+        ],
+        "SOON-USDT-SWAP": [
+          2830735.509,
+          0.2595,
+          10908422.000000002
+        ],
+        "KSTR-USDT-SWAP": [
+          802240.5608000001,
+          18.185,
+          44035.600000000006
+        ],
+        "IREN-USDT-SWAP": [
+          723424.9619999999,
+          20.49,
+          35220.3
+        ],
+        "IWM-USDT-SWAP": [
+          333582.1905,
+          271.45,
+          1228.89
+        ],
+        "MOVE-USDT-SWAP": [
+          336154.11414,
+          0.005837,
+          57590220.0
+        ],
+        "RECALL-USDT-SWAP": [
+          81546.5416,
+          0.02915,
+          2798440.0
+        ],
+        "XAG-USDT-SWAP": [
+          46270347.7848,
+          51.97,
+          890499.38
+        ],
+        "GLW-USDT-SWAP": [
+          875457.0131999999,
+          106.36,
+          8238.819999999998
+        ],
+        "OP-USDT-SWAP": [
+          3758324.64,
+          0.10394,
+          36176000.0
+        ],
+        "POL-USDT-SWAP": [
+          5882556.4785,
+          0.09389,
+          62680410.0
+        ],
+        "JNJ-USDT-SWAP": [
+          182562.5835,
+          271.15,
+          673.29
+        ],
+        "GE-USDT-SWAP": [
+          42082.739400000006,
+          313.98,
+          134.03
+        ],
+        "BX-USDT-SWAP": [
+          114487.1037,
+          119.61,
+          957.1700000000001
+        ],
+        "AVAX-USDT-SWAP": [
+          11851203.2562,
+          8.275,
+          1432862.2000000002
+        ],
+        "CSOPSAMSUNG2L-USDT-SWAP": [
+          243716.04,
+          4.448,
+          54891.0
+        ],
+        "GRASS-USDT-SWAP": [
+          4144286.4333,
+          0.4929,
+          8411379.0
+        ],
+        "NES-USDT-SWAP": [
+          796683.709,
+          0.138,
+          5768890.0
+        ],
+        "MSFT-USDT-SWAP": [
+          4698546.26,
+          534.2,
+          8794.0
+        ],
+        "XTZ-USDT-SWAP": [
+          1121755.0167,
+          0.2493,
+          4499619.0
+        ],
+        "TSLL-USDT-SWAP": [
+          170317.728,
+          8.344,
+          20412.0
+        ],
+        "RDW-USDT-SWAP": [
+          88146.4776,
+          6.337,
+          13916.4
+        ],
+        "MU-USDT-SWAP": [
+          51193731.43200002,
+          685.11,
+          74669.97000000003
+        ],
+        "AEHR-USDT-SWAP": [
+          165761.15399999998,
+          50.79,
+          3264.2999999999997
+        ],
+        "BABY-USDT-SWAP": [
+          346519.2276,
+          0.011622,
+          29815800.0
+        ],
+        "SPACE-USDT-SWAP": [
+          976875.4136,
+          0.003343,
+          292215200.0
+        ],
+        "KGEN-USDT-SWAP": [
+          131538.4364,
+          0.06802,
+          1933820.0
+        ],
+        "AIXBT-USDT-SWAP": [
+          336149.0306,
+          0.01543,
+          21785420.0
+        ],
+        "A-USDT-SWAP": [
+          630158.8323,
+          0.08027,
+          7850490.0
+        ],
+        "METIS-USDT-SWAP": [
+          211695.948,
+          2.594,
+          81578.4
+        ],
+        "BSB-USDT-SWAP": [
+          908884.8336,
+          0.08711,
+          10433760.0
         ]
       }
     }
