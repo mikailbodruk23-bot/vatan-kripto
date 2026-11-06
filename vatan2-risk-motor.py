@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """VATAN 2 public-market risk monitor. Read-only; NEVER places trades.
 
-Feeds: OKX public funding/OI/tickers; BLS release ICS; Federal Reserve FOMC calendar;
+Feeds: Binance USDT-M public funding/OI/tickers; BLS release ICS; Federal Reserve FOMC calendar;
 US Treasury daily yield XML; optional FRED daily broad dollar index (NOT ICE DXY).
 Produces vatan2-risk.json (including rolling public-market snapshots); leaves existing VATAN 2 analyses untouched.
 """
@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 
 UTC = timezone.utc
 NY = ZoneInfo("America/New_York")
-OKX = "https://www.okx.com"
+BINANCE = "https://fapi.binance.com"
 BLS_ICS = "https://www.bls.gov/schedule/news_release/bls.ics"
 FED_CAL = "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
 TREASURY = "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml"
@@ -59,12 +59,14 @@ def get_json(url):
     return json.loads(request_bytes(url).decode("utf-8"))
 
 
-def okx(path, **params):
-    url = OKX + path + (("?" + urlencode(params)) if params else "")
-    payload = get_json(url)
-    if not isinstance(payload, dict) or payload.get("code") != "0" or not isinstance(payload.get("data"), list):
-        raise ValueError("OKX invalid response: " + str(payload)[:180])
-    return payload["data"]
+def binance(path, **params):
+    url=BINANCE+path+(('?' + urlencode(params)) if params else '')
+    value=get_json(url)
+    if not isinstance(value,(dict,list)):
+        raise ValueError('Binance JSON semasi taninmiyor')
+    if isinstance(value,dict) and value.get('code') not in (None,0):
+        raise ValueError('Binance '+str(value.get('code'))+': '+str(value.get('msg'))[:90])
+    return value
 
 
 def number(value):
@@ -228,12 +230,8 @@ def broad_dollar_proxy():
 
 
 def symbol_from_coin(row):
-    value = str(row.get("coin") or row.get("symbol") or row.get("instId") or "").upper().strip()
-    if value.endswith("-USDT-SWAP"):
-        return value
-    if value.endswith("USDT") and "-" not in value:
-        return value[:-4] + "-USDT-SWAP"
-    return ""
+    v=str(row.get('coin') or row.get('symbol') or '').upper().strip()
+    return v if v.endswith('USDT') and '-' not in v else ''
 
 
 def select_candidates(data, limit=60):
@@ -251,7 +249,7 @@ def select_candidates(data, limit=60):
     eligible.sort(reverse=True)
     symbols = [coin for _, _, _, coin in eligible[:limit]]
     # BTC, ETH, SOL always included for broad-market diagnostics.
-    return list(dict.fromkeys(symbols + ["BTC-USDT-SWAP", "ETH-USDT-SWAP", "SOL-USDT-SWAP"]))
+    return list(dict.fromkeys(symbols + ["BTCUSDT", "ETHUSDT", "SOLUSDT"]))
 
 
 def floatdiff(current, previous):
@@ -308,7 +306,7 @@ def load_market_history(previous, now):
         raw_coins = entry.get("values", {})
         if not isinstance(raw_coins, dict):
             continue
-        values = {k: clean_snapshot_values(v) for k, v in raw_coins.items() if isinstance(k, str) and k.endswith("-USDT-SWAP")}
+        values = {k: clean_snapshot_values(v) for k, v in raw_coins.items() if isinstance(k, str) and k.endswith("USDT") and "-" not in k}
         values = {k: v for k, v in values.items() if v is not None}
         if values:
             history.append({"at": stamp(dt), "values": values})
@@ -322,7 +320,7 @@ def load_market_history(previous, now):
                 for coin in rows:
                     if isinstance(coin, dict):
                         symbol = coin.get("coin")
-                        if isinstance(symbol, str) and symbol.endswith("-USDT-SWAP"):
+                        if isinstance(symbol, str) and symbol.endswith("USDT") and "-" not in symbol:
                             v = clean_snapshot_values(coin)
                             if v is not None:
                                 values[symbol] = v
@@ -356,7 +354,7 @@ def reference_sample(history, symbol, now, target=None, tolerance=None):
 def current_market_snapshot(oi_map, px_map, oi_ccy_map, now):
     values = {}
     for symbol in oi_map.keys() & px_map.keys():
-        if isinstance(symbol, str) and symbol.endswith("-USDT-SWAP"):
+        if isinstance(symbol, str) and symbol.endswith("USDT") and "-" not in symbol:
             v = clean_snapshot_values([oi_map[symbol], px_map[symbol], oi_ccy_map.get(symbol)])
             if v is not None:
                 values[symbol] = v
@@ -382,17 +380,38 @@ def assess(funding, oi_usd, last_px, previous):
     return state, alerts, oi_change, px_change
 
 
+def funding_interval_hours(funding_time, next_funding_time):
+    """Return actual funding settlement interval; never assume 8 hours."""
+    try:
+        start, end = int(funding_time), int(next_funding_time)
+        delta = (end - start) / 3600000
+        # Binance may switch among 1/2/4/8 hour intervals during stress.
+        if any(abs(delta - hours) < 0.05 for hours in (1, 2, 4, 8)):
+            return round(delta, 2)
+    except (TypeError, ValueError, OverflowError):
+        pass
+    return None
+
+
+def equivalent_funding_8h_pct(rate, period_hours):
+    """Simple 8-hour equivalent, NOT a forecast of future realized fees."""
+    if rate is None or period_hours is None or period_hours <= 0:
+        return None
+    return round(rate * 100.0 * (8.0 / period_hours), 6)
+
+
 def build_report(now=None):
     global PREVIOUS
     now = now or utc_now()
-    report = {"version": 1, "updated_at": stamp(now), "status": "MONITOR_ONLY",
+    report = {"version": 2, "source": "BINANCE_UM", "market": "USDT-M-PERPETUAL", "updated_at": stamp(now), "status": "MONITOR_ONLY",
               "note": "This monitor cannot approve leveraged trades or predict liquidations.",
               "auto_trade": False, "orders": False, "dxy": {"status": "NOT_CONNECTED", "note": "ICE DXY licensed realtime feed not connected; broad USD proxy is not DXY."},
               "sources": {}, "macro": {}, "coins": [], "errors": []}
 
     if OUT_FILE.exists():
         try:
-            PREVIOUS = json.loads(OUT_FILE.read_text("utf-8"))
+            old = json.loads(OUT_FILE.read_text("utf-8"))
+            PREVIOUS = old if old.get('source')=='BINANCE_UM' else {}
         except (json.JSONDecodeError, OSError):
             PREVIOUS = {}
     # Read previous observations from the already-committed risk report. A one-hour
@@ -409,6 +428,8 @@ def build_report(now=None):
         scan = json.loads(JSON_FILE.read_text("utf-8"))
         if not isinstance(scan, dict) or not scan.get("results"):
             raise ValueError("No results in current scanner JSON")
+        if scan.get('source') != 'BINANCE_UM' or scan.get('market')!='USDT-M-PERPETUAL':
+            raise ValueError('Eski OKX/yanlis borsa taramasi kullanilamaz')
         last_scan = datetime.fromisoformat(str(scan.get("updated_at", "")).replace("Z", "+00:00"))
         if last_scan.tzinfo is None or (now-last_scan).total_seconds() > 40 * 60 or (now-last_scan).total_seconds() < -120:
             raise ValueError("Existing 525-coin scan stale or has invalid timestamp")
@@ -419,68 +440,82 @@ def build_report(now=None):
         coins = []
         report["analysis_source"] = {"status": "UNAVAILABLE"}
 
+    # One bulk request each for mark/funding and 24h prices; OI is per symbol.
+    # FundingInfo is sparse: unlisted symbols use default 8h settlement.
     try:
-        source = okx("/api/v5/public/open-interest", instType="SWAP")
-        oi_map = {x.get("instId"): number(x.get("oiUsd")) for x in source}
-        oi_ccy_map = {x.get("instId"): number(x.get("oiCcy")) for x in source}
-        report["sources"]["okx_open_interest"] = {"status": "OK", "retrieved_at": stamp(now), "symbols": len(oi_map)}
+        premiums=binance('/fapi/v1/premiumIndex')
+        if not isinstance(premiums,list): raise ValueError('premiumIndex bulk missing')
+        premium_map={v['symbol']:v for v in premiums if isinstance(v,dict) and v.get('symbol')}
+        report['sources']['binance_funding']={'status':'OK','retrieved_at':stamp(now),
+                                               'ok_count':0,'requested':len(coins)}
     except Exception as exc:
-        oi_map = {}
-        oi_ccy_map = {}
-        report["errors"].append("OKX OI unavailable: " + str(exc)[:130])
-        report["sources"]["okx_open_interest"] = {"status": "UNAVAILABLE"}
-
+        premium_map={}
+        report['errors'].append('Binance funding/mark: '+str(exc)[:120])
+        report['sources']['binance_funding']={'status':'UNAVAILABLE','ok_count':0,'requested':len(coins)}
     try:
-        market = okx("/api/v5/market/tickers", instType="SWAP")
-        px_map = {x.get("instId"): number(x.get("last")) for x in market}
-        report["sources"]["okx_tickers"] = {"status": "OK", "retrieved_at": stamp(now)}
+        info=binance('/fapi/v1/fundingInfo')
+        adjusted={x['symbol']:number(x.get('fundingIntervalHours')) for x in info if isinstance(x,dict) and x.get('symbol')}
     except Exception as exc:
-        px_map = {}
-        report["errors"].append("OKX tickers unavailable: " + str(exc)[:130])
-        report["sources"]["okx_tickers"] = {"status": "UNAVAILABLE"}
+        # Cannot reliably verify per-contract interval if adjustment endpoint fails.
+        adjusted=None
+        report['errors'].append('Binance funding interval info: '+str(exc)[:100])
+    try:
+        tickers=binance('/fapi/v1/ticker/price')
+        if not isinstance(tickers,list): raise ValueError('tickers bulk missing')
+        px_map={x['symbol']:number(x.get('price')) for x in tickers if isinstance(x,dict) and x.get('symbol')}
+        report['sources']['binance_tickers']={'status':'OK','retrieved_at':stamp(now)}
+    except Exception as exc:
+        px_map={}
+        report['sources']['binance_tickers']={'status':'UNAVAILABLE'}
+        report['errors'].append('Binance ticker: '+str(exc)[:110])
 
-    report["sources"]["okx_funding"] = {"status": "OK", "retrieved_at": stamp(now), "ok_count": 0, "requested": len(coins)}
+    oi_map={}; oi_ccy_map={}
+    successful_oi=0
     for coin in coins:
-        funding = None
-        next_funding = None
+        p=premium_map.get(coin,{})
+        funding=number(p.get('lastFundingRate'))
+        next_funding=p.get('nextFundingTime')
+        period=(adjusted.get(coin,8) if isinstance(adjusted,dict) else None)
+        if period not in (1,2,4,8): period=None
+        if funding is not None and period is not None:
+            report['sources']['binance_funding']['ok_count']+=1
+        oi_ccy=None
         try:
-            row = okx("/api/v5/public/funding-rate", instId=coin)[0]
-            funding = number(row.get("fundingRate"))
-            next_funding = row.get("fundingTime")
-            if funding is not None:
-                report["sources"]["okx_funding"]["ok_count"] += 1
+            raw=binance('/fapi/v1/openInterest',symbol=coin)
+            oi_ccy=valid_positive(raw.get('openInterest'))
+            if oi_ccy is not None: successful_oi+=1
         except Exception as exc:
-            report["errors"].append(f"Funding {coin}: {str(exc)[:100]}")
-        oi = oi_map.get(coin)
-        if oi is not None and oi <= 0:
-            oi = None
-        price = px_map.get(coin)
-        ref = reference_sample(history, coin, now)
-        old_values = {"oi_usd": ref[2][0], "last_price": ref[2][1]} if ref else {}
-        status, alerts, oi_change, px_change = assess(funding, oi, price, old_values)
-        oi_ccy = valid_positive(oi_ccy_map.get(coin))
-        ccy_change = floatdiff(oi_ccy, ref[2][2]) if ref else None
-        # USD open interest moves with price too; base-asset OI is an additional
-        # diagnostic, NOT a stand-alone trade signal.
-        changes = {}
-        for label, target, tolerance in (("5m", 5, 3), ("15m", 15, 6), ("60m", 60, 12)):
-            interval_ref = reference_sample(history, coin, now, target, tolerance)
-            changes[f"oi_change_{label}_pct"] = (floatdiff(oi, interval_ref[2][0]) if interval_ref else None)
-            changes[f"price_change_{label}_pct"] = (floatdiff(price, interval_ref[2][1]) if interval_ref else None)
-        report["coins"].append({"coin": coin, "status": status, "funding_rate": funding,
-                                "funding_pct": round(funding * 100, 5) if funding is not None else None,
-                                "next_funding_ms": next_funding, "oi_usd": oi, "oi_change_pct": oi_change,
-                                "oi_ccy": oi_ccy, "oi_ccy_change_pct": ccy_change,
-                                "last_price": price, "last_price_change_pct": px_change,
-                                "change_reference_at": ref[1] if ref else None,
-                                "change_period_minutes": round(ref[0], 1) if ref else None,
-                                "comparison_status": "OK" if ref else "REFERANS_YOK",
-                                **changes, "warnings": alerts})
-        time.sleep(0.12)
-    if coins and report["sources"]["okx_funding"]["ok_count"] == 0:
-        report["sources"]["okx_funding"]["status"] = "UNAVAILABLE"
+            report['errors'].append('Binance OI '+coin+': '+str(exc)[:90])
+        price=valid_positive(px_map.get(coin))
+        mark=valid_positive(p.get('markPrice'))
+        oi=(oi_ccy*price) if oi_ccy is not None and price is not None else None
+        if oi is not None: oi_map[coin]=oi; oi_ccy_map[coin]=oi_ccy
+        ref=reference_sample(history,coin,now)
+        old_values={'oi_usd':ref[2][0],'last_price':ref[2][1]} if ref else {}
+        status,alerts,oi_change,px_change=assess(funding,oi,price,old_values)
+        ccy_change=floatdiff(oi_ccy,ref[2][2]) if ref else None
+        changes={}
+        for label,target,tolerance in (('5m',5,3),('15m',15,6),('60m',60,12)):
+            interval_ref=reference_sample(history,coin,now,target,tolerance)
+            changes[f'oi_change_{label}_pct']=floatdiff(oi,interval_ref[2][0]) if interval_ref else None
+            changes[f'price_change_{label}_pct']=floatdiff(price,interval_ref[2][1]) if interval_ref else None
+        report['coins'].append({'coin':coin,'status':status,
+            'funding_rate':funding,'funding_pct':round(funding*100,6) if funding is not None else None,
+            'funding_interval_hours':period,
+            'funding_8h_pct':equivalent_funding_8h_pct(funding,period),
+            'next_funding_ms':next_funding,'oi_usd':oi,'oi_change_pct':oi_change,
+            'oi_ccy':oi_ccy,'oi_ccy_change_pct':ccy_change,
+            'mark_price':mark,'last_price':price,'last_price_change_pct':px_change,
+            'change_reference_at':ref[1] if ref else None,
+            'change_period_minutes':round(ref[0],1) if ref else None,
+            'comparison_status':'OK' if ref and ccy_change is not None else 'REFERANS_YOK',
+            **changes,'warnings':alerts})
+    report['sources']['binance_open_interest']={'status':'OK' if successful_oi>0 else 'UNAVAILABLE',
+        'retrieved_at':stamp(now),'symbols':successful_oi}
+    if coins and report['sources']['binance_funding']['ok_count']==0:
+        report['sources']['binance_funding']['status']='UNAVAILABLE'
     if not coins:
-        report["sources"]["okx_funding"]["status"] = "NOT_RUN"
+        report['sources']['binance_funding']['status']='NOT_RUN'
 
     # Preserve snapshots for ALL USDT swaps, not only the top ~60 currently checked.
     # This provides a baseline when the top-list membership changes next run.
@@ -550,9 +585,9 @@ def build_report(now=None):
     # A monitoring addon can ONLY narrow eligibility. It cannot issue new LONG/SHORT/ONAY signals.
     if macro_gate != "OLAY_YOK":
         report["global_risk"] = "BEKLE"
-    elif report["analysis_source"].get("status") == "UNAVAILABLE" or not coins or report["sources"]["okx_funding"].get("status") != "OK":
+    elif report["analysis_source"].get("status") == "UNAVAILABLE" or not coins or report["sources"]["binance_funding"].get("status") != "OK":
         report["global_risk"] = "VERI_EKSIK"
-    elif any(report["sources"].get(k, {}).get("status") != "OK" for k in ("okx_open_interest", "okx_tickers", "us_treasury")):
+    elif any(report["sources"].get(k, {}).get("status") != "OK" for k in ("binance_open_interest", "binance_tickers", "us_treasury")):
         report["global_risk"] = "VERI_EKSIK"
     else:
         report["global_risk"] = "KONTROL_ET"  # not an approval
@@ -563,22 +598,25 @@ def self_test():
     sample = "BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nSUMMARY:Consumer Price Index for Test\r\nDTSTART;TZID=America/New_York:20261110T083000\r\nEND:VEVENT\r\nEND:VCALENDAR"
     assert len(bls_events(sample)) == 1
     assert abs((datetime.fromisoformat(bls_events(sample)[0]["start"]) - datetime(2026, 11, 10, 12, 0, tzinfo=UTC)).total_seconds()) < 2
-    assert symbol_from_coin({"coin": "BTC-USDT-SWAP"}) == "BTC-USDT-SWAP"
-    assert select_candidates({"results": [{"coin": "CAP-USDT-SWAP", "puan": 95}]})[0] == "CAP-USDT-SWAP"
+    assert symbol_from_coin({"coin": "BTCUSDT"}) == "BTCUSDT"
+    assert select_candidates({"results": [{"coin": "CAPUSDT", "puan": 95}]})[0] == "CAPUSDT"
     assert assess(0.002, 150, 80, {"oi_usd": 100, "last_price": 82})[0] == "RISK_UYARISI"
     assert assess(None, 100, 80, {})[0] == "VERI_EKSIK"
+    assert funding_interval_hours("1600000000000", "1600014400000") == 4
+    assert funding_interval_hours("1600000000000", None) is None
+    assert equivalent_funding_8h_pct(0.0003, 4) == 0.06
     html = "<h3>2026 FOMC Meetings</h3><div>December</div><div>8-9*</div><h3>2027 FOMC Meetings</h3><div>January</div><div>26-27</div>"
     assert len(fomc_events(html)) >= 1
     t0 = datetime(2026, 11, 5, 17, 0, tzinfo=UTC)
     t1 = t0 + timedelta(minutes=61)
-    first = {"updated_at": stamp(t0), "coins": [{"coin": "BTC-USDT-SWAP", "oi_usd": 100, "last_price": 80}]}
+    first = {"updated_at": stamp(t0), "coins": [{"coin": "BTCUSDT", "oi_usd": 100, "last_price": 80}]}
     h = load_market_history(first, t1)
-    assert len(h) == 1 and reference_sample(h, "BTC-USDT-SWAP", t1)[0] == 61
-    assert floatdiff(110, reference_sample(h, "BTC-USDT-SWAP", t1)[2][0]) == 10.0
-    assert reference_sample(h, "BTC-USDT-SWAP", t1 + timedelta(hours=4)) is None
-    assert reference_sample(h, "ETH-USDT-SWAP", t1) is None
-    s = current_market_snapshot({"ETH-USDT-SWAP": 200}, {"ETH-USDT-SWAP": 20}, {}, t1)
-    assert s and s["values"]["ETH-USDT-SWAP"][:2] == [200, 20]
+    assert len(h) == 1 and reference_sample(h, "BTCUSDT", t1)[0] == 61
+    assert floatdiff(110, reference_sample(h, "BTCUSDT", t1)[2][0]) == 10.0
+    assert reference_sample(h, "BTCUSDT", t1 + timedelta(hours=4)) is None
+    assert reference_sample(h, "ETHUSDT", t1) is None
+    s = current_market_snapshot({"ETHUSDT": 200}, {"ETHUSDT": 20}, {}, t1)
+    assert s and s["values"]["ETHUSDT"][:2] == [200, 20]
     assert len(load_market_history({"market_history": [s]}, t1 + timedelta(minutes=61))) == 1
     print("SELF_TEST_OK: parsers, OI history, comparisons, stale guards, symbol normalization")
 
