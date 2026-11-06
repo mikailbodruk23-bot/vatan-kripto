@@ -1,1 +1,20 @@
-{"name":"VATAN Kripto Takip","short_name":"VATAN","start_url":"./index.html","display":"standalone","background_color":"#0b1220","theme_color":"#101827","icons":[{"src":"icon.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}
+{
+  "id": "./",
+  "name": "VATAN 2 - Kripto Analiz",
+  "short_name": "VATAN 2",
+  "description": "Canlı Binance Futures veri analizi ve manuel karar desteği",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#061c2b",
+  "theme_color": "#061c2b",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
