@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""VATAN 2 – OKX'teki tüm aktif USDT-SWAP sözleşmelerini tarar.
+"""VATAN 2 – Binance USDT-M aktif perpetual sözleşmelerini tarar.
 
 Python 3.11 standard library; kimlik bilgisi ve otomatik emir gerektirmez.
 Yalnızca kapanmış mumları kullanır. Her coin değerlendirilir; eksik veri
@@ -18,70 +18,73 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
-BASE = "https://www.okx.com"
+from vatan2_core import adx, choppiness, market_regime
+
+BASE = "https://fapi.binance.com"
 BARS = ("1Dutc", "4H", "1H", "15m")
 WEIGHTS = {"1Dutc": 20, "4H": 20, "1H": 15, "15m": 15}
 OUT = Path("son-tum-analiz.json")
 WORKERS = max(1, min(int(os.environ.get("VATAN_WORKERS", "7")), 10))
-MIN_INTERVAL = 0.085  # ~11.7 istek/sn; OKX mum limiti 40/2sn altinda
+MIN_INTERVAL = 0.12  # ~8.3 REST istegi/sn; Binance IP weight ve dalgali hatalara pay
 MIN_TURNOVER = 2_000_000  # Yalnizca islem ONAYI icin; taramaya sinir getirmez
 MAX_SPREAD_PCT = 0.35
 _request_lock = threading.Lock()
 _next_request = 0.0
 
 
-def request_json(path, params, retries=3):
+def request_json(path, params=None, retries=3):
+    """Binance USDT-M public REST; rate-limit aware, no API key."""
     global _next_request
-    url = BASE + path + "?" + urllib.parse.urlencode(params)
-    last_error = None
+    url = BASE + path + (('?' + urllib.parse.urlencode(params)) if params else '')
+    err = None
     for attempt in range(retries):
         with _request_lock:
             now = time.monotonic()
             wait = max(0, _next_request - now)
             _next_request = max(now, _next_request) + MIN_INTERVAL
-        if wait:
-            time.sleep(wait)
+        if wait: time.sleep(wait)
         try:
             req = urllib.request.Request(url, headers={
-                "User-Agent": "VATAN2-OKX-AllScanner/1.0",
-                "Accept": "application/json",
-            })
-            with urllib.request.urlopen(req, timeout=12) as response:
-                result = json.load(response)
-            if result.get("code") != "0":
-                raise ValueError("OKX " + str(result.get("code")) + ": " + str(result.get("msg"))[:90])
-            return result.get("data", [])
-        except (urllib.error.HTTPError, urllib.error.URLError, ValueError, TimeoutError, OSError) as exc:
-            last_error = exc
-            if attempt < retries - 1:
-                time.sleep(0.8 * (attempt + 1))
-    raise RuntimeError(str(last_error)[:160])
+                'User-Agent': 'VATAN2-Binance-UM-Public/1.0', 'Accept': 'application/json'})
+            with urllib.request.urlopen(req, timeout=14) as response:
+                return json.load(response)
+        except urllib.error.HTTPError as exc:
+            err = exc
+            if exc.code in (418, 429):
+                # Do not continue hammering the exchange after a ban/rate limit.
+                raise RuntimeError('Binance rate limit / IP ban: HTTP '+str(exc.code)) from exc
+        except (urllib.error.URLError, ValueError, TimeoutError, OSError) as exc:
+            err = exc
+        if attempt < retries-1: time.sleep(0.8*(attempt+1))
+    raise RuntimeError(str(err)[:160])
 
 
 def discover():
-    instruments = request_json("/api/v5/public/instruments", {"instType": "SWAP"})
-    tickers = request_json("/api/v5/market/tickers", {"instType": "SWAP"})
-    ticks = {x.get("instId"): x for x in tickers}
-    result = []
-    for instrument in instruments:
-        symbol = instrument.get("instId", "")
-        if not (instrument.get("state") == "live" and
-                instrument.get("settleCcy") == "USDT" and
-                symbol.endswith("-USDT-SWAP") and
-                instrument.get("ctType", "linear") == "linear"):
+    info = request_json('/fapi/v1/exchangeInfo')
+    tickers = request_json('/fapi/v1/ticker/24hr')
+    books = request_json('/fapi/v1/ticker/bookTicker')
+    if not isinstance(info, dict) or not isinstance(tickers, list) or not isinstance(books,list):
+        raise ValueError('Binance REST veri semasi beklenmedik')
+    ticks = {t.get('symbol'): t for t in tickers if isinstance(t,dict)}
+    bmap = {t.get('symbol'): t for t in books if isinstance(t,dict)}
+    markets = []
+    for inst in info.get('symbols',[]):
+        symbol = inst.get('symbol','')
+        if not (inst.get('contractType')=='PERPETUAL' and inst.get('status')=='TRADING'
+                and inst.get('quoteAsset')=='USDT' and inst.get('marginAsset')=='USDT'
+                and symbol.endswith('USDT')):
             continue
-        t = ticks.get(symbol, {})
-        price = max(0.0, safe_number(t.get("last")))
-        # OKX volCcy24h: coin miktari; fiyatla carpilarak yaklasik USDT hacmine cevrilir.
-        turnover = safe_number(t.get("volCcy24h")) * price
-        bid = safe_number(t.get("bidPx"))
-        ask = safe_number(t.get("askPx"))
-        spread = 100.0 * (ask - bid) / ((ask + bid) / 2) if bid > 0 and ask >= bid else None
-        result.append({"coin": symbol, "anlik_fiyat": price,
-                       "hacim24h_usdt_tahmini": round(turnover, 2),
-                       "spread_yuzde": round(spread, 4) if spread is not None else None})
-    # TAM KAPSAM: likidite az olsa da coinler elenmez; sadece islem onayi filtrelenir.
-    return sorted(result, key=lambda x: x["coin"])
+        t=ticks.get(symbol,{})
+        b=bmap.get(symbol,{})
+        px=safe_number(t.get('lastPrice'))
+        turnover=safe_number(t.get('quoteVolume'))
+        bid=safe_number(b.get('bidPrice'))
+        ask=safe_number(b.get('askPrice'))
+        spread=(100*(ask-bid)/((ask+bid)/2)) if bid>0 and ask>=bid else None
+        markets.append({'coin':symbol,'anlik_fiyat':px,
+                        'hacim24h_usdt_tahmini':round(turnover,2),
+                        'spread_yuzde':round(spread,5) if spread is not None else None})
+    return sorted(markets,key=lambda x:x['coin'])
 
 
 def safe_number(value):
@@ -93,11 +96,19 @@ def safe_number(value):
 
 
 def candles(symbol, bar):
-    rows = request_json("/api/v5/market/candles", {"instId": symbol, "bar": bar, "limit": "100"})
-    closed = [c for c in rows if len(c) >= 9 and c[8] == "1"]
-    closed.sort(key=lambda c: int(c[0]))
-    if len(closed) < 60:
-        raise ValueError(f"{bar}: sadece {len(closed)} kapanmis mum")
+    interval = {'1Dutc':'1d', '4H':'4h', '1H':'1h','15m':'15m'}[bar]
+    rows=request_json('/fapi/v1/klines', {'symbol':symbol,'interval':interval,'limit':110})
+    if not isinstance(rows,list): raise ValueError('Binance mum listesi eksik')
+    now_ms=int(time.time()*1000)
+    # Binance klines: [open_time,open,high,low,close,base_volume,close_time,quote_volume,...]
+    # Never use current unfinished candle, append the OKX adapter's confirmed flag.
+    closed=[]
+    for candle in rows:
+        if not isinstance(candle,list) or len(candle)<9: continue
+        if int(candle[6])>=now_ms-1500: continue
+        closed.append(candle[:8]+['1'])
+    closed.sort(key=lambda c:int(c[0]))
+    if len(closed)<60: raise ValueError(f'{bar}: {len(closed)} kapanmis mum')
     return closed
 
 
@@ -146,6 +157,50 @@ def atr(rows, period=14):
     return sum(trs) / period
 
 
+def price_action(history):
+    """Closed-candle price structure only. No indicator line on the user chart.
+
+    UTC daily levels refer to the LAST COMPLETED UTC day (yesterday).
+    Sweeps are potential reactions, never guaranteed liquidation/stop data.
+    """
+    day = history['1Dutc'][-1]
+    yesterday = {'acilis': float(day[1]), 'en_yuksek': float(day[2]),
+                 'en_dusuk': float(day[3]), 'kapanis': float(day[4]),
+                 'gun_ts': int(day[0])}
+    hour = history['1H']
+    hr = hour[-21:]
+    closes = [float(c[4]) for c in hr]
+    high = max(float(c[2]) for c in hr)
+    low = min(float(c[3]) for c in hr)
+    path = sum(abs(b-a) for a,b in zip(closes,closes[1:]))
+    efficiency = abs(closes[-1]-closes[0])/path if path else 0
+    regime = 'TREND' if efficiency >= 0.43 else 'YATAY' if efficiency <= 0.22 else 'GECIS'
+    range_position = (closes[-1]-low)/(high-low) if high>low else .5
+    range_position = round(max(0, min(1, range_position)), 3)
+    mid_range = regime == 'YATAY' and 0.35 <= range_position <= 0.65
+
+    sweep = 'YOK'
+    note = 'Son kapanmış 15 dk mumlarında dünün tepe/dibinde belirgin süpürme yok'
+    # Most recent closed candle wins. A wick followed by a close back inside
+    # yesterday's range is only a *possible* stop sweep, not proven liquidation.
+    for c in reversed(history['15m'][-3:]):
+        hi,lo,close = float(c[2]),float(c[3]),float(c[4])
+        if hi > yesterday['en_yuksek'] and close < yesterday['en_yuksek']:
+            sweep = 'TEPE_IGNE_SHORT';note='Dünün tepesinin üstünde iğne, sonra altında kapanış: olası SHORT tuzağı teyidi';break
+        if lo < yesterday['en_dusuk'] and close > yesterday['en_dusuk']:
+            sweep = 'DIP_IGNE_LONG';note='Dünün dibinin altında iğne, sonra üstünde kapanış: olası LONG dönüş teyidi';break
+    return {
+        'dun_seviyeleri': yesterday, 'piyasa_rejimi': regime,
+        'range_konumu': range_position, 'range_orta_riski': mid_range,
+        'likidite_supurmesi': sweep, 'sweep_notu': note,
+        'son_15m_kapanislar': [round(float(c[4]), 10) for c in history['15m'][-28:]],
+        'son_15m_mumlar': [[int(c[0])]+[round(float(c[j]),10) for j in (1,2,3,4)]
+                           for c in history['15m'][-24:]],
+        'son_15m_kapanis_ts': int(history['15m'][-1][0]),
+        'fiyat_yapisi_yontemi':'KAPANMIS_MUM_1H_15M'
+    }
+
+
 def analyze(market, btc_trends):
     symbol = market["coin"]
     row = dict(market)
@@ -177,6 +232,22 @@ def analyze(market, btc_trends):
                   and vols[-1] >= 100_000
                   and spread is not None and 0 <= spread <= MAX_SPREAD_PCT)
         ready = bool(score >= 75 and aligned and btc_ok and liquid and vol > 0)
+        action = price_action(history)
+        # Completed 1h candle ADX/CHOP are confirmation gates, not extra score.
+        adx_1h = adx(history['1H'])
+        chop_1h = choppiness(history['1H'])
+        hours = history['1H'][-21:]
+        close_hours = [float(c[4]) for c in hours]
+        travelled = sum(abs(b-a) for a,b in zip(close_hours, close_hours[1:]))
+        efficiency = abs(close_hours[-1]-close_hours[0])/travelled if travelled else 0
+        regime = market_regime(adx_1h, chop_1h, efficiency)
+        action['piyasa_rejimi'] = regime
+        action['adx1h'] = adx_1h
+        action['chop1h'] = chop_1h
+        action['trend_verimliligi1h'] = round(efficiency, 4)
+        action['rejim_yontemi'] = 'ADX14_CHOP14_EFFICIENCY20_CLOSED_1H'
+        action['range_orta_riski'] = regime == 'YATAY' and 0.35 <= action['range_konumu'] <= 0.65
+        row.update(action)
         row.update({
             "yonler": trends, "fiyat_kapanis": closes[-1],
             "rsi15m": round(strength, 2), "macd15m": round(momentum, 6),
@@ -185,13 +256,18 @@ def analyze(market, btc_trends):
             "likidite_onayi": liquid, "karar": side + " ADAY" if ready else "BEKLE",
             "durum": "ANALIZ_EDILDI", "mum_15m_ts": int(history["15m"][-1][0]),
         })
-        if ready:
+        # Compute a provisional structure-aware plan even if macro/funding
+        # later adjusts the score. The final report shows valid levels ONLY
+        # for 85+ as either approved plan or clearly marked non-tradable draft.
+        if vol > 0 and closes[-1] > 0:
             risk = vol * 1.5
             entry = closes[-1]
-            row.update({"giris_referans": entry,
-                        "stop": round(entry - risk if side == "LONG" else entry + risk, 10),
-                        "hedef": round(entry + 1.8 * risk if side == "LONG" else entry - 1.8 * risk, 10),
-                        "risk_odul": 1.8})
+            stop = entry - risk if side == 'LONG' else entry + risk
+            target = entry + 1.8 * risk if side == 'LONG' else entry - 1.8 * risk
+            if stop > 0 and target > 0:
+                row.update({'giris_referans': entry,
+                            'stop': round(stop, 10), 'hedef': round(target, 10),
+                            'risk_odul': 1.8})
     except (Exception,) as exc:
         row.update({"karar": "BEKLE", "puan": None, "durum": "VERI_EKSIK",
                     "hata": str(exc)[:150]})
@@ -200,15 +276,15 @@ def analyze(market, btc_trends):
 
 def main():
     started = time.monotonic()
-    print("VATAN 2 – TUM AKTIF USDT-SWAP TARAMASI", flush=True)
+    print("VATAN 2 – TUM BINANCE USDT-M TARAMASI", flush=True)
     markets = discover()
     if not markets:
-        raise RuntimeError("OKX'te uygun USDT SWAP sozlesmesi bulunamadi")
-    print("Bulunan aktif USDT SWAP:", len(markets), flush=True)
-    btc_market = next((m for m in markets if m["coin"] == "BTC-USDT-SWAP"), None)
+        raise RuntimeError("Binance USD-M perpetual sozlesme bulunamadi")
+    print("Bulunan aktif USDT-M perpetual:", len(markets), flush=True)
+    btc_market = next((m for m in markets if m["coin"] == "BTCUSDT"), None)
     if not btc_market:
-        raise RuntimeError("BTC yon filtresi icin BTC-USDT-SWAP bulunamadi")
-    btc_trends = {p: direction(candles("BTC-USDT-SWAP", p)) for p in ("1Dutc", "4H")}
+        raise RuntimeError("BTC yon filtresi icin BTCUSDT bulunamadi")
+    btc_trends = {p: direction(candles("BTCUSDT", p)) for p in ("1Dutc", "4H")}
     print("BTC trend filtresi:", btc_trends, flush=True)
     rows = []
     with ThreadPoolExecutor(max_workers=WORKERS) as executor:
@@ -224,8 +300,8 @@ def main():
         raise RuntimeError("Hicbir sozlesme analiz edilemedi; eski sonucu koruyoruz")
     output = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
-        "source": "OKX",
-        "market": "USDT-SWAP",
+        "source": "BINANCE_UM",
+        "market": "USDT-M-PERPETUAL",
         "eligible_count": len(markets),
         "analyzed_count": done,
         "error_count": len(markets) - done,
