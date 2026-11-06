@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#081829"><title>VATAN 2 · Otomatik Fırsat Tarayıcı v9</title>
+<style>:root{color-scheme:dark;--bg:#071625;--panel:#112a3b;--edge:#31516a;--muted:#a8c1ce;--green:#45e3ac;--amber:#ffce75;--red:#ff8597}*{box-sizing:border-box}body{margin:0;background:radial-gradient(at top,#0e3141,var(--bg) 48%);color:#e7f6ff;font:14px/1.55 system-ui,Arial}main{max-width:690px;margin:auto;padding:20px 14px 90px}h1{font-size:26px;margin:6px 0 0}h2{font-size:18px;margin:0 0 8px}p{margin:6px 0 14px}.sub,.muted{color:var(--muted)}.card{border:1px solid var(--edge);background:linear-gradient(145deg,#123044,#0e2538);border-radius:18px;padding:16px;margin:13px 0}label{display:block;margin:8px 0;color:var(--muted)}button,input,select{font:inherit}input,select{background:#0d2638;border:1px solid var(--edge);padding:12px;border-radius:10px;color:#f4ffff;width:100%;min-width:0}button{background:#39dbb0;border:0;border-radius:11px;padding:14px 17px;font-weight:850;color:#09262b;cursor:pointer}button:disabled{opacity:.5}.grid{display:grid;grid-template-columns:2fr 1fr;gap:9px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.small{font-size:12px}.badge{border-radius:9px;border:1px solid var(--edge);font-weight:850;padding:5px 8px;font-size:12px;text-align:center}.warn{color:var(--amber);border-color:#a47f32}.ok{color:var(--green);border-color:#247f6a}.bad{color:var(--red);border-color:#93495c}.score{font-size:22px;font-weight:900}.why{padding:10px;background:#19374a;border-radius:10px;margin:10px 0;font-size:12px}.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.mini div{padding:9px;background:#112638;border-radius:10px;overflow-wrap:anywhere}.mini small{display:block;color:var(--muted);font-size:10px}hr{border:0;border-top:1px solid #2a5065}details{margin-top:8px}summary{cursor:pointer;font-weight:700}.log{white-space:pre-wrap;word-break:break-word;font-size:12px;color:#e8c88a}#rows{display:grid;gap:9px}footer{padding-top:20px;color:var(--muted);font-size:12px}
+.radargrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.radarmetric{background:#0d2638;border-radius:10px;padding:10px;min-width:0}.radarmetric small{display:block;color:var(--muted);font-size:11px}.radarmetric strong{font-size:16px;overflow-wrap:anywhere}.radarnote{background:#1a3847;padding:12px;border-radius:10px;margin:10px 0}.alertline{border-left:3px solid #ffce75;padding:8px 11px;background:#3c3022;border-radius:4px;margin-top:8px}.radartools{display:grid;grid-template-columns:2fr 1fr;gap:10px}.secondary{background:#203e4c;color:#e7f6ff;border:1px solid #4b7b8a}.danger{color:#ff8597}.live{color:#45e3ac}.toolhint{font-size:12px;color:#b4cbd5}
+
+.thinmeter{height:6px;background:#102533;border-radius:10px;overflow:hidden;margin:8px 0}#autoProgress{height:100%;width:0%;background:linear-gradient(90deg,#28bea2,#81f0cf);transition:width .3s}.autoResults{display:grid;gap:8px;max-height:560px;overflow:auto;padding-right:2px}.candidate{padding:12px;border:1px solid #385e72;border-radius:13px;background:#102b3e;cursor:pointer;color:#edf9ff;text-align:left;width:100%;font-weight:400;transition:background .1s}.candidate:active,.candidate:focus-visible{background:#19475c;outline:2px solid var(--green)}.candidate .top{display:flex;align-items:center;justify-content:space-between;gap:8px}.candidate .direction{color:#75e5bc}.candidate.short .direction{color:#ff9ba6}.candidate .num{font-size:21px;font-weight:900}.candidate .meta{font-size:11px;color:#b0d0de;margin-top:5px}.tabs{display:flex;gap:6px;margin:6px 0 12px}.tab{border:1px solid #42667a;background:#1a394b;color:#eafaff;padding:9px 12px;flex:1;font-size:12px}.tab.active{background:#275f54;border-color:#45e3ac}.monitor{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.monitor>div{background:#0e2739;padding:12px;border-radius:11px}.monitor small{display:block;color:#aecad8;font-size:11px}.monitor strong{font-size:16px;overflow-wrap:anywhere}.dot{width:7px;height:7px;border-radius:99px;background:#45e3ac;display:inline-block}.warntext{color:#ffce75}.subtle{color:#aac3cd}.watchline{border-left:3px solid #45e3ac;padding:9px 10px;background:#1a3b42;border-radius:5px;margin:12px 0}.stickyTop{scroll-margin-top:12px}@media(max-width:400px){.grid{grid-template-columns:1fr 1fr}.tab{padding:8px 4px}.candidate .num{font-size:18px}}
+
+/* v7: one verdict, not overlapping direction labels */
+.decisionCard{border-color:#477486;background:linear-gradient(145deg,#173746,#0e2639)}
+.decisionLead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 12px}
+.decisionScore{font-size:26px;font-weight:900}.decisionTag{border:1px solid #647b83;border-radius:11px;font-size:14px;padding:9px 11px;font-weight:900;color:#d7e6ef;background:#304253}
+.decisionTag.candidate{color:#ffda88;background:#3a3122;border-color:#9f7e3e}
+.decisionTag.risk{color:#ffb76c;background:#48311d;border-color:#a67241}
+.decisionTag.missing{color:#e0b3ff;background:#392a4d;border-color:#9266ad}
+.decisionTag.wait{color:#ccd8e1;background:#344554;border-color:#718392}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.check{background:#0d2638;border:1px solid #27495c;border-radius:10px;padding:10px;min-width:0;font-size:12px}
+.check small{display:block;color:#afc6d0}.check strong{display:block;color:#e9f9ff;overflow-wrap:anywhere}
+.check.yes{border-color:#38785e}.check.no{border-color:#835c3b}.check.unknown{border-color:#696080}
+.positive{color:#48e3af}.attention{color:#ffce75}.caution{color:#ebadff}
+</style></head>
+<body><main><header><span style="font-weight:900;color:var(--green)">🇹🇷 VATAN 2 · BINANCE FUTURES</span><h1>Otomatik Fırsat Tarayıcı · v9</h1><p class="sub">Binance USDT-M · 80+ LONG/SHORT adayları · Dokun ve hedefe al · Birleşik sanal karar paneli</p></header>
+<section class="card" id="autoCard" aria-labelledby="autoTitle">
+  <div class="row"><h2 id="autoTitle">⚡ Otomatik piyasa taraması</h2><span class="badge ok" id="autoBadge">BAŞLIYOR</span></div>
+  <p class="small muted">Ekran açıkken otomatik yenilenir. Telefon ekranı kapandığında tarama duraklayabilir; sunucusuz 7/24 bildirim yoktur. <b>80 puan takip adayıdır; 85 puan bile tek başına işlem onayı değildir.</b></p>
+  <div class="grid">
+    <label>Hacme göre tarama kapsamı
+      <select id="autoUniverse"><option value="20">İlk 20 coin</option><option value="40" selected>İlk 40 coin</option><option value="80">İlk 80 coin</option></select>
+    </label>
+    <label>Coinler arası ara
+      <select id="autoDelay"><option value="8">8 saniye</option><option value="12" selected>12 saniye</option><option value="20">20 saniye</option></select>
+    </label>
+  </div>
+  <div class="radartools" style="margin:12px 0 8px">
+    <button id="autoStart" type="button">▶ Otomatik taramayı başlat</button>
+    <button id="autoStop" type="button" class="secondary" disabled>Durdur</button>
+  </div>
+  <p class="small" id="autoStatus" role="status">Tarama başlatılıyor…</p>
+  <div class="thinmeter"><div id="autoProgress"></div></div>
+  <div class="row" style="margin:14px 0 10px"><h2>80+ LONG / SHORT adayları</h2><span id="autoCount" class="sub">0 aday</span></div>
+  <div class="tabs" id="autoTabs">
+    <button type="button" class="tab active" data-filter="ALL">Tümü</button>
+    <button type="button" class="tab" data-filter="LONG">LONG</button>
+    <button type="button" class="tab" data-filter="SHORT">SHORT</button>
+  </div>
+  <div id="autoResults" class="autoResults"><p class="muted small">İlk 80+ aday için tarama bekleniyor.</p></div>
+  <p class="toolhint">Hacmi yüksek seçili sözleşmeler sırayla taranır; tüm Binance coinleri saniyelik taranmaz. Sonuçlar ölçüldükten sonra sıralanır, eskimiş sonuçlar aday listesinden çıkar. Hız sınırı veya erişim hatasında tarama durur.</p>
+</section>
+<section class="card" id="watchCard">
+  <div class="row"><h2>🎯 Hedefteki Coin · Canlı Takip</h2><span id="watchBadge" class="badge warn">HEDEF YOK</span></div>
+  <div id="watchBody"><p class="muted">80+ bir adayın üzerine dokun; coin burada takip edilecek.</p></div>
+  <p class="toolhint" id="watchQuoteStatus" role="status">Hedef seçilince bağımsız Binance canlı fiyat bağlantısı açılır. Veri eskiyse fiyat gizlenir.</p>
+  <div class="radartools" style="margin-top:10px"><button id="watchRefresh" class="secondary" type="button">↻ Hedefi hemen analiz et</button><button id="watchRemove" class="secondary" type="button">Hedefi kaldır</button></div>
+  <p class="small" id="focusStatus" role="status">Hedef analizi bağımsız çalışır; otomatik taramanın başlaması gerekmez.</p>
+  <p class="toolhint">Hedefe almak pozisyon açmaz. Seçilen coin puanı 80 altına düşerse takip sürer fakat aday ve işlem seviyeleri geçersizleşir. Veriler cihazda saklanan yalnızca coin adıyla yeniden yüklenir; geçmiş analiz canlı sinyal sayılmaz.</p>
+</section>
+
+<section class="card decisionCard" id="decisionCard" aria-labelledby="decisionTitle">
+ <h2 id="decisionTitle">🧭 Birleşik Karar Merkezi</h2>
+ <p class="toolhint">Tek nihai durum · Teknik, funding, OI, hacim, spread, balina baskısı ve maliyet teyidini aynı ekranda birleştirir. Canlı fiyat teknik skoru otomatik değiştirmez.</p>
+ <div class="decisionLead"><span id="decisionSymbol" class="muted">Hedef seçilmedi</span><span id="decisionScore" class="decisionScore">—</span><span id="decisionTag" class="decisionTag wait">BEKLE</span></div>
+ <div class="why" id="decisionReason" role="status">80+ bir adaya dokun; bütün karar koşulları burada listelenecek.</div>
+ <div class="checks" id="decisionChecks"></div>
+ <div id="decisionPlan" class="why">85 altında giriş, stop ve hedef gösterilmez.</div>
+ <p class="toolhint" id="decisionStamp">Bu ekran sanal takip içindir; hiçbir koşulda Binance hesabına emir göndermez.</p>
+</section>
+<section class="card"><h2>Bağlantı ve kapsam</h2><p id="status" class="muted" role="status">Henüz tarama başlatılmadı.</p><div class="grid"><label>İlk taranacak coin<input id="symbol" value="BTCUSDT" maxlength="25" autocomplete="off" spellcheck="false" placeholder="BTCUSDT"></label><label>Hacme göre ek coin<select id="count"><option value="0">0</option><option value="5" selected>5</option><option value="10">10</option><option value="20">20</option></select></label></div><button id="scan" style="width:100%">BINANCE ÖN TARAMASINI BAŞLAT</button><p class="small muted">Binance API ağırlık sınırlarına saygılı sınırlı deneme. İşlem verisi ve teyitleri için sınırlı sayıda API isteği kullanır; tüm piyasanın saniyelik taraması değildir.</p></section>
+<section class="card"><h2>Karar güvenliği</h2><p class="small">Bu sayfa telefon üzerinden çalışan teknik / türev piyasa ön taramasıdır; makro ve risk motorunun tamamının yerine geçmez. <strong>Funding, 15 dakikalık açık faiz ve seçili coin için emir defteri/işlem baskısı burada ölçülür.</strong> Makro takvimin tamamı, sürekli derinlik kaydı ve gerçek emir gerçekleşme maliyeti doğrulanmadığından <strong>kesin işlem onayı vermez.</strong> 85+ varsa geçerli giriş/stop/hedefler yalnızca <strong>PLAN TASLAĞI</strong> olarak gösterilir.</p><p class="small">Funding 8 saatlik eşdeğeri bir karşılaştırma tahminidir; gerçek fonlama maliyeti sözleşme takvimine bağlıdır. OI artışı tek başına LONG/SHORT pozisyon açıldığını kanıtlamaz.</p><p class="small">85 puan, %85 kazanma olasılığı değildir. Hiçbir otomatik emir veya API anahtarı kullanılmaz.</p></section>
+<section class="card"><div class="row"><h2>Tarama sonuçları</h2><span id="counter" class="sub">0 coin</span></div><div id="rows"><p class="muted">Tarama başlatılınca sonuçlar burada gösterilecek.</p></div></section>
+
+<section class="card" id="radarCard">
+  <h2>🐋 Balina Radar v8 · Seçili Coin</h2>
+  <p class="small muted">Binance USDT-M · Güncel /market/stream üzerinden gerçekleşen işlemler + her 10 saniyede emir defteri örneği. Sadece uygulama açıkken çalışır.</p>
+  <div class="radartools">
+    <label>Coin<select id="radarSymbol"><option value="">Önce tarama yap</option></select></label>
+    <label>Kontrol<br><button id="radarStop" class="secondary" type="button" disabled style="width:100%;margin-top:7px">Durdur</button></label>
+  </div>
+  <button type="button" id="radarStart" style="width:100%;margin-bottom:10px">🐋 CANLI BALİNA RADARINI BAŞLAT</button>
+  <div class="radarnote" id="radarState" role="status">Ön taramayı tamamla; ardından seçili coinin canlı baskısını takip et. Bu bir LONG/SHORT onayı değildir.</div>
+  <div class="radargrid">
+    <div class="radarmetric"><small>Alış tarafı derinliği (20 kademe)</small><strong id="radarBid">—</strong></div>
+    <div class="radarmetric"><small>Satış tarafı derinliği (20 kademe)</small><strong id="radarAsk">—</strong></div>
+    <div class="radarmetric"><small>Emir defteri alış payı</small><strong id="radarObi">—</strong></div>
+    <div class="radarmetric"><small>Alış / satış baskısı (60 sn)</small><strong id="radarDelta">—</strong></div>
+    <div class="radarmetric"><small>Agresif işlem hacmi</small><strong id="radarTrade">—</strong></div>
+    <div class="radarmetric"><small>En büyük gözlenen işlem</small><strong id="radarBig">—</strong></div>
+    <div class="radarmetric"><small>En iyi bid / ask spread</small><strong id="radarSpread">—</strong></div>
+    <div class="radarmetric"><small>Veri güncelliği</small><strong id="radarAge">—</strong></div>
+  </div>
+  <div class="alertline" id="radarAlert">Balina yönü henüz teyit edilmedi; işlem açma onayı yok.</div>
+  <p class="toolhint">Büyük işlem = balina kimliği/niyeti kanıtı değildir. Emir defteri kademeleri iptal edilebilir; sürekli emir takibi olmadan spoofing teşhisi konmaz. Bu sayfa Binance hesabına emir göndermez.</p>
+</section>
+<section class="card" id="costCard">
+  <h2>🧮 Sanal İşlem Maliyeti ve Risk/Ödül</h2>
+  <p class="small muted">Yalnızca 85+ puanlı, hesaplanmış plan için <b>gösterge amaçlı simülasyon</b>. Emir defterindeki 20 kademe, bugünkü giriş/çıkış maliyetine ilişkin anlık örnektir; gelecekteki stop veya hedef emri için garanti vermez.</p>
+  <div class="mini">
+    <label>Pozisyon büyüklüğü (USDT)<input id="positionNotional" type="number" min="10" max="1000000" step="10" value="100"></label>
+    <label>Tek yön taker komisyonu (%)<input id="takerFee" type="number" min="0" max="1" step="0.005" value="0.05"></label>
+    <label>Ek kayma varsayımı / yön (%)<input id="extraSlip" type="number" min="0" max="2" step="0.01" value="0.02"></label>
+  </div>
+  <p class="toolhint">%0,05 komisyon ve %0,02 ek kayma yalnızca <b>değiştirilebilir örnek varsayımlar</b>dır. Gerçek Binance hesap komisyonunu ve emir türünü sen kontrol etmelisin. Rakamlar marjin tutarı değil, toplam pozisyonun nominal değeridir. <b>Funding maliyeti ve gelecekteki kayma bu net hesabın içinde değildir.</b></p>
+  <div class="radargrid">
+    <div class="radarmetric"><small>20 kademe giriş / çıkış tahmini</small><strong id="costDepth">—</strong></div>
+    <div class="radarmetric"><small>Gidiş-dönüş maliyet (tahmini)</small><strong id="costPct">—</strong></div>
+    <div class="radarmetric"><small>TP1 net risk/ödül</small><strong id="costRR1">—</strong></div>
+    <div class="radarmetric"><small>TP2 net risk/ödül</small><strong id="costRR2">—</strong></div>
+  </div>
+  <div class="alertline" id="costAlert">Önce 85+ coin tara ve aynı coin için Balina Radarını başlat. Veri yoksa hesap yapılmaz.</div>
+</section>
+<section class="card" id="macroCard">
+ <h2>🗓️ ABD Ekonomi Saatleri · Sınırlı Koruma</h2>
+ <p class="small" id="macroStatus">Resmî veri saatleri hesaplanıyor…</p>
+ <p class="toolhint">Yalnızca 6, 10 ve 13 Kasım 2026 BLS açıklamaları eklenmiştir (BLS 2026 resmî takvimi). FOMC ve diğer takvimler burada yok. Takvim tamamlanmadan kesin işlem onayı verilmez. <a href="https://www.bls.gov/schedule/2026/11_sched_list.htm" target="_blank" rel="noopener noreferrer" style="color:#45e3ac">Resmî BLS takvimi</a></p>
+</section>
+<section class="card"><h2>Teknik kayıt</h2><div id="log" class="log">Bekliyor…</div></section><footer>VATAN 2 · Sadece sanal test / karar desteği. Telefon ekranı kapanırsa otomatik tarama duraklayabilir. Binance üzerinden kullanıcı adına işlem açmaz.</footer></main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), API='https://fapi.binance.com';
+const macroReleases=[
+ {name:'ABD İstihdam Raporu (Ekim)',at:'2026-11-06T08:30:00-05:00'},
+ {name:'ABD TÜFE / CPI (Ekim)',at:'2026-11-10T08:30:00-05:00'},
+ {name:'ABD ÜFE / PPI (Ekim)',at:'2026-11-13T08:30:00-05:00'}
+];
+let started=false, banned=false;const rows=[];
+const money=n=>!Number.isFinite(n)?'—':n.toLocaleString('tr-TR',{maximumFractionDigits:n>=100?2:n>=1?4:8});
+const finite=v=>{if(v===null||v===undefined||v==='')return NaN;let x=Number(v);return Number.isFinite(x)?x:NaN};
+const log=(s)=>{$('log').textContent+=`\n${new Date().toLocaleTimeString('tr-TR')} ${s}`;};
+async function json(path,params={},timeout=12000){if(banned)throw Error('429/418 nedeniyle tarama durduruldu');let u=new URL(API+path);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));let ctr=new AbortController(),timer=setTimeout(()=>ctr.abort(),timeout);try{const r=await fetch(u,{cache:'no-store',signal:ctr.signal});if(r.status===429||r.status===418){banned=true;throw Error('HTTP '+r.status+' · Binance hız sınırı; tarama durduruldu')}if(!r.ok)throw Error('HTTP '+r.status+' · '+path);return await r.json();}finally{clearTimeout(timer)}}
+function closeBars(raw){const now=Date.now()-1500;return raw.filter(c=>Array.isArray(c)&&Number(c[6])<now&&c.length>=9).map(c=>({ts:+c[0],o:+c[1],h:+c[2],l:+c[3],c:+c[4],v:+c[7]}));}
+function ema(a,n){let val=a.slice(0,n).reduce((s,x)=>s+x,0)/n;for(let i=n;i<a.length;i++)val+=(a[i]-val)*2/(n+1);return val}
+function rsi(a,n=14){let g=0,l=0;for(let i=1;i<=n;i++){const d=a[i]-a[i-1];g+=Math.max(0,d);l+=Math.max(0,-d)}g/=n;l/=n;for(let i=n+1;i<a.length;i++){let d=a[i]-a[i-1];g=(g*(n-1)+Math.max(d,0))/n;l=(l*(n-1)+Math.max(-d,0))/n}return l===0?(g>0?100:50):100-100/(1+g/l)}
+function macd(a){let m=[];for(let i=26;i<=a.length;i++)m.push(ema(a.slice(0,i),12)-ema(a.slice(0,i),26));return m.at(-1)-ema(m,9)}
+function trs(a){let v=[];for(let i=1;i<a.length;i++){let c=a[i],p=a[i-1];v.push(Math.max(c.h-c.l,Math.abs(c.h-p.c),Math.abs(c.l-p.c)))}return v}
+function atr(a,n=14){let x=trs(a.slice(-n-1));return x.reduce((s,b)=>s+b,0)/n}
+function adx(a,n=14){if(a.length<2*n+2)return NaN;let tr=[],pdm=[],mdm=[];for(let i=1;i<a.length;i++){let c=a[i],p=a[i-1],u=c.h-p.h,d=p.l-c.l;tr.push(Math.max(c.h-c.l,Math.abs(c.h-p.c),Math.abs(c.l-p.c)));pdm.push(u>d&&u>0?u:0);mdm.push(d>u&&d>0?d:0)}let t=tr.slice(0,n).reduce((s,x)=>s+x,0),p=pdm.slice(0,n).reduce((s,x)=>s+x,0),m=mdm.slice(0,n).reduce((s,x)=>s+x,0),dx=[];for(let i=n-1;i<tr.length;i++){if(i>n-1){t=t-t/n+tr[i];p=p-p/n+pdm[i];m=m-m/n+mdm[i]}let pi=t>0?100*p/t:0,mi=t>0?100*m/t:0;dx.push(pi+mi>0?100*Math.abs(pi-mi)/(pi+mi):0)}let x=dx.slice(0,n).reduce((s,v)=>s+v,0)/n;for(let i=n;i<dx.length;i++)x=(x*(n-1)+dx[i])/n;return x}
+function chop(a,n=14){let v=a.slice(-n-1),sum=trs(v).reduce((s,x)=>s+x,0),hi=Math.max(...v.slice(1).map(x=>x.h)),lo=Math.min(...v.slice(1).map(x=>x.l));return hi<=lo?100:Math.max(0,Math.min(100,100*Math.log10(Math.max(1,sum/(hi-lo)))/Math.log10(n)))}
+function trend(a){let v=a.map(x=>x.c),p=v.at(-1),m9=ema(v,9),m21=ema(v,21);return p>m9&&m9>m21?'LONG':p<m9&&m9<m21?'SHORT':'BEKLE'}
+async function bars(s,interval){let a=closeBars(await json('/fapi/v1/klines',{symbol:s,interval,limit:110}));if(a.length<60)throw Error(`${s} ${interval}: kapanmış mum eksik (${a.length})`);return a}
+const tf=['1d','4h','1h','15m'],weights=[20,20,15,15];
+// `fundingInfo` covers adjusted contracts; otherwise infer the *last observed*
+// settlement interval from exchange funding history. Never silently assume 8h.
+function fundingPeriod(mark, history, adjusted) {
+  const official=finite(adjusted?.fundingIntervalHours);
+  if([1,2,4,8].includes(official)) return {hours:official,src:'Binance fundingInfo'};
+  if(!Array.isArray(history)) return {hours:NaN,src:'Geçmiş funding alınamadı'};
+  const h=history.filter(x=>Number.isFinite(finite(x.fundingTime)))
+    .sort((a,b)=>+a.fundingTime-+b.fundingTime);
+  if(h.length<2) return {hours:NaN,src:'Ödeme geçmişi yetersiz'};
+  const delta=(+h.at(-1).fundingTime-+h.at(-2).fundingTime)/3600000;
+  const allowed=[1,2,4,8].find(v=>Math.abs(delta-v)<0.18);
+  if(!allowed) return {hours:NaN,src:'Ödeme aralığı belirsiz'};
+  const last=finite(h.at(-1).fundingTime), now=Date.now();
+  if(now-last>10*3600000||last>now+60000) return {hours:NaN,src:'Geçmiş funding güncel değil'};
+  // When the next time is irregular, do not present a normalized equivalent.
+  const next=finite(mark?.nextFundingTime);
+  if(!(next>now&&next<now+9*3600000)) return {hours:NaN,src:'Sonraki ödeme zamanı belirsiz'};
+  return {hours:allowed,src:'Son ödeme geçmişinden ('+allowed+'s); değişebilir'};
+}
+function oiChange15(history, sym) {
+  if(!Array.isArray(history)) return {pct:NaN,reason:'OI geçmişi alınamadı'};
+  const h=history.filter(x=>x.symbol===sym&&finite(x.sumOpenInterest)>0&&finite(x.timestamp)>0)
+    .sort((a,b)=>+a.timestamp-+b.timestamp);
+  if(h.length<4)return {pct:NaN,reason:'15dk OI referansı eksik'};
+  const last=h.at(-1), ts=+last.timestamp, now=Date.now();
+  if(now-ts>12*60000||ts>now+60000)return {pct:NaN,reason:'OI zaman damgası eski'};
+  const target=ts-15*60000;
+  const prev=h.slice(0,-1).reduce((best,x)=>Math.abs(+x.timestamp-target)<Math.abs(+best.timestamp-target)?x:best,h[0]);
+  const delta=ts-(+prev.timestamp);
+  if(Math.abs(delta-15*60000)>3*60000)return {pct:NaN,reason:'OI 15dk ölçüm aralığı doğrulanmadı'};
+  const first=finite(prev.sumOpenInterest),lastOi=finite(last.sumOpenInterest);
+  if(first<=0||lastOi<=0)return {pct:NaN,reason:'OI değerleri geçersiz'};
+  const pct=(lastOi/first-1)*100;
+  if(!Number.isFinite(pct)||Math.abs(pct)>100)return {pct:NaN,reason:'Anormal OI verisi; teyit yok'};
+  return {pct,reason:'Binance 5dk OI geçmişinden 15dk · sözleşme miktarı',time:ts};
+}
+function calc(sym,h,btc,market,book,mark,extra){
+  let dirs=tf.map(x=>trend(h[x])),m=h['15m'],cl=m.map(x=>x.c),r=rsi(cl),ma=macd(cl);
+  let vol=m.at(-1).v/(m.slice(-21,-1).reduce((s,x)=>s+x.v,0)/20),at=atr(m),a=adx(h['1h']),c=chop(h['1h']);
+  let scores={};
+  for(let side of ['LONG','SHORT']){
+    let sc=dirs.reduce((s,d,i)=>s+(d===side?weights[i]:0),0);
+    if(side==='LONG'&&r>=50&&r<=70||side==='SHORT'&&r>=30&&r<=50)sc+=10;
+    if(side==='LONG'&&ma>0||side==='SHORT'&&ma<0)sc+=10;
+    sc+=vol>=1.3?10:vol>=1?5:0;scores[side]=sc;
+  }
+  const side=scores.LONG>=scores.SHORT?'LONG':'SHORT',score=scores[side];
+  const bid=finite(book?.bidPrice),ask=finite(book?.askPrice),spread=bid>0&&ask>=bid?(ask-bid)/((ask+bid)/2)*100:NaN;
+  const turnover=finite(market?.quoteVolume);
+  const fundingPct=finite(mark?.lastFundingRate)*100;
+  const period=fundingPeriod(mark,extra.fundingHistory,extra.fundingInfo);
+  const fr8=Number.isFinite(fundingPct)&&Number.isFinite(period.hours)?fundingPct*8/period.hours:NaN;
+  const oi=oiChange15(extra.oiHistory,sym);
+  const nextFunding=finite(mark?.nextFundingTime),now=Date.now();
+  const beforeFunding=nextFunding>now && nextFunding-now<=3*60000;
+  const major=['BTCUSDT','ETHUSDT','SOLUSDT'].includes(sym),spreadLimit=major?.04:.12;
+  let issues=[];
+  if(!dirs.every(d=>d===side))issues.push('Zaman dilimleri çelişkili');
+  if(btc[0]!==side||btc[1]!==side)issues.push('BTC ana trendi ters');
+  if(!(vol>=1.3))issues.push('15dk hacim <1,3x');
+  if(!(a>=25&&c<61.8))issues.push('Piyasa rejimi trend değil');
+  if(!(turnover>=2e6&&m.at(-1).v>=1e5))issues.push('Yetersiz likidite');
+  if(!Number.isFinite(spread))issues.push('Spread verisi alınamadı');
+  else if(spread>=spreadLimit)issues.push('Spread riskli');
+  if(!Number.isFinite(fr8))issues.push('Funding dönemi doğrulanmadı');
+  else if(side==='LONG'&&fr8>=.05||side==='SHORT'&&fr8<=-.05)issues.push('Funding aşırı');
+  if(!(nextFunding>now&&nextFunding<now+9*3600000))issues.push('Funding ödeme saati doğrulanmadı');
+  const markTs=finite(mark?.time);
+  if(!(markTs>now-120000&&markTs<now+60000))issues.push('Mark fiyatı/funding zaman damgası doğrulanmadı');
+  else if(beforeFunding)issues.push('Funding ödemesine 3 dk veya daha az');
+  if(!Number.isFinite(oi.pct))issues.push('15dk OI değişimi doğrulanmadı');
+  else if(Math.abs(oi.pct)>=12)issues.push('OI 15dk ani değişim: risk kontrolü');
+  let entry=m.at(-1).c,step=1.5*at,stop=side==='LONG'?entry-step:entry+step,t1=side==='LONG'?entry+step:entry-step,t2=side==='LONG'?entry+1.8*step:entry-1.8*step;
+  let valid=entry>0&&stop>0&&t1>0&&t2>0&&at>0;
+  let missing=issues.some(x=>/alınamadı|doğrulanmadı/.test(x));
+  let danger=issues.some(x=>/Spread riskli|Funding aşırı|OI 15dk ani|Funding ödemesine/.test(x));
+  let status=score<60?'BEKLE':score<85?'ADAY '+side:danger?'RİSKLİ BEKLE':'VERİ EKSİK'; // Makro onayı hâlâ yok; 85+ teknik skor asla nihai onay üretmez.
+  return {sym,side,score,dirs,vol,r,adx:a,chop:c,spread,turnover,fundingPct,fr8,period,oiPct:oi.pct,oiNote:oi.reason,nextFunding,entry,stop,t1,t2,issues,status,valid,ts:m.at(-1).ts};
+}
+function safeNode(tag,cls,text){let e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
+function render(){const root=$('rows');root.replaceChildren();if(rows.length===0){root.append(safeNode('p','muted','Henüz analiz tamamlanmadı.'));return}let sorted=[...rows].sort((a,b)=>b.score-a.score);for(let r of sorted){let card=safeNode('article','card'),head=safeNode('div','row'),name=safeNode('b','',r.sym),badge=safeNode('span','badge '+(r.status.includes('85+')?'ok':r.status.includes('RİSK')?'bad':'warn'),r.status),s=safeNode('div','row');head.append(name,badge);s.append(safeNode('span','sub',r.side+' · teknik puan (olasılık değil)'),safeNode('span','score',r.score+'/100'));card.append(head,s);let info=safeNode('div','why',(r.issues.length?'Eksikler: '+r.issues.join(' · '):'Ön teknik kontrollerde engel yok')+' · Makro takvim, balina/derinlik ve uygulama maliyet teyidi henüz yok; kesin işlem onayı verilmez.');card.append(info);let radarBtn=safeNode('button','secondary','🐋 Bu coini radarda izle');radarBtn.type='button';radarBtn.style.cssText='padding:8px 12px;margin:3px 0 12px;font-size:12px;width:100%';radarBtn.addEventListener('click',()=>selectWatch(r.sym));card.append(radarBtn);let metrics=safeNode('div','mini');for(let [k,v] of [['15dk hacim',r.vol.toFixed(2)+'x'],['Spread',Number.isFinite(r.spread)?'%'+r.spread.toFixed(3):'—'],['RSI',r.r.toFixed(1)],['ADX',r.adx.toFixed(1)],['CHOP',r.chop.toFixed(1)],['Funding (öngörülen)',Number.isFinite(r.fundingPct)?'%'+r.fundingPct.toFixed(4):'—'],['Funding 8s eşd.',Number.isFinite(r.fr8)?'%'+r.fr8.toFixed(4):'Teyit yok'],['Funding aralığı',Number.isFinite(r.period.hours)?r.period.hours+' saat':'Teyit yok'],['OI 15dk (miktar)',Number.isFinite(r.oiPct)?(r.oiPct>=0?'+':'')+r.oiPct.toFixed(2)+'%':'Teyit yok']]){let x=safeNode('div');x.append(safeNode('small','',k),safeNode('b','',v));metrics.append(x)}card.append(metrics);card.append(safeNode('p','small muted','Funding aralığı: '+r.period.src+' · OI: '+r.oiNote+(r.nextFunding>Date.now()?' · Sonraki funding: '+new Date(r.nextFunding).toLocaleString('tr-TR'):' · Sonraki funding teyitsiz')));if(r.score>=85&&r.valid){card.append(safeNode('p','small warn','85+ PLAN TASLAĞI · İŞLEM ONAYI YOK'));let levels=safeNode('div','mini');for(let [k,v] of [['Giriş',r.entry],['Stop',r.stop],['Hedef 1',r.t1],['Hedef 2',r.t2]]){let x=safeNode('div');x.append(safeNode('small','',k),safeNode('b','',money(v)));levels.append(x)}card.append(levels)}else card.append(safeNode('p','small muted',r.score<85?'85 altı: giriş / stop / hedef gösterilmiyor.':'Geçerli işlem seviyeleri hesaplanamadı.'));card.append(safeNode('p','small muted','15dk mum açılışı: '+new Date(r.ts).toLocaleString('tr-TR')+' · Kapanışı: '+new Date(r.ts+900000).toLocaleString('tr-TR')+' · Bu analiz canlı işlem teyidi değildir.'));root.append(card)}$('counter').textContent=rows.length+' coin';refreshRadarOptions();updateCost()}
+async function run(){if(started)return;stopAuto();stopRadar();started=true;banned=false;rows.length=0;render();$('scan').disabled=true;$('log').textContent='';try{$('status').textContent='Binance sözleşmeleri ve piyasa bilgileri alınıyor…';let [info,ticker,bookList]=await Promise.all([json('/fapi/v1/exchangeInfo'),json('/fapi/v1/ticker/24hr'),json('/fapi/v1/ticker/bookTicker')]);let fundingInfos=[];try{fundingInfos=await json('/fapi/v1/fundingInfo');if(!Array.isArray(fundingInfos))fundingInfos=[];}catch(e){log('Funding aralık listesi alınamadı; ödeme geçmişi denenecek: '+e.message)}let fundingMap=new Map(fundingInfos.map(x=>[x.symbol,x]));let valid=new Set(info.symbols.filter(s=>s.contractType==='PERPETUAL'&&s.status==='TRADING'&&s.quoteAsset==='USDT'&&s.marginAsset==='USDT').map(s=>s.symbol)),tick=new Map(ticker.map(t=>[t.symbol,t])),books=new Map(bookList.map(b=>[b.symbol,b]));let inp=$('symbol').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');if(inp&&!valid.has(inp))throw Error('Seçilen coin Binance USDT-M perpetual listesinde yok: '+inp);let extras=[...valid].filter(s=>s!==inp&&finite(tick.get(s)?.quoteVolume)>=2e6).sort((a,b)=>finite(tick.get(b)?.quoteVolume)-finite(tick.get(a)?.quoteVolume)).slice(0,Number($('count').value));let targets=[...new Set([inp,...extras].filter(Boolean))];if(!targets.length)throw Error('Taranacak coin bulunamadı');$('status').textContent='BTC trendleri doğrulanıyor…';let btcH=await Promise.all([bars('BTCUSDT','1d'),bars('BTCUSDT','4h')]);let btc=btcH.map(trend);log('BTC 1D/4H: '+btc.join('/'));for(let i=0;i<targets.length;i++){if(banned)break;let sym=targets[i];$('status').textContent=`Analiz ediliyor: ${i+1}/${targets.length} · ${sym}`;try{const h={};for(const t of tf){h[t]=sym==='BTCUSDT'&&t==='1d'?btcH[0]:sym==='BTCUSDT'&&t==='4h'?btcH[1]:await bars(sym,t)}let [mark,fundingHistory,oiHistory]=await Promise.all([
+  json('/fapi/v1/premiumIndex',{symbol:sym}),
+  json('/fapi/v1/fundingRate',{symbol:sym,limit:4}).catch(e=>{log(sym+' funding geçmişi: '+e.message);return null}),
+  json('/futures/data/openInterestHist',{symbol:sym,period:'5m',limit:8}).catch(e=>{log(sym+' OI geçmişi: '+e.message);return null})
+]);
+let row=calc(sym,h,btc,tick.get(sym),books.get(sym),mark,{fundingInfo:fundingMap.get(sym),fundingHistory,oiHistory});row.autoAt=Date.now();rows.push(row);log(sym+' '+row.side+' '+row.score+'/100: '+row.status+' · Funding 8s '+(Number.isFinite(row.fr8)?row.fr8.toFixed(4)+'%':'TEYİTSİZ')+' · OI15 '+(Number.isFinite(row.oiPct)?row.oiPct.toFixed(2)+'%':'TEYİTSİZ'));render()}catch(e){log(sym+' hata: '+e.message)}await new Promise(resolve=>setTimeout(resolve,300))}let msg=`Tamamlandı: ${rows.length}/${targets.length} coin. Teknik ön tarama; kesin işlem onayı yok.`;$('status').textContent=msg;log(msg)}catch(e){$('status').textContent='Tarama başarısız: '+e.message;log('HATA: '+e.message)}finally{$('scan').disabled=false;started=false;}}
+
+// VATAN 2 v4 — seçilen tek coin için sınırlı canlı baskı izleme.
+// Bu bir alım/satım sinyali, tam order-book rekonstrüksiyonu veya manipülasyon teşhisi değildir.
+const radar={symbol:'',socket:null,poll:null,uiTimer:null,seq:0,book:null,bookAt:0,quoteAt:0,bid:NaN,ask:NaN,trades:[],startedAt:0,lastTradeAt:0,lastTrade:0,lastPrice:NaN,bigTrade:0,bigSide:'',wsError:'',bookError:'',wsTimer:null,retryTimer:null,wsFrames:0,aggFrames:0,lastWsMsg:0,pressureHistory:[],lastPressureSample:0,pressureDirection:""};
+const hugeUsd=n=>Number.isFinite(n)?(Math.abs(n)>=1e6?(n/1e6).toFixed(2)+' Mn $':Math.round(n).toLocaleString('tr-TR')+' $'):'—';
+function refreshRadarOptions(){let sel=$('radarSymbol'),keep=radar.symbol||sel.value;let symbols=[...new Set(rows.map(x=>x.sym))];sel.replaceChildren();if(!symbols.length){sel.append(new Option('Önce tarama yap',''));return}symbols.forEach(s=>sel.append(new Option(s,s)));sel.value=symbols.includes(keep)?keep:symbols[0]}
+function normalizeDepth(d){let b=(d?.bids||[]).slice(0,20),a=(d?.asks||[]).slice(0,20);if(!b.length||!a.length)throw Error('Derinlik kademeleri eksik');let sum=x=>x.reduce((s,v)=>{let p=finite(v[0]),q=finite(v[1]);return s+(p>0&&q>=0?p*q:0)},0);let bid=sum(b),ask=sum(a);if(!(bid>0&&ask>0))throw Error('Derinlik miktarı geçersiz');return {bid,ask,ratio:bid/(bid+ask),bids:b.map(([p,q])=>[finite(p),finite(q)]).filter(([p,q])=>p>0&&q>0).sort((a,b)=>b[0]-a[0]),asks:a.map(([p,q])=>[finite(p),finite(q)]).filter(([p,q])=>p>0&&q>0).sort((a,b)=>a[0]-b[0])} }
+async function updateDepth(seq){let symbol=radar.symbol;if(!symbol)return;try{let d=await json('/fapi/v1/depth',{symbol,limit:20},9000);if(seq!==radar.seq)return;radar.book=normalizeDepth(d);radar.bookAt=Date.now();radar.bookError=''}catch(e){if(seq===radar.seq){radar.bookError=e.message;radar.book=null}}}
+async function updateQuote(seq){const symbol=radar.symbol;if(!symbol)return;try{const q=await json('/fapi/v1/ticker/bookTicker',{symbol},9000);if(seq!==radar.seq)return;const bid=finite(q?.bidPrice),ask=finite(q?.askPrice);if(bid>0&&ask>=bid){radar.bid=bid;radar.ask=ask;radar.quoteAt=Date.now()}}catch(e){/* best-effort public quote; stale data stay invalid */}}
+function stopRadar(){radar.seq++;if(radar.wsTimer){clearTimeout(radar.wsTimer);radar.wsTimer=null}if(radar.retryTimer){clearTimeout(radar.retryTimer);radar.retryTimer=null}if(radar.socket){let s=radar.socket;radar.socket=null;try{s.close(1000,'Kapatıldı')}catch(e){}}if(radar.poll){clearInterval(radar.poll);radar.poll=null}if(radar.uiTimer){clearInterval(radar.uiTimer);radar.uiTimer=null}radar.symbol='';radar.pressureHistory=[];radar.lastPressureSample=0;radar.pressureDirection='';updateCost();if(typeof updateWatch==='function')updateWatch();$('radarStop').disabled=true;$('radarState').textContent='Radar durduruldu. Yeni işlem onayı verilmez.';$('radarAlert').textContent='CANLI TEYİT YOK';$('radarAge').textContent='—';for(const id of ['radarBid','radarAsk','radarObi','radarDelta','radarTrade','radarBig','radarSpread'])$(id).textContent='—'}
+// Derinlik 20 seviyeden fazla tahmin edilmez; emir miktarı tam dolmazsa sonuç geçersizdir.
+function estimateFill(levels,quantity) {
+ if(!(quantity>0)||!Array.isArray(levels)||!levels.length)return NaN;
+ let remain=quantity, paid=0;
+ for(const [p,q] of levels){let fill=Math.min(remain,q); paid+=fill*p;remain-=fill;if(remain<=1e-10)break}
+ return remain>1e-10?NaN:paid/quantity;
+}
+function estimateCostPlan(row,book,bid,ask,notional,feePct,extraSlipPct){
+ if(!row||row.score<85||!row.valid)return {ok:false,reason:'85+ ve geçerli bir plan taslağı bulunamadı'};
+ if(!(bid>0&&ask>=bid&&notional>=10&&notional<=1e6&&feePct>=0&&feePct<=1&&extraSlipPct>=0&&extraSlipPct<=2))return {ok:false,reason:'Pozisyon veya maliyet ayarı geçersiz'};
+ const mid=(bid+ask)/2,quantity=notional/mid;
+ const buy=estimateFill(book?.asks,quantity),sell=estimateFill(book?.bids,quantity);
+ if(!book?.asks?.length||!book?.bids?.length)return {ok:false,reason:'Emir defteri verisi henüz yok veya güncel değil'};
+ if(!(buy>0&&sell>0))return {ok:false,reason:'20 kademede bu pozisyon için yeterli emir derinliği yok'};
+ let impactBuy=Math.max(0,(buy/mid-1)*100),impactSell=Math.max(0,(1-sell/mid)*100);
+ const entryImpact=row.side==='LONG'?impactBuy:impactSell,exitImpact=row.side==='LONG'?impactSell:impactBuy;
+ const costPct=entryImpact+exitImpact+2*feePct+2*extraSlipPct;
+ const grossLoss=Math.abs(row.stop-row.entry)/row.entry*100;
+ const grossGain1=(row.side==='LONG'?row.t1-row.entry:row.entry-row.t1)/row.entry*100;
+ const grossGain2=(row.side==='LONG'?row.t2-row.entry:row.entry-row.t2)/row.entry*100;
+ if(!(grossLoss>0&&grossGain1>0&&grossGain2>0))return {ok:false,reason:'Giriş/stop/hedef yönü hatalı'};
+ return {ok:true,costPct,impactBuy,impactSell,rr1:(grossGain1-costPct)/(grossLoss+costPct),rr2:(grossGain2-costPct)/(grossLoss+costPct),grossLoss,grossGain1,grossGain2,costUsd:notional*costPct/100};
+}
+function updateCost(){
+ const row=rows.find(r=>r.sym===radar.symbol),now=Date.now();
+ const bookFresh=!!radar.book&&now-radar.bookAt<20000,quoteFresh=Number.isFinite(radar.bid)&&Number.isFinite(radar.ask)&&now-radar.quoteAt<15000;
+ let v=estimateCostPlan(row,bookFresh?radar.book:null,quoteFresh?radar.bid:NaN,quoteFresh?radar.ask:NaN,Number($('positionNotional').value),Number($('takerFee').value),Number($('extraSlip').value));
+ const write=(id,s)=>$(id).textContent=s;
+ if(!v.ok){['costDepth','costPct','costRR1','costRR2'].forEach(id=>write(id,'—'));write('costAlert',v.reason+' · İŞLEM ONAYI YOK');return}
+ write('costDepth','Alış / satış yeterli (20 seviye)');write('costPct','%'+v.costPct.toFixed(3)+' ≈ '+hugeUsd(v.costUsd));
+ write('costRR1',v.rr1>0?'1 : '+v.rr1.toFixed(2):'Net getiri ≤ 0');
+ write('costRR2',v.rr2>0?'1 : '+v.rr2.toFixed(2):'Net getiri ≤ 0');
+ const macroNow=isMacroBlocked(Date.now());
+ const result=v.rr2<1.5?'TP2 net risk/ödül 1:1,5 altında':macroNow?'Önemli ABD veri saati: risk freni': 'İşlem maliyeti hesaplandı';
+ write('costAlert',result+' · Anlık derinlik ve komisyon varsayımı · Kesin işlem onayı YOK');
+}
+function isMacroBlocked(now){return macroReleases.some(x=>{let ts=Date.parse(x.at);return Number.isFinite(ts)&&now>=ts-30*60000&&now<=ts+20*60000})}
+function persistentPressure(now,buyShare,bookShare,ready){
+ if(!ready){radar.pressureHistory=[];return {direction:'',count:0}}
+ let state=bookShare>=0.58&&buyShare>=0.65?'LONG':bookShare<=0.42&&buyShare<=0.35?'SHORT':'MIXED';
+ if(now-radar.lastPressureSample>=10000){radar.lastPressureSample=now;radar.pressureHistory.push({time:now,state});}
+ radar.pressureHistory=radar.pressureHistory.filter(x=>now-x.time<=40000).slice(-3);
+ const h=radar.pressureHistory, consistent=h.length===3&&h[0].state===h[1].state&&h[1].state===h[2].state&&h[0].state!=='MIXED'&&h[2].time-h[0].time>=19000;
+ return {direction:consistent?h[0].state:'',count:h.filter(x=>x.state===state&&state!=='MIXED').length};
+}
+function showRadar(){let now=Date.now();let sec=radar.startedAt?Math.floor((now-radar.startedAt)/1000):0;
+ let bookFresh=radar.book&&now-radar.bookAt<=20000, quoteFresh=Number.isFinite(radar.bid)&&Number.isFinite(radar.ask)&&now-radar.quoteAt<=15000;
+ radar.trades=radar.trades.filter(t=>t.ts>now-60000&&t.ts<=now+2000).slice(-12000);
+ let buy=0,sell=0;for(let t of radar.trades){if(t.side==='BUY')buy+=t.usd;else sell+=t.usd}let total=buy+sell, buyShare=total>0?buy/total:NaN;let observedSpan=radar.trades.length>1?(radar.trades.at(-1).ts-radar.trades[0].ts)/1000:0;let biggest=radar.trades.reduce((b,t)=>t.usd>b.usd?t:b,{usd:0,side:''});
+ $('radarBid').textContent=bookFresh?hugeUsd(radar.book.bid):'Teyit yok';$('radarAsk').textContent=bookFresh?hugeUsd(radar.book.ask):'Teyit yok';
+ $('radarObi').textContent=bookFresh?(radar.book.ratio*100).toFixed(1)+'%':'Teyit yok';
+ $('radarDelta').textContent=Number.isFinite(buyShare)?'Alış '+(buyShare*100).toFixed(1)+'% / Satış '+((1-buyShare)*100).toFixed(1)+'%':'Toplanıyor';
+ $('radarTrade').textContent=hugeUsd(total)+' · '+radar.trades.length+' olay · '+Math.max(0,observedSpan).toFixed(0)+' sn örnek';
+ $('radarBig').textContent=biggest.usd>0?hugeUsd(biggest.usd)+' ('+(biggest.side==='BUY'?'alıcı':'satıcı')+')':'—';
+ let spr=quoteFresh&&radar.ask>=radar.bid&&radar.bid>0?(radar.ask-radar.bid)/((radar.ask+radar.bid)/2)*100:NaN;
+ $('radarSpread').textContent=Number.isFinite(spr)?'%'+spr.toFixed(4):'Teyit yok';
+ $('radarAge').textContent='Derinlik '+(radar.bookAt?Math.floor((now-radar.bookAt)/1000)+' sn':'yok')+' · İşlem '+(radar.lastTradeAt?Math.floor((now-radar.lastTradeAt)/1000)+' sn':'yok');
+ let major=['BTCUSDT','ETHUSDT','SOLUSDT'].includes(radar.symbol),spreadLimit=major?0.04:0.12;
+ let ready=bookFresh&&quoteFresh&&radar.lastTradeAt&&now-radar.lastTradeAt<=15000&&sec>=20&&radar.trades.length>=12&&observedSpan>=12&&total>=5000;
+ const gate=!!ready&&radar.socket?.readyState===1&&Number.isFinite(spr)&&spr<spreadLimit;
+ const consistency=persistentPressure(now,buyShare,bookFresh?radar.book.ratio:NaN,gate);
+ radar.pressureDirection=consistency.direction;
+ let pressure='';
+ if(consistency.direction==='LONG')pressure='🟢 3 ÖLÇÜM UYUMLU: OLASI ALICI BASKISI · Sadece ön teyit';
+ else if(consistency.direction==='SHORT')pressure='🔴 3 ÖLÇÜM UYUMLU: OLASI SATICI BASKISI · Sadece ön teyit';
+ else if(gate)pressure='⚪ BASKI TEYİDİ BEKLENİYOR · eş yönlü '+consistency.count+'/3 ölçüm';
+ else if(Number.isFinite(spr)&&spr>=spreadLimit)pressure='🟠 SPREAD GENİŞ · yeni işlem onayı verilmez';
+ else pressure='🟠 VERİ / ÖRNEK YETERSİZ · yön teyidi yok';
+ let daily=rows.find(x=>x.sym===radar.symbol)?.turnover;let bigLimit=major?250000:Math.min(150000,Math.max(25000,Number.isFinite(daily)?daily*0.0005:25000));let bigAlert=biggest.usd>=bigLimit?' · 🐋 OLAĞAN DIŞI BÜYÜK İŞLEM ('+hugeUsd(biggest.usd)+', '+(biggest.side==='BUY'?'agresif alış':'agresif satış')+')':'';$('radarAlert').textContent=pressure+bigAlert+' · Balina niyeti kesin değildir · İŞLEM ONAYI YOK';
+ let warn=radar.wsError?'WebSocket: '+radar.wsError:'';
+ if(radar.bookError)warn+=(warn?' | ':'')+'Derinlik: '+radar.bookError;
+ $('radarState').textContent=radar.symbol+' · '+(radar.socket?.readyState===1?'WebSocket bağlı':'WebSocket bekliyor/kopuk')+' · '+sec+' sn izlendi · WS mesaj '+radar.wsFrames+' / işlem '+radar.aggFrames+(warn?' · '+warn:'')+' · Bağlantı veya veri eskiyse baskı teyitsiz.';
+ updateCost();if(typeof updateWatch==='function')updateWatch();
+}
+function startRadar(symbol,scroll=true){
+ const validSym=rows.some(r=>r.sym===symbol);if(!validSym){$('radarState').textContent='Önce bu coini taratmalısın.';return}
+ stopRadar();let seq=radar.seq;radar.symbol=symbol;radar.startedAt=Date.now();radar.trades=[];radar.bigTrade=0;radar.bid=radar.ask=NaN;radar.bookAt=radar.quoteAt=0;radar.lastTradeAt=0;radar.lastPrice=NaN;radar.wsFrames=radar.aggFrames=0;radar.lastWsMsg=0;radar.wsError='';radar.bookError='';radar.pressureHistory=[];radar.lastPressureSample=0;radar.pressureDirection='';$('radarSymbol').value=symbol;$('radarStop').disabled=false;$('radarState').textContent=symbol+' için canlı Binance verisi başlatılıyor…';
+ const lower=symbol.toLowerCase();
+ // Official Binance Futures routes. First use combined market stream, then raw aggTrade fallback.
+ const urls=['wss://fstream.binance.com/market/stream?streams='+lower+'@aggTrade/'+lower+'@bookTicker','wss://fstream.binance.com/market/ws/'+lower+'@aggTrade'];
+ let endpoint=0,tries=0;
+ function connect(){
+  if(seq!==radar.seq)return;
+  if(radar.wsTimer){clearTimeout(radar.wsTimer);radar.wsTimer=null}
+  const thisEndpoint=endpoint;
+  let ws;
+  try{ws=new WebSocket(urls[thisEndpoint]);}catch(e){radar.wsError='WebSocket açılmadı: '+e.message;scheduleRetry();return}
+  radar.socket=ws;let framesThisConnect=0,aggThisConnect=0,closed=false;
+  function scheduleRetry(){if(seq!==radar.seq)return;if(radar.retryTimer)clearTimeout(radar.retryTimer);radar.retryTimer=setTimeout(()=>{radar.retryTimer=null;if(seq!==radar.seq)return;tries++;endpoint=tries%2;connect()},Math.min(10000,1500+tries*800))}
+  ws.onopen=()=>{if(seq===radar.seq){radar.wsError='';showRadar()}};
+  ws.onmessage=ev=>{
+   if(seq!==radar.seq)return;framesThisConnect++;radar.wsFrames++;radar.lastWsMsg=Date.now();
+   let data;try{const packet=JSON.parse(ev.data);data=packet.data||packet}catch(e){radar.wsError='WebSocket JSON çözümlenemedi';return}
+   if(data.s!==symbol)return;
+   if(data.e==='aggTrade'){
+    aggThisConnect++;radar.aggFrames++;
+    const p=finite(data.p),q=finite(data.q),ts=finite(data.T);
+    if(!(p>0&&q>0&&ts>Date.now()-65000&&ts<Date.now()+2000)){radar.wsError='İşlem geldi, zaman/fiyat doğrulaması başarısız';return}
+    const usd=p*q,side=data.m?'SELL':'BUY';radar.trades.push({ts,usd,side});radar.lastTradeAt=Date.now();radar.lastTrade=usd;radar.lastPrice=p;if(usd>radar.bigTrade){radar.bigTrade=usd;radar.bigSide=side}
+   }else if(data.e==='bookTicker'||('b'in data&&'a'in data)){
+    const bid=finite(data.b),ask=finite(data.a),ts=finite(data.E||data.T);
+    if(bid>0&&ask>=bid&&(!Number.isFinite(ts)||Math.abs(Date.now()-ts)<120000)){radar.bid=bid;radar.ask=ask;radar.quoteAt=Date.now()}
+   }
+  };
+  ws.onerror=()=>{if(seq===radar.seq)radar.wsError='WebSocket bağlantı hatası'};
+  ws.onclose=event=>{if(seq!==radar.seq)return;closed=true;if(radar.wsTimer){clearTimeout(radar.wsTimer);radar.wsTimer=null}radar.wsError='Bağlantı kapandı (kod '+event.code+')';scheduleRetry()};
+  radar.wsTimer=setTimeout(()=>{
+   if(seq!==radar.seq||radar.socket!==ws)return;
+   if(aggThisConnect===0){radar.wsError='15 sn boyunca aggTrade gelmedi; diğer Binance akışı deneniyor';try{ws.close(4000,'No trade messages')}catch(e){} }
+   // If messages come from an aggTrade feed, don't auto-switch while briefly quiet.
+  },15000);
+ }
+ function scheduleRetry(){if(seq!==radar.seq)return;radar.retryTimer=setTimeout(()=>{radar.retryTimer=null;tries++;endpoint=tries%2;connect()},2000)}
+ connect();updateDepth(seq);updateQuote(seq);radar.poll=setInterval(()=>{updateDepth(seq);updateQuote(seq)},10000);radar.uiTimer=setInterval(()=>{if(seq===radar.seq)showRadar()},1000);showRadar();if(scroll)$('radarCard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// VATAN 2 v9 · Otomatik tarama ve hedefteki coin izleme.
+// Sadece sayfa görünürken döngüsel tarama; telefon kapalıyken 7/24 izleme iddiası yok.
+const auto={active:false,paused:false,timer:null,seq:0,universe:[],seen:0,index:0,priority:'',lastMarket:0,ticker:null,books:null,funding:null,market:null,btcH:null,btcAt:0,filter:'ALL',working:false};
+const focus={working:false,lastStarted:0};
+let watchSymbol='';
+try{const saved=localStorage.getItem('vatan2_v7_watch')||localStorage.getItem('vatan2_v6_watch');if(saved&&/^[A-Z0-9]{5,24}$/.test(saved))watchSymbol=saved}catch(e){}
+function storeWatch(sym){try{if(sym)localStorage.setItem('vatan2_v7_watch',sym);else localStorage.removeItem('vatan2_v7_watch')}catch(e){}}
+
+// v9: Independent selected-symbol quote (not coupled to the Whale Radar).
+// Binance Futures @ticker sends the *last traded price*; REST ticker/price is fallback.
+const watchQuote={symbol:'',seq:0,ws:null,retry:null,pollTimer:null,price:NaN,at:0,wsAt:0,source:'',error:'',retryCount:0};
+function quoteFresh(sym, maxAge=15000){return sym&&watchQuote.symbol===sym&&Number.isFinite(watchQuote.price)&&watchQuote.price>0&&Date.now()-watchQuote.at<maxAge;}
+function stopWatchQuote(){
+ watchQuote.seq++;
+ if(watchQuote.retry){clearTimeout(watchQuote.retry);watchQuote.retry=null}
+ if(watchQuote.pollTimer){clearInterval(watchQuote.pollTimer);watchQuote.pollTimer=null}
+ if(watchQuote.ws){let ws=watchQuote.ws;watchQuote.ws=null;try{ws.close()}catch(e){}}
+ watchQuote.symbol='';watchQuote.price=NaN;watchQuote.at=0;watchQuote.wsAt=0;watchQuote.source='';watchQuote.error='';watchQuote.retryCount=0;
+}
+function quoteDisplayStatus(){
+ if(!watchSymbol)return 'Hedef seçilmedi; canlı fiyat bağlantısı kapalı.';
+ if(document.hidden)return 'Ekran arka planda: fiyat canlı kabul edilmez.';
+ if(watchQuote.symbol!==watchSymbol)return 'Hedef fiyat bağlantısı başlatılıyor…';
+ if(quoteFresh(watchSymbol))return 'Canlı fiyat: Binance '+watchQuote.source+' · son veri '+Math.max(0,Math.floor((Date.now()-watchQuote.at)/1000))+' sn önce. Fiyat, teknik puan veya işlem onayı değildir.';
+ return 'Fiyat bağlantısı bekleniyor / veri eski'+(watchQuote.error?' · '+watchQuote.error:'')+'. Eski değer gösterilmiyor.';
+}
+async function pollWatchQuote(seq){
+ if(seq!==watchQuote.seq||!watchQuote.symbol||document.hidden||banned)return;
+ // Do not poll REST while a fresh WebSocket ticker is supplying last trades.
+ if(Date.now()-watchQuote.wsAt<5000)return;
+ const sym=watchQuote.symbol;
+ try{
+  const x=await json('/fapi/v1/ticker/price',{symbol:sym},8000);
+  if(seq!==watchQuote.seq||document.hidden||watchQuote.symbol!==sym)return;
+  const value=finite(x?.price),timestamp=finite(x?.time);
+  if(x?.symbol===sym&&value>0&&(!Number.isFinite(timestamp)||Math.abs(Date.now()-timestamp)<30000)){
+   // A newer WS tick always takes precedence over an in-flight REST response.
+   if(Date.now()-watchQuote.wsAt>=5000){watchQuote.price=value;watchQuote.at=Date.now();watchQuote.source='REST son fiyat';watchQuote.error='';updateWatch()}
+  }else watchQuote.error='REST fiyatı doğrulanamadı';
+ }catch(e){if(seq===watchQuote.seq){watchQuote.error=String(e.message).slice(0,100);updateWatch()}}
+}
+function connectWatchQuote(seq){
+ if(seq!==watchQuote.seq||!watchQuote.symbol||document.hidden)return;
+ const sym=watchQuote.symbol,stream=sym.toLowerCase()+'@ticker';
+ let socket;
+ try{socket=new WebSocket('wss://fstream.binance.com/market/stream?streams='+stream)}
+ catch(e){watchQuote.error='WebSocket açılamadı';retryWatchQuote(seq);return}
+ watchQuote.ws=socket;
+ socket.onopen=()=>{if(seq===watchQuote.seq){watchQuote.error='';updateWatch()}};
+ socket.onmessage=ev=>{
+  if(seq!==watchQuote.seq||document.hidden||watchQuote.symbol!==sym)return;
+  try{
+   const p=JSON.parse(ev.data),d=p.data||p;
+   if(d.s!==sym||d.e!=='24hrTicker'||d.st===2)return;
+   const value=finite(d.c),when=finite(d.E);
+   if(!(value>0)||!(when>Date.now()-30000&&when<Date.now()+5000))return;
+   watchQuote.price=value;watchQuote.at=Date.now();watchQuote.wsAt=Date.now();watchQuote.source='WebSocket son işlem';watchQuote.error='';updateWatch();
+  }catch(e){watchQuote.error='Fiyat mesajı çözümlenemedi'}
+ };
+ socket.onerror=()=>{if(seq===watchQuote.seq)watchQuote.error='WebSocket ağ hatası';};
+ socket.onclose=()=>{if(seq===watchQuote.seq&&!document.hidden){watchQuote.ws=null;retryWatchQuote(seq)}};
+}
+function retryWatchQuote(seq){
+ if(seq!==watchQuote.seq||document.hidden)return;
+ if(watchQuote.retry)clearTimeout(watchQuote.retry);
+ const wait=Math.min(15000,2000*Math.pow(1.6,Math.min(5,watchQuote.retryCount++)));
+ watchQuote.retry=setTimeout(()=>{watchQuote.retry=null;connectWatchQuote(seq)},wait);
+}
+function startWatchQuote(sym){
+ stopWatchQuote();if(!sym||document.hidden)return;
+ watchQuote.symbol=sym;const seq=watchQuote.seq;
+ // Immediate REST bootstrap then live WS. The poll is a limited fallback.
+ pollWatchQuote(seq);connectWatchQuote(seq);
+ watchQuote.pollTimer=setInterval(()=>{
+  if(seq!==watchQuote.seq||document.hidden)return;
+  if(watchQuote.ws?.readyState===1&&watchQuote.wsAt>0&&Date.now()-watchQuote.wsAt>30000){
+   watchQuote.error='Fiyat akışı durdu; yeniden bağlanılıyor';try{watchQuote.ws.close()}catch(e){}
+  }
+  pollWatchQuote(seq);updateWatch();
+ },9000);
+}
+
+// The newest *fully closed* 15m candle, with 2 seconds settlement tolerance.
+function latestClosed15Open(now=Date.now()){return Math.floor((now-2000)/900000)*900000-900000;}
+function freshScan(r,now=Date.now()){
+ return !!r&&Number.isFinite(r.autoAt)&&r.autoAt>0&&now>=r.autoAt&&now-r.autoAt<25*60000&&Number.isFinite(r.ts)&&r.ts===latestClosed15Open(now);
+}
+function cleanCandidates(){let now=Date.now();return rows.filter(r=>r.score>=80&&freshScan(r,now))}
+function renderCandidates(){
+ let list=cleanCandidates().filter(r=>auto.filter==='ALL'||r.side===auto.filter).sort((a,b)=>b.score-a.score||b.autoAt-a.autoAt);
+ $('autoCount').textContent=cleanCandidates().length+' aday';let box=$('autoResults');box.replaceChildren();
+ if(!list.length){box.append(safeNode('p','muted small',auto.active?'Güncel kapanmış mumlarla taranan coinlerde henüz 80+ aday yok. Puanı düşürmeyeceğiz.':'Tarama durmuş. Eski adaylar güncel sinyal olarak gösterilmez.'));return}
+ for(const r of list){
+  let el=safeNode('button','candidate '+(r.side==='SHORT'?'short':''));el.type='button';el.dataset.sym=r.sym;
+  let top=safeNode('div','top');let title=safeNode('div');title.append(safeNode('strong','',r.sym),safeNode('div','direction',r.side+' ADAY'));
+  top.append(title,safeNode('span','num',r.score+'/100'));el.append(top);
+  const time=new Date(r.autoAt).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+  el.append(safeNode('div','meta','15dk hacim '+r.vol.toFixed(2)+'x · Spread '+(Number.isFinite(r.spread)?'%'+r.spread.toFixed(3):'teyitsiz')+' · '+time+(watchSymbol===r.sym?' · 🎯 HEDEFTE':'')));
+  el.append(safeNode('div','meta',(r.score>=85?'85+ PLAN TASLAĞI':'80–84 TAKİP ADAYI')+' · '+(r.issues.length?r.issues.slice(0,2).join(' · '):'Ek risk teyidi bekleniyor')));
+  el.addEventListener('click',()=>selectWatch(r.sym));box.append(el);
+ }
+}
+function selectedRow(){return rows.find(r=>r.sym===watchSymbol)||null}
+
+// Birleşik karar KESİN AL/SAT üretmez: eksik makro / gerçek emir maliyeti / sürekli piyasa yapısı kaydı.
+function computeUnified(r,now=Date.now()){
+ if(!watchSymbol) return {label:'HEDEF YOK',style:'wait',why:'80+ aday listesinden bir coin seç.',checks:[],showPlan:false,fresh:false};
+ const fresh=freshScan(r,now);
+ if(!fresh)return {label:'VERİ EKSİK',style:'missing',why:'Güncel kapanmış mum analizi yok; otomatik taramayı başlat veya hedefi yeniden analiz et.',checks:[],showPlan:false,fresh:false};
+ const rowSide=r.side,major=['BTCUSDT','ETHUSDT','SOLUSDT'].includes(r.sym),maxSpread=major?0.04:0.12;
+ const trendOK=Array.isArray(r.dirs)&&r.dirs.length===4&&r.dirs.every(d=>d===rowSide),volOK=Number.isFinite(r.vol)&&r.vol>=1.3;
+ const regimeOK=Number.isFinite(r.adx)&&Number.isFinite(r.chop)&&r.adx>=25&&r.chop<61.8;
+ const spreadOK=Number.isFinite(r.spread)&&r.spread<maxSpread;
+ const fundingOK=Number.isFinite(r.fr8)&&Number.isFinite(r.period?.hours)&&!((rowSide==='LONG'&&r.fr8>=0.05)||(rowSide==='SHORT'&&r.fr8<=-0.05))&&r.nextFunding>now+180000;
+ const oiOK=Number.isFinite(r.oiPct)&&Math.abs(r.oiPct)<12;
+ const radarSelected=radar.symbol===r.sym,bookFresh=radarSelected&&!!radar.book&&now-radar.bookAt<20000;
+ const wsFresh=radarSelected&&radar.socket?.readyState===1&&!!radar.lastTradeAt&&now-radar.lastTradeAt<12000;
+ const whaleOK=!!(bookFresh&&wsFresh&&radar.pressureDirection===rowSide);
+ const macroBrake=isMacroBlocked(now);
+ const price=quoteFresh(r.sym)?watchQuote.price:wsFresh&&Number.isFinite(radar.lastPrice)?radar.lastPrice:NaN;
+ const drift=Number.isFinite(price)&&r.entry>0?Math.abs(price/r.entry-1)*100:NaN;
+ const cost=(radarSelected&&bookFresh&&now-radar.quoteAt<15000)?estimateCostPlan(r,radar.book,radar.bid,radar.ask,Number($('positionNotional').value),Number($('takerFee').value),Number($('extraSlip').value)):{ok:false,reason:'Güncel hedef radar/derinlik verisi yok'};
+ const costOK=cost.ok&&Number.isFinite(cost.rr2)&&cost.rr2>=1.5;
+ const risk=r.issues.some(x=>/Spread riskli|Funding aşırı|OI 15dk ani|Funding ödemesine/.test(x))||macroBrake||(cost.ok&&cost.rr2<1.5)||(Number.isFinite(drift)&&drift>=0.75);
+ let label='BEKLE',style='wait';
+ if(r.score<80){label='BEKLE';style='wait'}
+ else if(r.score<85){label='ADAY '+rowSide;style='candidate'}
+ else if(risk){label='RİSKLİ BEKLE';style='risk'}
+ else {label='VERİ EKSİK';style='missing'}
+ const checks=[
+  {name:'Teknik / 4 zaman',ok:trendOK,detail:trendOK?'Uyumlu':'Çelişki var'},
+  {name:'15dk hacim',ok:volOK,detail:Number.isFinite(r.vol)?r.vol.toFixed(2)+'x':'Veri yok'},
+  {name:'Piyasa rejimi',ok:regimeOK,detail:regimeOK?'Trend filtresi uygun':'Yatay / çelişkili'},
+  {name:'Spread',ok:spreadOK,detail:Number.isFinite(r.spread)?'%'+r.spread.toFixed(3):'Teyitsiz'},
+  {name:'Funding',ok:fundingOK,detail:Number.isFinite(r.fr8)?'%'+r.fr8.toFixed(4)+' (8s eşd.)':'Teyitsiz'},
+  {name:'OI / 15dk',ok:oiOK,detail:Number.isFinite(r.oiPct)?(r.oiPct>0?'+':'')+r.oiPct.toFixed(2)+'%':'Teyitsiz'},
+  {name:'Balina / 3 örnek',ok:whaleOK,detail:whaleOK?'Yön eşleşti · ön teyit':!radarSelected?'Radar hedefi izlemiyor':!wsFresh?'Canlı işlem akışı yok':'Uyum doğrulanmadı'},
+  {name:'Net TP2 risk/ödül',ok:costOK,detail:cost.ok?'1 : '+cost.rr2.toFixed(2):'85+ ve derinlik gerekli'},
+  {name:'Makro takvim',ok:false,detail:macroBrake?'Duyuru saati risk freni':'Tam güncel takvim bağlı değil'}
+ ];
+ let why=r.score<80?'Puan 80 altında: takip sürer, işlem adayı değil.':r.score<85?'80–84: yalnızca takip adayı; işlem seviyeleri gizli.':risk?'Teknik skor 85+ ancak risk kapısı var.':'Teknik skor 85+; tam risk ve haber doğrulaması eksik.';
+ if(!trendOK)why+=' Zaman dilimleri uyumsuz.';
+ if(!volOK)why+=' 15dk hacim 1,3x altında.';
+ if(!whaleOK)why+=' Canlı balina yönü teyitsiz.';
+ if(macroBrake)why+=' Makro veri saati nedeniyle yeni işlem açılmamalı.';
+ if(Number.isFinite(drift)&&drift>=0.75)why+=' Canlı fiyat son kapanıştan %'+drift.toFixed(2)+' uzaklaşmış.';
+ return {label,style,why,checks,showPlan:r.score>=85&&r.valid,fresh,drift,macroBrake,cost};
+}
+function renderUnified(){
+ const sym=watchSymbol,r=selectedRow(),dec=computeUnified(r),tag=$('decisionTag');
+ $('decisionSymbol').textContent=sym||'Hedef seçilmedi';$('decisionScore').textContent=dec.fresh?r.score+'/100':'—';tag.className='decisionTag '+dec.style;tag.textContent=dec.label;
+ $('decisionReason').textContent=dec.why;let root=$('decisionChecks');root.replaceChildren();
+ for(let item of dec.checks){let cell=safeNode('div','check '+(item.ok?'yes':item.detail.includes('Teyitsiz')?'unknown':'no'));cell.append(safeNode('small','',item.name),safeNode('strong','',item.ok?'✓ '+item.detail:'• '+item.detail));root.append(cell)}
+ let plan=$('decisionPlan');plan.replaceChildren();
+ if(dec.showPlan){plan.append(safeNode('strong','attention','85+ PLAN TASLAĞI · İŞLEM ONAYI YOK'));let levels=safeNode('div','mini');levels.style.marginTop='8px';for(let [name,num] of [['Giriş',r.entry],['Stop',r.stop],['Hedef 1',r.t1],['Hedef 2',r.t2]]){let cell=safeNode('div');cell.append(safeNode('small','',name),safeNode('b','',money(num)));levels.append(cell)}plan.append(levels)}
+ else plan.textContent='85 altı veya geçersiz plan: giriş, stop ve hedef gösterilmez.';
+ $('decisionStamp').textContent=dec.fresh?'Son teknik ölçüm: '+new Date(r.autoAt).toLocaleTimeString('tr-TR')+' · 15dk mum açılışı: '+new Date(r.ts).toLocaleTimeString('tr-TR')+' · kapanışı: '+new Date(r.ts+900000).toLocaleTimeString('tr-TR')+' · 85 skor kazanma olasılığı değildir.':'Veri güncelliği doğrulanmadı. Eski sonuçlardan işlem kararı verme.';
+}
+
+function updateWatch(){
+ renderUnified();
+ let root=$('watchBody');root.replaceChildren();
+ $('watchQuoteStatus').textContent=quoteDisplayStatus();
+ if(!watchSymbol){$('watchBadge').textContent='HEDEF YOK';root.append(safeNode('p','muted','80+ bir coine dokunarak hedefe al.'));return}
+ let r=selectedRow(),t=Date.now(),fresh=freshScan(r,t);
+ let validScan=!!r&&fresh;let live=radar.symbol===watchSymbol&&radar.socket?.readyState===1&&radar.lastTradeAt&&t-radar.lastTradeAt<12000;
+ let price=quoteFresh(watchSymbol)?watchQuote.price:live&&Number.isFinite(radar.lastPrice)?radar.lastPrice:NaN;
+ let p=safeNode('div','row');p.append(safeNode('b','',watchSymbol),safeNode('strong','score',validScan?r.score+'/100':'Teyit bekleniyor'));
+ root.append(p);
+ let status=!validScan?'GÜNCEL ANALİZ BEKLENİYOR':r.score<80?'80 ALTINA DÜŞTÜ · TAKİP SÜRÜYOR':r.score<85?'80–84 TAKİP ADAYI':r.issues.length?'85+ · RİSK / VERİ TEYİDİ EKSİK':'85+ · MAKRO/DERİNLİK TEYİDİ EKSİK';
+ $('watchBadge').textContent=validScan?(r.score<80?'TAKİP · ONAY YOK':r.score<85?'ADAY '+r.side:'85+ · TEYİT BEKLENİYOR'):'ESKİ/VERİ YOK';
+ root.append(safeNode('div','watchline',status+' · KESİN İŞLEM ONAYI YOK'));
+ const grid=safeNode('div','monitor');
+ const data=[['Canlı Binance fiyatı',Number.isFinite(price)?money(price)+' USDT':'Bağlantı bekleniyor'],['Son kapanmış 15dk',validScan?money(r.entry)+' USDT':'—'],['Yön / skor',validScan?r.side+' · '+r.score+'/100':'Yeniden taranacak'],['Balina baskısı',radar.symbol===watchSymbol&&radar.pressureDirection?radar.pressureDirection+' ön teyit':'Canlı teyit bekleniyor'],['Son tarama',validScan?new Date(r.autoAt).toLocaleTimeString('tr-TR'):'Eski / yok'],['Hacim · spread',validScan?r.vol.toFixed(2)+'x · '+(Number.isFinite(r.spread)?'%'+r.spread.toFixed(3):'—'):'—']];
+ if(validScan&&r.score>=85&&r.valid)data.push(['Giriş (taslak)',money(r.entry)],['Stop (taslak)',money(r.stop)],['Hedef 1 (taslak)',money(r.t1)],['Hedef 2 (taslak)',money(r.t2)]);
+ for(const [label,value] of data){const n=safeNode('div');n.append(safeNode('small','',label),safeNode('strong','',value));grid.append(n)}root.append(grid);
+ if(validScan&&r.issues.length)root.append(safeNode('p','small warn','Eksikler: '+r.issues.slice(0,5).join(' · ')));
+ if(validScan&&r.score<85)root.append(safeNode('p','small muted','85 puanın altında giriş, stop ve hedef gösterilmez.'));
+ root.append(safeNode('p','toolhint','Son fiyat canlı olabilir; teknik puan yalnızca yeniden alınan kapanmış mumlarla güncellenir. Yeni mum kapanmışsa eski puan geçersizdir. Sayfa gizliyken izleme güvenilir değildir.'));
+}
+function selectWatch(sym){
+ if(!/^[A-Z0-9]{5,24}$/.test(sym)||!rows.some(r=>r.sym===sym)){log('Hedef için önce doğrulanmış analiz gerekiyor: '+sym);return}
+ watchSymbol=sym;storeWatch(sym);startWatchQuote(sym);updateWatch();renderCandidates();refreshRadarOptions();startRadar(sym,false);$('watchCard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function stopAuto(){
+ auto.active=false;auto.paused=false;auto.seq++;auto.working=false;
+ if(auto.timer){clearTimeout(auto.timer);auto.timer=null}
+ $('autoStart').disabled=false;$('autoStop').disabled=true;$('autoBadge').textContent='DURDU';
+ $('autoStatus').textContent='Otomatik tarama durduruldu. Mevcut aday puanları zamanla eskir; tekrar başlatınca yeniden değerlendirilir.';
+}
+const autoWait=()=>new Promise(resolve=>setTimeout(resolve,0));
+function planNext(seq,ms){if(seq!==auto.seq||!auto.active)return;if(auto.timer)clearTimeout(auto.timer);auto.timer=setTimeout(()=>autoTick(seq),ms)}
+async function autoMarket(seq){
+ if(seq!==auto.seq||!auto.active)throw Error('İptal edildi');
+ const [info,tickers,bookTicks]=await Promise.all([json('/fapi/v1/exchangeInfo'),json('/fapi/v1/ticker/24hr'),json('/fapi/v1/ticker/bookTicker')]);
+ let funding=[];try{funding=await json('/fapi/v1/fundingInfo')}catch(e){log('FundingInfo kısıtlı: '+e.message)}
+ const eligible=new Set(info.symbols.filter(s=>s.contractType==='PERPETUAL'&&s.status==='TRADING'&&s.quoteAsset==='USDT'&&s.marginAsset==='USDT').map(s=>s.symbol));
+ auto.market=new Map(tickers.map(t=>[t.symbol,t]));auto.books=new Map(bookTicks.map(t=>[t.symbol,t]));auto.funding=new Map((Array.isArray(funding)?funding:[]).map(f=>[f.symbol,f]));
+ let top=[...eligible].filter(s=>finite(auto.market.get(s)?.quoteVolume)>=2000000).sort((a,b)=>finite(auto.market.get(b).quoteVolume)-finite(auto.market.get(a).quoteVolume));
+ const max=Number($('autoUniverse').value)||40;
+ let picked=top.slice(0,max);
+ if(watchSymbol&&eligible.has(watchSymbol)&&!picked.includes(watchSymbol))picked.unshift(watchSymbol);
+ if(!picked.length)throw Error('Uygun likit sözleşme yok');
+ if(seq!==auto.seq||!auto.active)return;
+ auto.universe=picked;auto.index=0;auto.seen=0;auto.priority='';auto.lastMarket=Date.now();
+ auto.btcH=await Promise.all([bars('BTCUSDT','1d'),bars('BTCUSDT','4h')]);auto.btcAt=Date.now();
+ $('autoStatus').textContent=auto.universe.length+' likit Binance USDT-M perpetual coin seçildi. Kapanmış mumlarla dönüşümlü tarama başladı.';
+ log('Otomatik tarama evreni: '+picked.length+' coin, hacim sıralı.');
+}
+async function scanAutoCoin(sym,seq){
+ const btc=auto.btcH.map(trend),h={};const candles=await Promise.all(tf.map(t=>sym==='BTCUSDT'&&t==='1d'?Promise.resolve(auto.btcH[0]):sym==='BTCUSDT'&&t==='4h'?Promise.resolve(auto.btcH[1]):bars(sym,t)));
+ tf.forEach((t,i)=>h[t]=candles[i]);
+ if(seq!==auto.seq||!auto.active)return;
+ // Fast phase: request derivatives history only for 80+ scores.
+ const draft=calc(sym,h,btc,auto.market.get(sym),auto.books.get(sym),null,{fundingHistory:null,oiHistory:null,fundingInfo:auto.funding.get(sym)});
+ if(draft.score<80 && sym!==watchSymbol){draft.autoAt=Date.now();return draft}
+ const [mark,fundingHist,oiHist,book]=await Promise.all([
+  json('/fapi/v1/premiumIndex',{symbol:sym}),
+  json('/fapi/v1/fundingRate',{symbol:sym,limit:4}).catch(()=>null),
+  json('/futures/data/openInterestHist',{symbol:sym,period:'5m',limit:8}).catch(()=>null),
+  json('/fapi/v1/ticker/bookTicker',{symbol:sym}).catch(()=>auto.books.get(sym))
+ ]);
+ if(seq!==auto.seq||!auto.active)return;
+ const row=calc(sym,h,btc,auto.market.get(sym),book,mark,{fundingInfo:auto.funding.get(sym),fundingHistory:fundingHist,oiHistory:oiHist});row.autoAt=Date.now();return row;
+}
+async function autoTick(seq){
+ if(seq!==auto.seq||!auto.active||auto.working||auto.paused||document.hidden)return;
+ // Targeted refresh temporarily gets priority over the rotating scanner.
+ if(focus.working){planNext(seq,1200);return;}
+ auto.working=true;let sym='';
+ try{
+  if(!auto.universe.length||(auto.index===0&&auto.seen>0&&Date.now()-auto.lastMarket>25*60000)){
+   $('autoStatus').textContent='Binance sözleşmeleri ve hacim listesi güncelleniyor…';await autoMarket(seq);
+  }
+  if(Date.now()-auto.btcAt>15*60000){auto.btcH=await Promise.all([bars('BTCUSDT','1d'),bars('BTCUSDT','4h')]);auto.btcAt=Date.now()}
+  const prioritized=auto.priority;auto.priority='';sym=prioritized||auto.universe[auto.index];
+  $('autoStatus').textContent=`Taranıyor: ${sym} · ${auto.index+1}/${auto.universe.length} · 80+ adaylar yukarıda listeleniyor.`;
+  const r=await scanAutoCoin(sym,seq);
+  if(seq!==auto.seq||!auto.active)return;
+  if(r){let i=rows.findIndex(x=>x.sym===sym);if(i<0)rows.push(r);else rows[i]=r;auto.seen++;
+   if(r.score>=80)log(sym+' '+r.side+' '+r.score+'/100 · '+(r.score>=85?'plan taslağı':'takip adayı'));
+  }
+  if(!prioritized)auto.index=(auto.index+1)%auto.universe.length;
+  $('autoProgress').style.width=(100*auto.index/auto.universe.length).toFixed(1)+'%';
+  if(auto.index===0&&!prioritized){$('autoStatus').textContent=auto.universe.length+' coinlik tarama turu tamamlandı; otomatik yeniden tarama sürüyor.';log('Tarama turu tamamlandı. 80+ aday: '+cleanCandidates().length)}
+  renderCandidates();updateWatch();
+ }catch(e){
+  if(seq!==auto.seq||!auto.active)return;
+  log('Otomatik tarama sorunu '+(sym||'piyasa')+': '+e.message);
+  if(/HTTP (429|418|451)|hız sınırı|erişim|Failed to fetch/i.test(e.message)){stopAuto();$('autoStatus').textContent='Tarama güvenlik nedeniyle durduruldu: '+e.message+'. VPN/proxy ile engeli aşmaya çalışmayın.';$('autoBadge').textContent='HATA';return}
+  if(auto.universe.length&&!auto.priority)auto.index=(auto.index+1)%auto.universe.length;
+ }finally{
+  auto.working=false;
+  if(seq===auto.seq&&auto.active&&!auto.paused&&!document.hidden){
+   $('autoBadge').textContent='AKTİF';planNext(seq,Number($('autoDelay').value)*1000);
+  }
+ }
+}
+async function startAuto(){
+ if(started||focus.working){$('autoStatus').textContent='Önce sürmekte olan coin analizinin bitmesini bekle.';return}
+ stopAuto();banned=false;auto.active=true;auto.paused=document.hidden;auto.universe=[];auto.index=0;auto.seen=0;auto.priority='';
+ $('autoStart').disabled=true;$('autoStop').disabled=false;$('autoBadge').textContent='TARANIYOR';
+ $('autoStatus').textContent='Otomatik Binance tarama başlıyor. 80+ adaylar burada görünecek.';
+ let seq=auto.seq;
+ if(!document.hidden)planNext(seq,100);
+}
+$('autoStart').addEventListener('click',startAuto);
+$('autoStop').addEventListener('click',stopAuto);
+$('autoUniverse').addEventListener('change',()=>{if(auto.active)startAuto()});
+$('autoDelay').addEventListener('change',()=>{if(auto.active&&!auto.working)planNext(auto.seq,500)});
+for(let b of $('autoTabs').querySelectorAll('button'))b.addEventListener('click',()=>{auto.filter=b.dataset.filter;for(let x of $('autoTabs').querySelectorAll('button'))x.classList.toggle('active',x===b);renderCandidates()});
+$('watchRemove').addEventListener('click',()=>{watchSymbol='';storeWatch('');stopWatchQuote();updateWatch();renderCandidates();stopRadar()});
+// v8: Independent target refresh. It never relies on the rotating scanner queue.
+function focusMessage(message){$('focusStatus').textContent=message;}
+async function refreshFocus(){
+ const sym=watchSymbol;
+ if(!sym){focusMessage('Önce 80+ aday listesinden hedef coin seç.');return;}
+ if(focus.working){focusMessage('Hedef analizi zaten sürüyor.');return;}
+ if(started){focusMessage('Manuel toplu tarama sürerken bağımsız analiz başlatılmaz.');return;}
+ if(document.hidden){focusMessage('Tarayıcı görünürken yeniden dene.');return;}
+ if(banned){focusMessage('Binance hız sınırı etkin. Otomatik olarak tekrar denemeyeceğiz.');return;}
+ if(Date.now()-focus.lastStarted<15000){focusMessage('Aşırı API isteğini önlemek için iki hedef analizi arasında en az 15 saniye olmalı.');return;}
+ focus.working=true;focus.lastStarted=Date.now();$('watchRefresh').disabled=true;
+ // Do not stop an existing auto scan; only let an in-flight symbol finish.
+ if(auto.timer){clearTimeout(auto.timer);auto.timer=null;}
+ focusMessage(sym+' için yeni 1D / 4s / 1s / 15dk mumları doğrudan Binance üzerinden alınıyor…');
+ try{
+  const waitStarted=Date.now();
+  while(auto.working && Date.now()-waitStarted<18000){await new Promise(r=>setTimeout(r,200));}
+  if(auto.working)throw Error('Süren coin taraması bitmedi; hedef verisi yenilenmedi.');
+  if(document.hidden||watchSymbol!==sym)throw Error('Ekran gizlendi veya hedef değişti; sonuç kullanılmadı.');
+  const btcDaily=bars('BTCUSDT','1d'),btc4h=bars('BTCUSDT','4h');
+  const coinBars=tf.map(t=>sym==='BTCUSDT'&&t==='1d'?btcDaily:sym==='BTCUSDT'&&t==='4h'?btc4h:bars(sym,t));
+  const [btcD,btc4,cD,c4,cH,cM,market,book,mark,fundingHistory,oiHistory,fundingInfo]=await Promise.all([
+   btcDaily,btc4h,...coinBars,
+   json('/fapi/v1/ticker/24hr',{symbol:sym}),
+   json('/fapi/v1/ticker/bookTicker',{symbol:sym}),
+   json('/fapi/v1/premiumIndex',{symbol:sym}),
+   json('/fapi/v1/fundingRate',{symbol:sym,limit:4}).catch(()=>null),
+   json('/futures/data/openInterestHist',{symbol:sym,period:'5m',limit:8}).catch(()=>null),
+   auto.funding?.get(sym)?Promise.resolve(auto.funding.get(sym)):json('/fapi/v1/fundingInfo').then(a=>Array.isArray(a)?a.find(x=>x.symbol===sym):null).catch(()=>null)
+  ]);
+  if(document.hidden||watchSymbol!==sym)throw Error('Hedef değişti veya uygulama görünmez; eski sonuç saklanmadı.');
+  let h={'1d':cD,'4h':c4,'1h':cH,'15m':cM};
+  let row=calc(sym,h,[trend(btcD),trend(btc4)],market,book,mark,{fundingInfo,fundingHistory,oiHistory});
+  const expected=latestClosed15Open();
+  if(row.ts!==expected)throw Error('Binance henüz en yeni kapanmış 15dk mumunu vermedi. Beklenen açılış: '+new Date(expected).toLocaleTimeString('tr-TR')+'; gelen: '+new Date(row.ts).toLocaleTimeString('tr-TR'));
+  row.autoAt=Date.now();
+  const idx=rows.findIndex(x=>x.sym===sym);
+  if(idx<0)rows.push(row);else rows[idx]=row;
+  auto.btcH=[btcD,btc4];auto.btcAt=Date.now();
+  if(auto.market)auto.market.set(sym,market);
+  if(auto.books)auto.books.set(sym,book);
+  if(auto.funding&&fundingInfo)auto.funding.set(sym,fundingInfo);
+  renderCandidates();updateWatch();updateCost();
+  focusMessage('✓ '+sym+' doğrudan analiz edildi: '+row.side+' '+row.score+'/100 · 15dk mum kapanışı '+new Date(row.ts+900000).toLocaleTimeString('tr-TR')+' · İşlem onayı yok.');
+  log('Hedef doğrudan yenilendi: '+sym+' '+row.score+'/100 · '+row.side);
+ }catch(e){
+  const r=rows.find(x=>x.sym===sym);
+  if(r)r.autoAt=0; // Never keep a failed attempted refresh displayed as a fresh signal.
+  if(/HTTP (429|418|451)|hız sınırı|erişim|Failed to fetch/i.test(String(e.message))&&auto.active){stopAuto();$('autoBadge').textContent='HATA';}
+  renderCandidates();updateWatch();
+  focusMessage('⚠ Hedef analizi güncellenemedi: '+e.message+' · Eski skor işlem için geçersiz.');
+  log('Hedef yenileme hata: '+sym+' · '+e.message);
+ }finally{
+  focus.working=false;$('watchRefresh').disabled=false;
+  if(auto.active&&!auto.paused&&!document.hidden&&!auto.working)planNext(auto.seq,900);
+ }
+}
+$('watchRefresh').addEventListener('click',refreshFocus);
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){stopWatchQuote();updateWatch()}
+ else if(watchSymbol){startWatchQuote(watchSymbol);updateWatch()}
+ if(!auto.active)return;
+ if(document.hidden){auto.paused=true;if(auto.timer)clearTimeout(auto.timer);auto.timer=null;$('autoBadge').textContent='DURAKLADI'}
+ else{auto.paused=false;$('autoBadge').textContent='TARANIYOR';$('autoStatus').textContent='Ekran tekrar açıldı; kapanmış mumlar yeniden denetlenecek.';if(!auto.working)planNext(auto.seq,1500);renderCandidates();updateWatch()}
+});
+setInterval(()=>{renderCandidates();updateWatch()},5000);
+updateWatch();renderCandidates();
+if(watchSymbol)startWatchQuote(watchSymbol);
+// Sürümün kendi kendine başlaması: kullanıcı durdurabilir.
+setTimeout(()=>{if(!auto.active&&!started)startAuto()},900);
+
+$('radarStart').addEventListener('click',()=>startRadar($('radarSymbol').value));$('radarStop').addEventListener('click',stopRadar);['positionNotional','takerFee','extraSlip'].forEach(id=>$(id).addEventListener('input',updateCost));
+window.addEventListener('pagehide',()=>{stopRadar();stopWatchQuote()});
+// Sabit duyuru listesi yalnızca yakın dönem ABD BLS saatleri için bir hatırlatmadır.
+// Makro duyuruları yukarıda tanımlandı; yalnızca sınırlı takvimdir.
+function refreshMacro(){let now=Date.now(),all=macroReleases.map(x=>({...x,ts:Date.parse(x.at)}));let nearby=all.find(x=>now>=x.ts-30*60000&&now<=x.ts+20*60000),next=all.find(x=>x.ts>now);let msg;
+ if(nearby)msg='⛔ ÖNEMLİ VERİ SAATİ · '+nearby.name+' · Yeni işlem onayı durdurulmalı. '+new Date(nearby.ts).toLocaleString('tr-TR',{timeZone:'Europe/Istanbul'})+' (TR)';
+ else if(next)msg='Yaklaşan resmî veri: '+next.name+' · '+new Date(next.ts).toLocaleString('tr-TR',{timeZone:'Europe/Istanbul'})+' (TR). 30 dk önce–20 dk sonra ihtiyat freni.';
+ else msg='Bu sürümdeki sabit Kasım takvimi sona erdi. GÜNCEL TAKVİM TEYİDİ YOK; işlem onayı verilmez.';
+ $('macroStatus').textContent=msg;
+}
+refreshMacro();setInterval(refreshMacro,60000);
+
+$('scan').addEventListener('click',run);
+</script></body></html>
