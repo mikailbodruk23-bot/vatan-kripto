@@ -1,18 +1,18 @@
 {
-  "updated_at": "2026-11-07T05:27:11.756972+00:00",
+  "updated_at": "2026-11-07T06:26:07.574058+00:00",
   "results": [
     {
       "coin": "BTC-USDT-SWAP",
       "yonler": {
         "1Dutc": "SHORT",
         "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "BEKLE"
+        "1H": "BEKLE",
+        "15m": "LONG"
       },
-      "rsi15m": 49.45,
-      "macd15m": -13.961847,
-      "hacim_orani": 0.93,
-      "puan": 75,
+      "rsi15m": 57.58,
+      "macd15m": 9.142709,
+      "hacim_orani": 2.38,
+      "puan": 50,
       "btc_filtre": true,
       "karar": "BEKLE"
     },
@@ -24,10 +24,10 @@
         "1H": "BEKLE",
         "15m": "LONG"
       },
-      "rsi15m": 54.51,
-      "macd15m": -0.605575,
-      "hacim_orani": 1.23,
-      "puan": 55,
+      "rsi15m": 55.9,
+      "macd15m": -0.071087,
+      "hacim_orani": 0.83,
+      "puan": 50,
       "btc_filtre": true,
       "karar": "BEKLE"
     },
@@ -36,19 +36,15 @@
       "yonler": {
         "1Dutc": "SHORT",
         "4H": "SHORT",
-        "1H": "SHORT",
-        "15m": "SHORT"
+        "1H": "BEKLE",
+        "15m": "BEKLE"
       },
-      "rsi15m": 43.38,
-      "macd15m": -0.04503,
-      "hacim_orani": 0.99,
-      "puan": 90,
+      "rsi15m": 53.8,
+      "macd15m": 0.013941,
+      "hacim_orani": 0.74,
+      "puan": 40,
       "btc_filtre": true,
-      "karar": "SHORT ADAY",
-      "giris_referans": 89.92,
-      "stop": 90.238214,
-      "hedef": 89.347214,
-      "risk_odul": 1.8
+      "karar": "BEKLE"
     }
   ]
 }
