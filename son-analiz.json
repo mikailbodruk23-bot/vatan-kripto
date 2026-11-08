@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-08T22:22:26.210029+00:00",
+  "updated_at": "2026-11-08T23:13:27.471544+00:00",
   "results": [
     {
       "coin": "BTC-USDT-SWAP",
@@ -9,15 +9,15 @@
         "1H": "SHORT",
         "15m": "SHORT"
       },
-      "rsi15m": 23.79,
-      "macd15m": -152.846322,
-      "hacim_orani": 3.91,
-      "puan": 90,
+      "rsi15m": 24.6,
+      "macd15m": -153.561218,
+      "hacim_orani": 0.52,
+      "puan": 80,
       "btc_filtre": true,
       "karar": "SHORT ADAY",
-      "giris_referans": 74471.6,
-      "stop": 74889.8,
-      "hedef": 73718.84,
+      "giris_referans": 74433.4,
+      "stop": 74920.739286,
+      "hedef": 73556.189286,
       "risk_odul": 1.8
     },
     {
@@ -28,15 +28,15 @@
         "1H": "SHORT",
         "15m": "SHORT"
       },
-      "rsi15m": 5.79,
-      "macd15m": -10.408334,
-      "hacim_orani": 3.45,
-      "puan": 90,
+      "rsi15m": 9.2,
+      "macd15m": -11.611616,
+      "hacim_orani": 0.66,
+      "puan": 80,
       "btc_filtre": true,
       "karar": "SHORT ADAY",
-      "giris_referans": 2125.83,
-      "stop": 2153.338929,
-      "hedef": 2076.313929,
+      "giris_referans": 2127.2,
+      "stop": 2157.880357,
+      "hedef": 2071.975357,
       "risk_odul": 1.8
     },
     {
@@ -47,15 +47,15 @@
         "1H": "SHORT",
         "15m": "SHORT"
       },
-      "rsi15m": 24.47,
-      "macd15m": -0.322528,
-      "hacim_orani": 2.97,
-      "puan": 90,
+      "rsi15m": 26.82,
+      "macd15m": -0.359599,
+      "hacim_orani": 0.56,
+      "puan": 80,
       "btc_filtre": true,
       "karar": "SHORT ADAY",
-      "giris_referans": 86.55,
-      "stop": 87.476786,
-      "hedef": 84.881786,
+      "giris_referans": 86.27,
+      "stop": 87.329643,
+      "hedef": 84.362643,
       "risk_odul": 1.8
     }
   ]
