@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-25T23:53:59.362685+00:00",
+  "updated_at": "2026-11-26T01:17:24.667895+00:00",
   "results": [
     {
       "coin": "BTC-USDT-SWAP",
@@ -9,10 +9,10 @@
         "1H": "LONG",
         "15m": "LONG"
       },
-      "rsi15m": 64.38,
-      "macd15m": -35.301183,
-      "hacim_orani": 0.64,
-      "puan": 30,
+      "rsi15m": 64.61,
+      "macd15m": 1.676882,
+      "hacim_orani": 1.16,
+      "puan": 25,
       "btc_filtre": false,
       "karar": "BEKLE"
     },
@@ -24,10 +24,10 @@
         "1H": "LONG",
         "15m": "LONG"
       },
-      "rsi15m": 63.99,
-      "macd15m": -0.916582,
-      "hacim_orani": 0.78,
-      "puan": 30,
+      "rsi15m": 65.9,
+      "macd15m": 0.121952,
+      "hacim_orani": 1.08,
+      "puan": 25,
       "btc_filtre": false,
       "karar": "BEKLE"
     },
@@ -37,11 +37,11 @@
         "1Dutc": "SHORT",
         "4H": "BEKLE",
         "1H": "LONG",
-        "15m": "BEKLE"
+        "15m": "LONG"
       },
-      "rsi15m": 59.31,
-      "macd15m": -0.11121,
-      "hacim_orani": 0.27,
+      "rsi15m": 64.79,
+      "macd15m": -0.038865,
+      "hacim_orani": 0.89,
       "puan": 30,
       "btc_filtre": false,
       "karar": "BEKLE"
