@@ -1,17 +1,17 @@
 {
-  "updated_at": "2026-11-27T15:20:45.116551+00:00",
+  "updated_at": "2026-11-27T16:30:12.959779+00:00",
   "results": [
     {
       "coin": "BTC-USDT-SWAP",
       "yonler": {
         "1Dutc": "SHORT",
-        "4H": "LONG",
+        "4H": "BEKLE",
         "1H": "SHORT",
         "15m": "SHORT"
       },
-      "rsi15m": 23.34,
-      "macd15m": -236.04735,
-      "hacim_orani": 5.5,
+      "rsi15m": 34.15,
+      "macd15m": -99.242603,
+      "hacim_orani": 0.66,
       "puan": 70,
       "btc_filtre": false,
       "karar": "BEKLE"
@@ -20,14 +20,14 @@
       "coin": "ETH-USDT-SWAP",
       "yonler": {
         "1Dutc": "SHORT",
-        "4H": "LONG",
+        "4H": "BEKLE",
         "1H": "SHORT",
         "15m": "SHORT"
       },
-      "rsi15m": 17.38,
-      "macd15m": -7.055929,
-      "hacim_orani": 7.96,
-      "puan": 70,
+      "rsi15m": 29.45,
+      "macd15m": -3.68165,
+      "hacim_orani": 0.49,
+      "puan": 60,
       "btc_filtre": false,
       "karar": "BEKLE"
     },
@@ -39,9 +39,9 @@
         "1H": "BEKLE",
         "15m": "SHORT"
       },
-      "rsi15m": 27.9,
-      "macd15m": -0.247451,
-      "hacim_orani": 6.04,
+      "rsi15m": 40.63,
+      "macd15m": -0.070309,
+      "hacim_orani": 0.56,
       "puan": 55,
       "btc_filtre": false,
       "karar": "BEKLE"
